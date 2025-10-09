@@ -7,7 +7,7 @@
 #include "Events/Event.h"
 
 
-namespace Core {
+namespace Jah {
 
 
 	struct WindowProps

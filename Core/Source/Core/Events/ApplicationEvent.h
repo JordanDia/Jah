@@ -3,7 +3,7 @@
 #include "Event.h"
 #include <sstream>
 
-namespace Core {
+namespace Jah {
 
 	class WindowResizeEvent : public Event
 	{

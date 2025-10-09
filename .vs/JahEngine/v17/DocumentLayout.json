@@ -3,28 +3,48 @@
   "WorkspaceRootPath": "C:\\Dev\\CodingProjects\\JahEngine\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A07B792F-D2C5-4BD5-8CEB-56261625F4FE}|Core\\Core.vcxproj|C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\Events\\MouseEvent.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{A07B792F-D2C5-4BD5-8CEB-56261625F4FE}|Core\\Core.vcxproj|solutionrelative:Core\\Source\\Core\\Events\\MouseEvent.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{D321AA71-B1AF-43FA-959E-105A825205B3}|App\\App.vcxproj|C:\\Dev\\CodingProjects\\JahEngine\\App\\Source\\App.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{D321AA71-B1AF-43FA-959E-105A825205B3}|App\\App.vcxproj|solutionrelative:App\\Source\\App.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A07B792F-D2C5-4BD5-8CEB-56261625F4FE}|Core\\Core.vcxproj|C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\Application.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{A07B792F-D2C5-4BD5-8CEB-56261625F4FE}|Core\\Core.vcxproj|solutionrelative:Core\\Source\\Core\\Application.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{A07B792F-D2C5-4BD5-8CEB-56261625F4FE}|Core\\Core.vcxproj|C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\Layer.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A07B792F-D2C5-4BD5-8CEB-56261625F4FE}|Core\\Core.vcxproj|solutionrelative:Core\\Source\\Core\\Layer.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A07B792F-D2C5-4BD5-8CEB-56261625F4FE}|Core\\Core.vcxproj|C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\Events\\ApplicationEvent.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{A07B792F-D2C5-4BD5-8CEB-56261625F4FE}|Core\\Core.vcxproj|solutionrelative:Core\\Source\\Core\\Events\\ApplicationEvent.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{A07B792F-D2C5-4BD5-8CEB-56261625F4FE}|Core\\Core.vcxproj|C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\Layer.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A07B792F-D2C5-4BD5-8CEB-56261625F4FE}|Core\\Core.vcxproj|solutionrelative:Core\\Source\\Core\\Layer.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A07B792F-D2C5-4BD5-8CEB-56261625F4FE}|Core\\Core.vcxproj|C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\LayerStack.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A07B792F-D2C5-4BD5-8CEB-56261625F4FE}|Core\\Core.vcxproj|solutionrelative:Core\\Source\\Core\\LayerStack.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A07B792F-D2C5-4BD5-8CEB-56261625F4FE}|Core\\Core.vcxproj|C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\Application.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A07B792F-D2C5-4BD5-8CEB-56261625F4FE}|Core\\Core.vcxproj|solutionrelative:Core\\Source\\Core\\Application.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A07B792F-D2C5-4BD5-8CEB-56261625F4FE}|Core\\Core.vcxproj|C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\Window.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A07B792F-D2C5-4BD5-8CEB-56261625F4FE}|Core\\Core.vcxproj|solutionrelative:Core\\Source\\Core\\Window.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A07B792F-D2C5-4BD5-8CEB-56261625F4FE}|Core\\Core.vcxproj|C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\Events\\Event.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{A07B792F-D2C5-4BD5-8CEB-56261625F4FE}|Core\\Core.vcxproj|solutionrelative:Core\\Source\\Core\\Events\\Event.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A07B792F-D2C5-4BD5-8CEB-56261625F4FE}|Core\\Core.vcxproj|C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\Events\\KeyEvent.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{A07B792F-D2C5-4BD5-8CEB-56261625F4FE}|Core\\Core.vcxproj|solutionrelative:Core\\Source\\Core\\Events\\KeyEvent.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{A07B792F-D2C5-4BD5-8CEB-56261625F4FE}|Core\\Core.vcxproj|C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\Application.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A07B792F-D2C5-4BD5-8CEB-56261625F4FE}|Core\\Core.vcxproj|solutionrelative:Core\\Source\\Core\\Application.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A07B792F-D2C5-4BD5-8CEB-56261625F4FE}|Core\\Core.vcxproj|C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\Application.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{A07B792F-D2C5-4BD5-8CEB-56261625F4FE}|Core\\Core.vcxproj|solutionrelative:Core\\Source\\Core\\Application.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{A07B792F-D2C5-4BD5-8CEB-56261625F4FE}|Core\\Core.vcxproj|C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Jah.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A07B792F-D2C5-4BD5-8CEB-56261625F4FE}|Core\\Core.vcxproj|solutionrelative:Core\\Source\\Jah.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A07B792F-D2C5-4BD5-8CEB-56261625F4FE}|Core\\Core.vcxproj|C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\EntryPoint.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A07B792F-D2C5-4BD5-8CEB-56261625F4FE}|Core\\Core.vcxproj|solutionrelative:Core\\Source\\Core\\EntryPoint.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A07B792F-D2C5-4BD5-8CEB-56261625F4FE}|Core\\Core.vcxproj|C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\LayerStack.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A07B792F-D2C5-4BD5-8CEB-56261625F4FE}|Core\\Core.vcxproj|solutionrelative:Core\\Source\\Core\\LayerStack.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,7 +54,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 11,
           "Children": [
             {
               "$type": "Bookmark",
@@ -42,80 +62,145 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "MouseEvent.h",
-              "DocumentMoniker": "C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\Events\\MouseEvent.h",
-              "RelativeDocumentMoniker": "Core\\Source\\Core\\Events\\MouseEvent.h",
-              "ToolTip": "C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\Events\\MouseEvent.h",
-              "RelativeToolTip": "Core\\Source\\Core\\Events\\MouseEvent.h",
-              "ViewState": "AgIAAEsAAAAAAAAAAAAAAGAAAAADAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-10-09T15:49:08.337Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "KeyEvent.h",
-              "DocumentMoniker": "C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\Events\\KeyEvent.h",
-              "RelativeDocumentMoniker": "Core\\Source\\Core\\Events\\KeyEvent.h",
-              "ToolTip": "C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\Events\\KeyEvent.h",
-              "RelativeToolTip": "Core\\Source\\Core\\Events\\KeyEvent.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-10-09T03:28:11.112Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 6,
               "Title": "Event.h",
               "DocumentMoniker": "C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\Events\\Event.h",
               "RelativeDocumentMoniker": "Core\\Source\\Core\\Events\\Event.h",
               "ToolTip": "C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\Events\\Event.h",
               "RelativeToolTip": "Core\\Source\\Core\\Events\\Event.h",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAB4AAABpAAAAAAAAAA==",
+              "ViewState": "AgIAACoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-10-09T03:05:47.84Z",
+              "WhenOpened": "2025-10-09T20:17:22.428Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
+              "Title": "Window.cpp",
+              "DocumentMoniker": "C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\Window.cpp",
+              "RelativeDocumentMoniker": "Core\\Source\\Core\\Window.cpp",
+              "ToolTip": "C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\Window.cpp",
+              "RelativeToolTip": "Core\\Source\\Core\\Window.cpp",
+              "ViewState": "AgIAAHgAAAAAAAAAAAAAAIoAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-10-09T20:12:09.142Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Jah.h",
+              "DocumentMoniker": "C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Jah.h",
+              "RelativeDocumentMoniker": "Core\\Source\\Jah.h",
+              "ToolTip": "C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Jah.h",
+              "RelativeToolTip": "Core\\Source\\Jah.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-10-09T20:08:52.785Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "Application.cpp",
               "DocumentMoniker": "C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\Application.cpp",
               "RelativeDocumentMoniker": "Core\\Source\\Core\\Application.cpp",
               "ToolTip": "C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\Application.cpp",
               "RelativeToolTip": "Core\\Source\\Core\\Application.cpp",
-              "ViewState": "AgIAABUAAAAAAAAAAAAAACcAAAAVAAAAAAAAAA==",
+              "ViewState": "AgIAABsAAAAAAAAAAAAAACwAAAAEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-10-09T03:38:56.662Z",
+              "WhenOpened": "2025-10-09T20:03:08.341Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ApplicationEvent.h",
-              "DocumentMoniker": "C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\Events\\ApplicationEvent.h",
-              "RelativeDocumentMoniker": "Core\\Source\\Core\\Events\\ApplicationEvent.h",
-              "ToolTip": "C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\Events\\ApplicationEvent.h",
-              "RelativeToolTip": "Core\\Source\\Core\\Events\\ApplicationEvent.h",
-              "ViewState": "AgIAABUAAAAAAAAAAAAAAAwAAAADAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-10-09T03:20:36.444Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 7,
               "Title": "Application.h",
               "DocumentMoniker": "C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\Application.h",
               "RelativeDocumentMoniker": "Core\\Source\\Core\\Application.h",
               "ToolTip": "C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\Application.h",
               "RelativeToolTip": "Core\\Source\\Core\\Application.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAeAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-10-09T03:02:42.041Z",
+              "WhenOpened": "2025-10-09T20:02:17.231Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "LayerStack.cpp",
+              "DocumentMoniker": "C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\LayerStack.cpp",
+              "RelativeDocumentMoniker": "Core\\Source\\Core\\LayerStack.cpp",
+              "ToolTip": "C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\LayerStack.cpp",
+              "RelativeToolTip": "Core\\Source\\Core\\LayerStack.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAiwBEAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-10-09T19:52:35.42Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "LayerStack.h",
+              "DocumentMoniker": "C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\LayerStack.h",
+              "RelativeDocumentMoniker": "Core\\Source\\Core\\LayerStack.h",
+              "ToolTip": "C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\LayerStack.h",
+              "RelativeToolTip": "Core\\Source\\Core\\LayerStack.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-10-09T19:49:31.131Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Layer.h",
+              "DocumentMoniker": "C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\Layer.h",
+              "RelativeDocumentMoniker": "Core\\Source\\Core\\Layer.h",
+              "ToolTip": "C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\Layer.h",
+              "RelativeToolTip": "Core\\Source\\Core\\Layer.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-10-09T19:48:48.502Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Layer.cpp",
+              "DocumentMoniker": "C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\Layer.cpp",
+              "RelativeDocumentMoniker": "Core\\Source\\Core\\Layer.cpp",
+              "ToolTip": "C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\Layer.cpp",
+              "RelativeToolTip": "Core\\Source\\Core\\Layer.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-10-09T19:47:51.414Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "EntryPoint.h",
+              "DocumentMoniker": "C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\EntryPoint.h",
+              "RelativeDocumentMoniker": "Core\\Source\\Core\\EntryPoint.h",
+              "ToolTip": "C:\\Dev\\CodingProjects\\JahEngine\\Core\\Source\\Core\\EntryPoint.h",
+              "RelativeToolTip": "Core\\Source\\Core\\EntryPoint.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-10-09T19:48:27.232Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "App.cpp",
+              "DocumentMoniker": "C:\\Dev\\CodingProjects\\JahEngine\\App\\Source\\App.cpp",
+              "RelativeDocumentMoniker": "App\\Source\\App.cpp",
+              "ToolTip": "C:\\Dev\\CodingProjects\\JahEngine\\App\\Source\\App.cpp",
+              "RelativeToolTip": "App\\Source\\App.cpp",
+              "ViewState": "AgIAABgAAAAAAAAAAAAAACgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-10-09T19:48:19.793Z",
               "EditorCaption": ""
             }
           ]

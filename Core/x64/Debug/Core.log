@@ -1,4 +1,7 @@
-﻿  Application.cpp
-  Window.cpp
+﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(538,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (Core.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Application.cpp
+C:\Dev\CodingProjects\JahEngine\Core\Source\Core\Application.cpp(98,3): warning C4102: 'm_LayerStack': unreferenced label
+  LayerStack.cpp
   Generating Code...
-  Core.vcxproj -> C:\Dev\CodingProjects\JahEngine\Binaries\x64\Debug\Core\Core.lib
+C:\Dev\CodingProjects\JahEngine\Core\Source\Core\Application.cpp(99,1): warning C4717: 'Jah::Application::PushOverlay': recursive on all control paths, function will cause runtime stack overflow
+  Core.vcxproj -> C:\Dev\CodingProjects\JahEngine\Binaries\x64\Debug\Jah\Jah.lib

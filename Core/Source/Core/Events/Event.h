@@ -3,7 +3,7 @@
 #include <string>
 #include <functional>
 
-namespace Core {
+namespace Jah {
 
 
 	enum class EventType

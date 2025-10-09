@@ -1,10 +1,10 @@
 #pragma once
 
-extern Core::Application* Core::CreateApplication();
+extern Jah::Application* Jah::CreateApplication();
 
 int main(int argumentCount, char** arguments)
 {
-	auto app = Core::CreateApplication();
+	auto app = Jah::CreateApplication();
 	app->Run();
 	delete app;
 }

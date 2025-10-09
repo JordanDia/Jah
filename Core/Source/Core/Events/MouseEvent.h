@@ -2,7 +2,7 @@
 
 #include "Events/Event.h"
 
-namespace Core {
+namespace Jah {
 
 	class MouseMovedEvent : public Event
 	{

@@ -2,7 +2,7 @@
 
 #include "Events/Event.h"
 
-namespace Core {
+namespace Jah {
 
 	class KeyEvent : public Event
 	{
@@ -40,10 +40,6 @@ namespace Core {
 		EVENT_CLASS_TYPE(KeyPressed)
 		EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
 
-		static EventType GetStaticType() { return EventType::KeyPressed; }
-		EventType GetEventType() const override { return GetStaticType(); }
-		const char* GetName() const override { return "KeyPressed"; }
-
 	private:
 		uint32_t m_RepeatCount = 0;
 	};
@@ -60,10 +56,6 @@ namespace Core {
 		{
 			return "KeyReleasedEvent: " + std::to_string(m_KeyCode);
 		}
-
-		static EventType GetStaticType() { return EventType::KeyReleased; }
-		EventType GetEventType() const override { return GetStaticType(); }
-		const char* GetName() const override { return "KeyReleased"; }
 
 		EVENT_CLASS_TYPE(KeyPressed)
 		EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)

@@ -2,10 +2,10 @@
 #include "Events/ApplicationEvent.h"
 #include "Events/KeyEvent.h"
 #include "Events/MouseEvent.h"
+#include <iostream>
 #include <cassert>
 
-
-namespace Core {
+namespace Jah {
 
 	static bool s_GLFWInitialized = false;
 

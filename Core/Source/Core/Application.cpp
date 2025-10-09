@@ -2,7 +2,7 @@
 #include <iostream>
 
 
-namespace Core {
+namespace Jah {
 
 	Application::Application()
 	{
@@ -21,6 +21,10 @@ namespace Core {
 		{
 			glClearColor(1, 0, 1, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
+
+			for (Layer* layer : m_LayerStack)
+				layer->OnUpdate();
+
 			m_Window->OnUpdate();
 		}
 	}
@@ -41,7 +45,15 @@ namespace Core {
 			return true;
 		});
 
-		dispatcher.Dispatch<KeyPressedEvent>([this](KeyPressedEvent& event) {
+		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
+		{
+			(*--it)->OnEvent(e);
+			if (e.Handled)
+				break;
+		}
+
+
+		/*dispatcher.Dispatch<KeyPressedEvent>([this](KeyPressedEvent& event) {
 			std::cout << event.ToString() << std::endl;
 			return false;
 		});
@@ -69,11 +81,21 @@ namespace Core {
 		dispatcher.Dispatch<MouseMovedEvent>([this](MouseMovedEvent& event) {
 			std::cout << event.ToString() << std::endl;
 			return false;
-		});
+		});*/
 
 		
 
 
+	}
+
+	void Application::PushLayer(Layer* layer)
+	{
+		m_LayerStack.PushLayer(layer);
+	}
+
+	void Application::PushOverlay(Layer* overlay)
+	{
+		m_LayerStack:PushOverlay(overlay);
 	}
 
 }
