@@ -14,47 +14,12 @@ workspace "Jah"
 outputdir = "%{cfg.buildcfg}-%{cfg.architecture}"
 
 IncludeDirs = {
-	["GLFW"] = "Jah/External/GLFW/include"
+	["GLFW"] = "Jah/External/GLFW/include",
+	["Glad"] = "Jah/External/Glad/include",
 }
 
-project "GLFW"
-	location "Jah/External/GLFW"
-	kind "StaticLib"
-	language "C"
-	staticruntime "On"
-
-	targetdir ("Binaries/" .. outputdir .. "/%{prj.name}")
-	objdir ("Binaries-Int/" .. outputdir .. "/%{prj.name}")
-
-	files {
-        "Jah/External/GLFW/src/**.c"
-    }
-
-    includedirs {
-        "Jah/External/GLFW/include"
-    }
-
-	filter "system:windows"
-		systemversion "latest"
-		defines {
-			"_GLFW_WIN32",
-			"_CRT_SECURE_NO_WARNINGS"
-		}
-
-	filter "configurations:Debug"
-		defines { "JAH_DEBUG" }
-		symbols "On"
-		runtime "Debug"
-
-	filter "configurations:Release"
-		defines { "JAH_RELEASE" }
-		optimize "On"
-		runtime "Release"
-
-	filter "configurations:Dist"
-		defines { "JAH_DIST" }
-		optimize "On"
-		runtime "Release"
+include "Jah/External/GLFW"
+include "Jah/External/Glad"
 
 project "Jah"
 	location "Jah"
@@ -66,6 +31,10 @@ project "Jah"
 	targetdir ("Binaries/" .. outputdir .. "/%{prj.name}")
 	objdir("Binaries-Int/" .. outputdir .. "/%{prj.name}")
 
+	defines {
+		"GLFW_INCLUDE_NONE"
+	}
+
 	files {
 		"%{prj.name}/Source/**.h",
 		"%{prj.name}/Source/**.cpp",
@@ -73,12 +42,14 @@ project "Jah"
 
 	links {
 		"GLFW",
+		"Glad",
 		"opengl32.lib"
 	}
 
 	includedirs {
 		"%{prj.name}/Source/",
 		IncludeDirs.GLFW,
+		IncludeDirs.Glad,
 		"%{prj.name}/External/Glad/include",
 	}
 

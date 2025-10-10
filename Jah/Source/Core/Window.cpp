@@ -2,9 +2,11 @@
 #include "Events/ApplicationEvent.h"
 #include "Events/KeyEvent.h"
 #include "Events/MouseEvent.h"
+#include "Core.h"
 #include <iostream>
 #include <cassert>
 
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 namespace Jah {
@@ -61,13 +63,15 @@ namespace Jah {
 		if (!s_GLFWInitialized)
 		{
 			int success = glfwInit();
-			assert(success && "Could not initialize GLFW");
+			JAH_ASSERT(success, "Failed to initialize GLFW!");
 			glfwSetErrorCallback(GLFWErrorCallback);
 			s_GLFWInitialized = true;
 		}
 
 		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
 		glfwMakeContextCurrent(m_Window);
+		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		JAH_ASSERT(status, "Failed to initialize Glad!")
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetVsync(true);
 
