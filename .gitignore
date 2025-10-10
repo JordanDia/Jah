@@ -1,7 +1,17 @@
-".vs/" 
-"bin/" 
-"obj/" 
-"build/" 
-"*.pdb" 
-"*.vcxproj.user" 
-"*.log" 
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build directories
+Binaries/
+Binaries-Int/
+obj/
+
+# Logs
+*.log
+
+# Other
+*.pdb
