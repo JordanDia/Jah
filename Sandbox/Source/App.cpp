@@ -1,5 +1,6 @@
 #include <Jah.h>
 #include <iostream>
+#include <print>
 
 class ExampleLayer : public Jah::Layer
 {
@@ -11,12 +12,19 @@ public:
 
 	void OnUpdate() override
 	{
-		std::cout << "ExampleLayer::Update" << std::endl;
+		//std::cout << "ExampleLayer::Update" << std::endl;
+
+		bool holdingA = Jah::Input::IsKeyPressed((int)'A');
+		if (holdingA) { std::println("Holding A"); }
+
+		bool mousePressed = Jah::Input::IsMouseButtonPressed(0);
+		if (mousePressed) { std::println("Mouse is pressed"); }
+
 	}
 
 	void OnEvent(Jah::Event& event) override
 	{
-		std::cout << event.ToString() << std::endl;
+		//std::cout << event.ToString() << std::endl;
 	}
 };
 

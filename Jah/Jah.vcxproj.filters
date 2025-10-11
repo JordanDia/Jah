@@ -46,7 +46,9 @@
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="Source\Jah.h" />
-    <ClInclude Include="Source\Core\Input.h" />
+    <ClInclude Include="Source\Core\Input.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\Application.cpp">
@@ -67,6 +69,8 @@
     <ClCompile Include="Source\Core\Window.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Input.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
