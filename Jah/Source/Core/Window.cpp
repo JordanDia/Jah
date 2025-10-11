@@ -4,7 +4,7 @@
 #include "Events/MouseEvent.h"
 #include "Core.h"
 #include <iostream>
-#include <cassert>
+#include <print>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -36,7 +36,7 @@ namespace Jah {
 	void Window::OnUpdate()
 	{
 		glfwPollEvents();
-		glfwSwapBuffers(m_Window);
+		m_Context->SwapBuffers();
 	}
 
 	void Window::SetVsync(bool enabled)
@@ -60,6 +60,7 @@ namespace Jah {
 		m_Data.Width = props.Width;
 		m_Data.Height = props.Height;
 
+
 		if (!s_GLFWInitialized)
 		{
 			int success = glfwInit();
@@ -69,9 +70,10 @@ namespace Jah {
 		}
 
 		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
-		glfwMakeContextCurrent(m_Window);
-		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-		JAH_ASSERT(status, "Failed to initialize Glad!")
+		m_Context = new GraphicsContext(m_Window);
+		m_Context->Init();
+
+		
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetVsync(true);
 

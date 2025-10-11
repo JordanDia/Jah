@@ -49,6 +49,7 @@
     <ClInclude Include="Source\Core\Input.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Core\Renderer\GraphicsContext.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\Application.cpp">
@@ -69,8 +70,7 @@
     <ClCompile Include="Source\Core\Window.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
+    <ClCompile Include="Source\Core\Renderer\GraphicsContext.cpp" />
+    <ClCompile Include="Source\Core\Input.cpp" />
   </ItemGroup>
 </Project>

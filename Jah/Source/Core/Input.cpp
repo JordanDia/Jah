@@ -10,7 +10,7 @@ namespace Jah {
 	{
 		Application& app = Application::Get();
 		GLFWwindow* window = app.GetWindow().GetNativeWindow();
-		bool state = glfwGetKey(window, keycode);
+		int state = glfwGetKey(window, keycode);
 
 		return state == GLFW_PRESS || state == GLFW_REPEAT;
 	}
@@ -19,7 +19,7 @@ namespace Jah {
 	{
 		Application& app = Application::Get();
 		GLFWwindow* window = app.GetWindow().GetNativeWindow();
-		bool state = glfwGetMouseButton(window, button);
+		int state = glfwGetMouseButton(window, button);
 
 		return state == GLFW_PRESS;
 	}

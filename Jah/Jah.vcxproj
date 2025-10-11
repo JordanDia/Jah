@@ -156,16 +156,18 @@
     <ClInclude Include="Source\Core\Input.h" />
     <ClInclude Include="Source\Core\Layer.h" />
     <ClInclude Include="Source\Core\LayerStack.h" />
+    <ClInclude Include="Source\Core\Renderer\GraphicsContext.h" />
     <ClInclude Include="Source\Core\Window.h" />
     <ClInclude Include="Source\Jah.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Input.cpp" />
     <ClCompile Include="Source\Core\Application.cpp" />
     <ClCompile Include="Source\Core\Core.cpp" />
     <ClCompile Include="Source\Core\ImGui\ImGuiLayer.cpp" />
+    <ClCompile Include="Source\Core\Input.cpp" />
     <ClCompile Include="Source\Core\Layer.cpp" />
     <ClCompile Include="Source\Core\LayerStack.cpp" />
+    <ClCompile Include="Source\Core\Renderer\GraphicsContext.cpp" />
     <ClCompile Include="Source\Core\Window.cpp" />
   </ItemGroup>
   <ItemGroup>

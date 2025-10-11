@@ -3,6 +3,7 @@
 #include <string>
 #include <functional>
 #include "Events/Event.h"
+#include "Renderer/GraphicsContext.h"
 
 struct GLFWwindow;
 
@@ -52,6 +53,7 @@ namespace Jah {
 
 	private:
 		GLFWwindow* m_Window;
+		GraphicsContext* m_Context;
 
 		struct WindowData
 		{

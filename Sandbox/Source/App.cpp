@@ -14,11 +14,11 @@ public:
 	{
 		//std::cout << "ExampleLayer::Update" << std::endl;
 
-		bool holdingA = Jah::Input::IsKeyPressed((int)'A');
+		/*bool holdingA = Jah::Input::IsKeyPressed((int)'A');
 		if (holdingA) { std::println("Holding A"); }
 
 		bool mousePressed = Jah::Input::IsMouseButtonPressed(0);
-		if (mousePressed) { std::println("Mouse is pressed"); }
+		if (mousePressed) { std::println("Mouse is pressed"); }*/
 
 	}
 
@@ -34,7 +34,6 @@ public:
 	App()
 	{
 		PushLayer(new ExampleLayer());
-		PushOverlay(new Jah::ImGuiLayer());
 	}
 
 	~App()
