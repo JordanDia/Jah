@@ -1,5 +1,4 @@
 project "Glad"
-	location "Jah/External/Glad"
 	kind "StaticLib"
 	language "C"
 

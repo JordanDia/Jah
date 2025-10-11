@@ -1,5 +1,4 @@
 project "GLFW"
-	location "Jah/External/GLFW"
 	kind "StaticLib"
 	language "C"
 

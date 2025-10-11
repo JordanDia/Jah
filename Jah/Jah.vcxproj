@@ -76,7 +76,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>GLFW_INCLUDE_NONE;JAH_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>Source;External\GLFW\include;External\Glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Source;External\GLFW\include;External\Glad\include;External\imgui;External\imgui\backends;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
@@ -98,7 +98,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>GLFW_INCLUDE_NONE;JAH_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>Source;External\GLFW\include;External\Glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Source;External\GLFW\include;External\Glad\include;External\imgui;External\imgui\backends;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -124,7 +124,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>GLFW_INCLUDE_NONE;JAH_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>Source;External\GLFW\include;External\Glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Source;External\GLFW\include;External\Glad\include;External\imgui;External\imgui\backends;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -152,24 +152,31 @@
     <ClInclude Include="Source\Core\Events\Event.h" />
     <ClInclude Include="Source\Core\Events\KeyEvent.h" />
     <ClInclude Include="Source\Core\Events\MouseEvent.h" />
+    <ClInclude Include="Source\Core\ImGui\ImGuiLayer.h" />
+    <ClInclude Include="Source\Core\Input.h" />
     <ClInclude Include="Source\Core\Layer.h" />
     <ClInclude Include="Source\Core\LayerStack.h" />
     <ClInclude Include="Source\Core\Window.h" />
     <ClInclude Include="Source\Jah.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="Source\Core\Application.cpp" />
     <ClCompile Include="Source\Core\Core.cpp" />
+    <ClCompile Include="Source\Core\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="Source\Core\Layer.cpp" />
     <ClCompile Include="Source\Core\LayerStack.cpp" />
     <ClCompile Include="Source\Core\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="External\GLFW\Jah\External\GLFW\GLFW.vcxproj">
+    <ProjectReference Include="External\GLFW\GLFW.vcxproj">
       <Project>{154B857C-0182-860D-AA6E-6C109684020F}</Project>
     </ProjectReference>
-    <ProjectReference Include="External\Glad\Jah\External\Glad\Glad.vcxproj">
+    <ProjectReference Include="External\Glad\Glad.vcxproj">
       <Project>{BDD6857C-A90D-870D-52FA-6C103E10030F}</Project>
+    </ProjectReference>
+    <ProjectReference Include="External\imgui\ImGui.vcxproj">
+      <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

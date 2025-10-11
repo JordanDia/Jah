@@ -7,6 +7,9 @@
     <Filter Include="Core\Events">
       <UniqueIdentifier>{52201B74-BED5-9369-47CA-8D40B37E8A6D}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\ImGui">
+      <UniqueIdentifier>{D8137ACD-C4CB-BB1A-2DD3-947619AA560B}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\Application.h">
@@ -30,6 +33,9 @@
     <ClInclude Include="Source\Core\Events\MouseEvent.h">
       <Filter>Core\Events</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Core\ImGui\ImGuiLayer.h">
+      <Filter>Core\ImGui</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Core\Layer.h">
       <Filter>Core</Filter>
     </ClInclude>
@@ -40,6 +46,7 @@
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="Source\Jah.h" />
+    <ClInclude Include="Source\Core\Input.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\Application.cpp">
@@ -47,6 +54,9 @@
     </ClCompile>
     <ClCompile Include="Source\Core\Core.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\ImGui\ImGuiLayer.cpp">
+      <Filter>Core\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\Layer.cpp">
       <Filter>Core</Filter>
@@ -57,5 +67,6 @@
     <ClCompile Include="Source\Core\Window.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="Input.cpp" />
   </ItemGroup>
 </Project>

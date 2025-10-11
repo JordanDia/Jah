@@ -1,19 +1,23 @@
 #include "Application.h"
-
+#include "Core.h"
 #include <iostream>
 
 #include <glad/glad.h>
 
 
+
 namespace Jah {
+
+	Application* Application::s_Instance = nullptr;
 
 	Application::Application()
 	{
+
+		JAH_ASSERT(!s_Instance, "Application already exists!");
+		s_Instance = this;
+
 		m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallback([this](Event& e) { OnEvent(e); });
-
-		unsigned int id;
-		glGenVertexArrays(1, &id);
 	}
 
 	Application::~Application()
@@ -25,7 +29,7 @@ namespace Jah {
 	{
 		while (m_Running)
 		{
-			glClearColor(1, 0, 1, 1);
+			glClearColor(0, 0.5, 1, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
 
 			for (Layer* layer : m_LayerStack)
@@ -97,11 +101,13 @@ namespace Jah {
 	void Application::PushLayer(Layer* layer)
 	{
 		m_LayerStack.PushLayer(layer);
+		layer->OnAttach();
 	}
 
 	void Application::PushOverlay(Layer* overlay)
 	{
-		m_LayerStack:PushOverlay(overlay);
+		m_LayerStack.PushOverlay(overlay);
+		overlay->OnAttach();
 	}
 
 }

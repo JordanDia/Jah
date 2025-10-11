@@ -26,6 +26,7 @@ public:
 	App()
 	{
 		PushLayer(new ExampleLayer());
+		PushOverlay(new Jah::ImGuiLayer());
 	}
 
 	~App()

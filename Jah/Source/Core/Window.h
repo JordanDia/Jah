@@ -43,6 +43,8 @@ namespace Jah {
 
 		static Window* Create(const WindowProps& props = WindowProps());
 
+		inline GLFWwindow* GetNativeWindow() { return m_Window; }
+
 
 	private:
 		void Init(const WindowProps& props);

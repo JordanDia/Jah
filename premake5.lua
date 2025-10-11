@@ -10,16 +10,18 @@ workspace "Jah"
 
 	flags { "MultiProcessorCompile" }
 
-
 outputdir = "%{cfg.buildcfg}-%{cfg.architecture}"
 
 IncludeDirs = {
 	["GLFW"] = "Jah/External/GLFW/include",
 	["Glad"] = "Jah/External/Glad/include",
+	["ImGui"] = "Jah/External/imgui",
+	["ImGuiBackends"] = "Jah/External/imgui/backends",
 }
 
 include "Jah/External/GLFW"
 include "Jah/External/Glad"
+include "Jah/External/imgui"
 
 project "Jah"
 	location "Jah"
@@ -32,7 +34,8 @@ project "Jah"
 	objdir("Binaries-Int/" .. outputdir .. "/%{prj.name}")
 
 	defines {
-		"GLFW_INCLUDE_NONE"
+		"GLFW_INCLUDE_NONE",
+		
 	}
 
 	files {
@@ -43,14 +46,16 @@ project "Jah"
 	links {
 		"GLFW",
 		"Glad",
-		"opengl32.lib"
+		"ImGui",
+		"opengl32.lib",
 	}
 
 	includedirs {
 		"%{prj.name}/Source/",
 		IncludeDirs.GLFW,
 		IncludeDirs.Glad,
-		"%{prj.name}/External/Glad/include",
+		IncludeDirs.ImGui,
+		IncludeDirs.ImGuiBackends,
 	}
 
 	filter "configurations:Debug"
