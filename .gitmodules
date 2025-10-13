@@ -1,3 +1,6 @@
 [submodule "Jah/External/imgui"]
 	path = Jah/External/imgui
 	url = https://github.com/JordanDia/imgui.git
+[submodule "Jah/External/glm"]
+	path = Jah/External/glm
+	url = https://github.com/g-truc/glm

@@ -17,6 +17,7 @@ IncludeDirs = {
 	["Glad"] = "Jah/External/Glad/include",
 	["ImGui"] = "Jah/External/imgui",
 	["ImGuiBackends"] = "Jah/External/imgui/backends",
+	["glm"] = "Jah/External/glm"
 }
 
 include "Jah/External/GLFW"
@@ -41,6 +42,8 @@ project "Jah"
 	files {
 		"%{prj.name}/Source/**.h",
 		"%{prj.name}/Source/**.cpp",
+		"%{prj.name}/External/glm/glm/**.hpp",
+		"%{prj.name}/External/glm/glm/**.inl",
 	}
 
 	links {
@@ -56,6 +59,7 @@ project "Jah"
 		IncludeDirs.Glad,
 		IncludeDirs.ImGui,
 		IncludeDirs.ImGuiBackends,
+		IncludeDirs.glm,
 	}
 
 	filter "configurations:Debug"
@@ -95,7 +99,10 @@ project "Sandbox"
     }
 
     includedirs {
-        "Jah/Source",
+        "%{wks.location}/Jah/Source",
+		"%{wks.location}/Jah/External",
+		IncludeDirs.ImGui,
+		IncludeDirs.glm,
     }
 
     links {

@@ -17,7 +17,6 @@ project "Glad"
 
 	filter "system:windows"
 		systemversion "latest"
-		buildoptions { "-std=c11", "-lgdi32" }
 		staticruntime "On"
 
 	filter { "system:windows", "configurations:Release" }
