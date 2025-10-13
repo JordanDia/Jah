@@ -16,7 +16,7 @@ public:
 
 	void OnUpdate() override
 	{
-			
+
 	}
 
 	void OnEvent(Jah::Event& event) override
