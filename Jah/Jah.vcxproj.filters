@@ -1344,6 +1344,8 @@
     <ClInclude Include="Source\Core\Renderer\Shader.h" />
     <ClInclude Include="Source\Core\Renderer\Buffer.h" />
     <ClInclude Include="Source\Core\Renderer\VertexArray.h" />
+    <ClInclude Include="Source\Core\Renderer\Renderer.h" />
+    <ClInclude Include="Source\Core\Renderer\Camera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\Application.cpp">
@@ -1373,5 +1375,7 @@
     <ClCompile Include="Source\Core\Renderer\Shader.cpp" />
     <ClCompile Include="Source\Core\Renderer\Buffer.cpp" />
     <ClCompile Include="Source\Core\Renderer\VertexArray.cpp" />
+    <ClCompile Include="Source\Core\Renderer\Renderer.cpp" />
+    <ClCompile Include="Source\Core\Renderer\Camera.cpp" />
   </ItemGroup>
 </Project>

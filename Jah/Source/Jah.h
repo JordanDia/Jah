@@ -5,7 +5,19 @@
 
 #include "Core/Application.h"
 #include "Core/Layer.h"
+
 #include "Core/Input.h"
+#include "Core/ImGui/ImGuiLayer.h"
+
+// --Renderer---------------------------
+#include "Core/Renderer/Renderer.h"
+#include "Core/Renderer/Shader.h"
+#include "Core/Renderer/Buffer.h"
+#include "Core/Renderer/VertexArray.h"
+#include "Core/Renderer/Camera.h"
+// -------------------------------------
+
+
 
 // ---- Entry Point ---------
 #include "Core/EntryPoint.h"
