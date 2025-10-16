@@ -8,6 +8,8 @@
 
 #include "Core/Input.h"
 #include "Core/ImGui/ImGuiLayer.h"
+#include "Core/Timestep.h"
+#include "Core/KeyCodes.h"
 
 // --Renderer---------------------------
 #include "Core/Renderer/Renderer.h"

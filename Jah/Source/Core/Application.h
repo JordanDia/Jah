@@ -15,6 +15,7 @@
 #include "Renderer/Shader.h"
 #include "Renderer/Buffer.h"
 #include "Renderer/VertexArray.h"
+#include "Timestep.h"
 
 namespace Jah {
 
@@ -38,6 +39,8 @@ namespace Jah {
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
+		Timestep timestep = 0.0f;
+		float m_LastFrameTime = 0.0f;
 
 		std::shared_ptr<Shader> m_Shader;
 		std::shared_ptr<VertexArray> m_VertexArray;

@@ -574,6 +574,7 @@
     <ClInclude Include="Source\Core\Events\MouseEvent.h" />
     <ClInclude Include="Source\Core\ImGui\ImGuiLayer.h" />
     <ClInclude Include="Source\Core\Input.h" />
+    <ClInclude Include="Source\Core\KeyCodes.h" />
     <ClInclude Include="Source\Core\Layer.h" />
     <ClInclude Include="Source\Core\LayerStack.h" />
     <ClInclude Include="Source\Core\Renderer\GraphicsContext.h" />
@@ -582,6 +583,7 @@
     <ClInclude Include="Source\Core\Renderer\Shader.h" />
     <ClInclude Include="Source\Core\Renderer\Buffer.h" />
     <ClInclude Include="Source\Core\Renderer\VertexArray.h" />
+    <ClInclude Include="Source\Core\Timestep.h" />
     <ClInclude Include="Source\Core\Window.h" />
     <ClInclude Include="Source\Jah.h" />
   </ItemGroup>

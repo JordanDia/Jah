@@ -1346,6 +1346,8 @@
     <ClInclude Include="Source\Core\Renderer\VertexArray.h" />
     <ClInclude Include="Source\Core\Renderer\Renderer.h" />
     <ClInclude Include="Source\Core\Renderer\Camera.h" />
+    <ClInclude Include="Source\Core\Timestep.h" />
+    <ClInclude Include="Source\Core\KeyCodes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\Application.cpp">

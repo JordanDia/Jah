@@ -2,7 +2,9 @@
 #include "Core.h"
 #include <iostream>
 
+
 #include <glad/glad.h>
+#include <glfw/glfw3.h>
 #include "Core/Renderer/Renderer.h"
 
 
@@ -144,21 +146,12 @@ namespace Jah {
 	{
 		while (m_Running)
 		{
-			/*Renderer::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
-			Renderer::Clear();
-
-			Renderer::BeginScene();
-			
-			m_SquareShader->Bind();
-			Renderer::Submit(m_SquareVertexArray);
-
-			m_Shader->Bind();
-			Renderer::Submit(m_VertexArray);
-
-			Renderer::EndScene();*/
+			float time = (float)glfwGetTime();
+			Timestep timestep = time - m_LastFrameTime;
+			m_LastFrameTime = time;
 
 			for (Layer* layer : m_LayerStack)
-				layer->OnUpdate();
+				layer->OnUpdate(timestep);
 
 			m_ImGuiLayer->Begin();
 			for (Layer* layer : m_LayerStack)

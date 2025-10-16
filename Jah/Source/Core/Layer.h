@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Events/Event.h"
+#include "Timestep.h"
 
 namespace Jah {
 
@@ -12,7 +13,7 @@ namespace Jah {
 
 		virtual void OnAttach() {}
 		virtual void OnDetach() {}
-		virtual void OnUpdate() {}
+		virtual void OnUpdate(Timestep timestep) {}
 		virtual void OnEvent(Event& event) {}
 		virtual void OnImGuiRender() {}
 
