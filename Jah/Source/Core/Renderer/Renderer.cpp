@@ -26,11 +26,21 @@ namespace Jah {
 
 	}
 
-	void Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& vertexArray, const glm::mat4& transform)
+	void Renderer::Submit(const std::shared_ptr<Shader>& shader,
+		const std::shared_ptr<VertexArray>& vertexArray,
+		const glm::mat4& transform,
+		const Shared<Texture2D>& texture
+	)
 	{
 		shader->Bind();
 		shader->UploadUniformMat4("u_ViewProjection", m_SceneData->ViewProjectionMatrix);
 		shader->UploadUniformMat4("u_Transform", transform);
+
+		if (texture)
+		{
+			texture->Bind(0);
+			shader->UploadUniformInt("u_Texture", 0);
+		}
 
 		vertexArray->Bind();
 		glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);

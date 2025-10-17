@@ -17,7 +17,8 @@ IncludeDirs = {
 	["Glad"] = "Jah/External/Glad/include",
 	["ImGui"] = "Jah/External/imgui",
 	["ImGuiBackends"] = "Jah/External/imgui/backends",
-	["glm"] = "Jah/External/glm"
+	["glm"] = "Jah/External/glm",
+	["stb_image"] = "Jah/External/stb_image"
 }
 
 include "Jah/External/GLFW"
@@ -36,12 +37,13 @@ project "Jah"
 
 	defines {
 		"GLFW_INCLUDE_NONE",
-		
 	}
 
 	files {
 		"%{prj.name}/Source/**.h",
 		"%{prj.name}/Source/**.cpp",
+		"%{prj.name}/External/stb_image/**.h",
+		"%{prj.name}/External/stb_image/**.cpp",
 		"%{prj.name}/External/glm/glm/**.hpp",
 		"%{prj.name}/External/glm/glm/**.inl",
 	}
@@ -60,6 +62,7 @@ project "Jah"
 		IncludeDirs.ImGui,
 		IncludeDirs.ImGuiBackends,
 		IncludeDirs.glm,
+		IncludeDirs.stb_image,
 	}
 
 	filter "configurations:Debug"

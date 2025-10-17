@@ -11,7 +11,7 @@ class ExampleLayer : public Jah::Layer
 {
 public:
 	ExampleLayer()
-		: Layer("Example"), m_Camera(-1.6, 1.6f, -0.9f, 0.9f), m_SquarePosition(0.0f), m_TriangleColor(0.0f)
+		: Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_SquarePosition(0.0f), m_TriangleColor(0.0f)
 	{
 		m_VertexArray = std::make_shared<Jah::VertexArray>();
 		m_VertexArray->Bind();
@@ -22,31 +22,32 @@ public:
 			 0.0f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f
 		};
 
-		m_VertexBuffer = std::make_shared<Jah::VertexBuffer>(vertices, sizeof(vertices));
+		Jah::Shared<Jah::VertexBuffer> vertexBuffer = std::make_shared<Jah::VertexBuffer>(vertices, sizeof(vertices));
 		Jah::BufferLayout layout = {
 			{ Jah::ShaderDataType::Float3, "a_Position" },
 			{ Jah::ShaderDataType::Float4, "a_Color" },
 		};
-		m_VertexBuffer->SetLayout(layout);
-		m_VertexArray->AddVertexBuffer(m_VertexBuffer);
+		vertexBuffer->SetLayout(layout);
+		m_VertexArray->AddVertexBuffer(vertexBuffer);
 
 		unsigned int indices[3] = {
 			0, 1, 2
 		};
-		m_IndexBuffer = std::make_shared<Jah::IndexBuffer>(indices, sizeof(indices) / sizeof(uint32_t));
-		m_VertexArray->SetIndexBuffer(m_IndexBuffer);
+		Jah::Shared<Jah::IndexBuffer> indexBuffer = std::make_shared<Jah::IndexBuffer>(indices, sizeof(indices) / sizeof(uint32_t));
+		m_VertexArray->SetIndexBuffer(indexBuffer);
 
 		m_SquareVertexArray = std::make_shared<Jah::VertexArray>();
 
-		float squareVertices[4 * 3] = {
-			-0.5f, -0.5f, 0.0f,
-			 0.5f, -0.5f, 0.0f,
-			 0.5f,  0.5f, 0.0f,
-			-0.5f,  0.5f, 0.0f,
+		float squareVertices[4 * 5] = {
+			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+			 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+			 0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
 		};
 		std::shared_ptr<Jah::VertexBuffer> squareVB = std::make_shared<Jah::VertexBuffer>(squareVertices, sizeof(squareVertices));
 		Jah::BufferLayout squareLayout = {
 			{ Jah::ShaderDataType::Float3, "a_Position" },
+			{ Jah::ShaderDataType::Float2, "a_TexCoord" },
 		};
 		squareVB->SetLayout(squareLayout);
 		m_SquareVertexArray->AddVertexBuffer(squareVB);
@@ -106,13 +107,9 @@ public:
 			uniform mat4 u_ViewProjection;
 			uniform mat4 u_Transform;
 
-			out vec3 v_Position;
-
 			void main()
 			{
-				v_Position = a_Position;
 				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
-
 			}
 		)";
 
@@ -120,8 +117,6 @@ public:
 			#version 330 core
 			
 			layout(location = 0) out vec4 color;
-
-			in vec3 v_Position;
 
 			uniform vec4 u_Color;
 
@@ -132,6 +127,46 @@ public:
 		)";
 
 		m_SquareShader = std::make_shared<Jah::Shader>(squareVertexSrc, squareFragmentSrc);
+
+		std::string textureVertexSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) in vec3 a_Position;
+			layout(location = 1) in vec2 a_TexCoord;
+
+			uniform mat4 u_ViewProjection;
+			uniform mat4 u_Transform;
+
+			out vec2 v_TexCoord;
+
+			void main()
+			{
+				v_TexCoord = a_TexCoord;
+				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
+			}
+		)";
+
+		std::string textureFragmentSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) out vec4 color;
+
+			in vec2 v_TexCoord;
+			
+			uniform sampler2D u_Texture;
+
+			void main()
+			{
+				color = texture(u_Texture, v_TexCoord);
+			}
+		)";
+
+		m_TextureShader = std::make_shared<Jah::Shader>(textureVertexSrc, textureFragmentSrc);
+
+		m_Texture = std::make_shared<Jah::Texture2D>("Assets/goku_pfp.jpg");
+
+		m_TextureShader->Bind();
+		m_TextureShader->UploadUniformInt("u_Texture", 0);
 	}
 
 	void OnUpdate(Jah::Timestep timestep) override
@@ -178,6 +213,7 @@ public:
 
 		glm::vec4 greenColor(40 / 255.0f, 111 / 255.0f, 80 / 255.0f, 1.0f);
 		glm::vec4 redColor(78 / 255.0f, 33 / 255.0f, 53 / 255.0f, 1.0f);
+		glm::vec4 blueColor(78 / 255.0f, 100 / 255.0f, 255 / 255.0f, 1.0f);
 
 		for (int y = 0; y < 20; y++)
 		{
@@ -192,24 +228,27 @@ public:
 
 				Jah::Renderer::Submit(m_SquareShader, m_SquareVertexArray, transform);
 			}
-			
 		}
 
-		//glm::mat4 transform = glm::translate(glm::mat4(1.0f), m_SquarePosition);
-		//Jah::Renderer::Submit(m_SquareShader, m_SquareVertexArray, transform);
+		m_SquareShader->UploadUniformFloat4("u_Color", blueColor);
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), m_SquarePosition);
 
-		m_Shader->Bind();
+		m_Texture->Bind();
+		Jah::Renderer::Submit(m_TextureShader, m_SquareVertexArray, transform);
+		//Jah::Renderer::Submit(m_TextureShader, m_SquareVertexArray, transform, m_Texture);
+
+		/*m_Shader->Bind();
 		m_Shader->UploadUniformFloat3("u_Color", m_TriangleColor);
-		Jah::Renderer::Submit(m_Shader, m_VertexArray);
+		Jah::Renderer::Submit(m_Shader, m_VertexArray);*/
 
 		Jah::Renderer::EndScene();
 	}
 
 	void OnImGuiRender() override
 	{
-		ImGui::Begin("Settings");
+		/*ImGui::Begin("Settings");
 		ImGui::ColorEdit3("Triangle Color", glm::value_ptr(m_TriangleColor));
-		ImGui::End();
+		ImGui::End();*/
 	}
 
 	void OnEvent(Jah::Event& event) override
@@ -220,18 +259,19 @@ public:
 	
 
 private:
-	std::shared_ptr<Jah::Shader> m_Shader;
-	std::shared_ptr<Jah::VertexArray> m_VertexArray;
-	std::shared_ptr<Jah::VertexBuffer> m_VertexBuffer;
-	std::shared_ptr<Jah::IndexBuffer> m_IndexBuffer;
+	Jah::Shared<Jah::Shader> m_Shader;
+	Jah::Shared<Jah::VertexArray> m_VertexArray;
 
-	std::shared_ptr<Jah::Shader> m_SquareShader;
-	std::shared_ptr<Jah::VertexArray> m_SquareVertexArray;
+	Jah::Shared<Jah::Texture2D> m_Texture;
+	
+	Jah::Shared<Jah::Shader> m_SquareShader, m_TextureShader;
+	Jah::Shared<Jah::VertexArray> m_SquareVertexArray;
 	Jah::OrthographicCamera m_Camera;
 	glm::vec3 m_CameraPosition{ 0.0f, 0.0f, 0.0f };
 	float m_CameraSpeed = 1.0f;
 	float m_CameraRotation = 0.0f;
 	float m_CameraRotationSpeed = 90.0f;
+
 
 	glm::vec3 m_SquarePosition;
 	float m_SquareMoveSpeed = 2.0f;

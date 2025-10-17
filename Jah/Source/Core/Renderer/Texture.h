@@ -1,0 +1,38 @@
+#pragma once
+
+#include <cstdint>
+#include <string>
+#include "Core/Core.h"
+
+namespace Jah {
+
+	class Texture
+	{
+	public:
+		virtual ~Texture() = default;
+
+		virtual uint32_t GetWidth() const = 0;
+		virtual uint32_t GetHeight() const = 0;
+
+		virtual void Bind(uint32_t slot = 0) const = 0;
+	};
+
+	class Texture2D : public Texture
+	{
+	public:
+		Texture2D(const std::string& path);
+		~Texture2D();
+
+		uint32_t GetWidth() const override { return m_Width; }
+		uint32_t GetHeight() const override { return m_Height; }
+
+		void Bind(uint32_t slot = 0) const override;
+
+	private:
+		std::string m_Path;
+		uint32_t m_Width = 0;
+		uint32_t m_Height = 0;
+		uint32_t m_RendererID = 0;
+	};
+
+}

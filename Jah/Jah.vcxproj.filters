@@ -22,6 +22,9 @@
     <Filter Include="External\glm\glm\gtx">
       <UniqueIdentifier>{8877723B-7406-FC04-1D25-100009930CAB}</UniqueIdentifier>
     </Filter>
+    <Filter Include="External\stb_image">
+      <UniqueIdentifier>{A237811D-8E1B-4273-F77B-3CC6E37E2CF5}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source">
       <UniqueIdentifier>{56EB95D1-428D-C0A7-2B48-D4FB178947F8}</UniqueIdentifier>
     </Filter>
@@ -1299,6 +1302,9 @@
     <ClInclude Include="External\glm\glm\vector_relational.hpp">
       <Filter>External\glm\glm</Filter>
     </ClInclude>
+    <ClInclude Include="External\stb_image\stb_image.h">
+      <Filter>External\stb_image</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Core\Application.h">
       <Filter>Source\Core</Filter>
     </ClInclude>
@@ -1326,14 +1332,38 @@
     <ClInclude Include="Source\Core\Input.h">
       <Filter>Source\Core</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Core\KeyCodes.h">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Core\Layer.h">
       <Filter>Source\Core</Filter>
     </ClInclude>
     <ClInclude Include="Source\Core\LayerStack.h">
       <Filter>Source\Core</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Core\Renderer\Buffer.h">
+      <Filter>Source\Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Core\Renderer\Camera.h">
+      <Filter>Source\Core\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Core\Renderer\GraphicsContext.h">
       <Filter>Source\Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Core\Renderer\Renderer.h">
+      <Filter>Source\Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Core\Renderer\Shader.h">
+      <Filter>Source\Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Core\Renderer\Texture.h">
+      <Filter>Source\Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Core\Renderer\VertexArray.h">
+      <Filter>Source\Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Core\Timestep.h">
+      <Filter>Source\Core</Filter>
     </ClInclude>
     <ClInclude Include="Source\Core\Window.h">
       <Filter>Source\Core</Filter>
@@ -1341,19 +1371,12 @@
     <ClInclude Include="Source\Jah.h">
       <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Core\Renderer\Shader.h" />
-    <ClInclude Include="Source\Core\Renderer\Buffer.h" />
-    <ClInclude Include="Source\Core\Renderer\VertexArray.h" />
-    <ClInclude Include="Source\Core\Renderer\Renderer.h" />
-    <ClInclude Include="Source\Core\Renderer\Camera.h" />
-    <ClInclude Include="Source\Core\Timestep.h" />
-    <ClInclude Include="Source\Core\KeyCodes.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Core\Application.cpp">
-      <Filter>Source\Core</Filter>
+    <ClCompile Include="External\stb_image\stb_image.cpp">
+      <Filter>External\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Core\Core.cpp">
+    <ClCompile Include="Source\Core\Application.cpp">
       <Filter>Source\Core</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\ImGui\ImGuiLayer.cpp">
@@ -1368,16 +1391,29 @@
     <ClCompile Include="Source\Core\LayerStack.cpp">
       <Filter>Source\Core</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Core\Renderer\Buffer.cpp">
+      <Filter>Source\Core\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Renderer\Camera.cpp">
+      <Filter>Source\Core\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Core\Renderer\GraphicsContext.cpp">
+      <Filter>Source\Core\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Renderer\Renderer.cpp">
+      <Filter>Source\Core\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Renderer\Shader.cpp">
+      <Filter>Source\Core\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Renderer\Texture.cpp">
+      <Filter>Source\Core\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Renderer\VertexArray.cpp">
       <Filter>Source\Core\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\Window.cpp">
       <Filter>Source\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Core\Renderer\Shader.cpp" />
-    <ClCompile Include="Source\Core\Renderer\Buffer.cpp" />
-    <ClCompile Include="Source\Core\Renderer\VertexArray.cpp" />
-    <ClCompile Include="Source\Core\Renderer\Renderer.cpp" />
-    <ClCompile Include="Source\Core\Renderer\Camera.cpp" />
   </ItemGroup>
 </Project>
