@@ -20,17 +20,18 @@ namespace Jah {
 		GLenum internalFormat = 0;
 		GLenum dataFormat = 0;
 
-		if (channels == 4) {
+		if (channels == 4)
+		{
 			internalFormat = GL_RGBA8;
 			dataFormat = GL_RGBA;
 		}
-		else if (channels == 3) {
+		else if (channels == 3)
+		{
 			internalFormat = GL_RGB8;
 			dataFormat = GL_RGB;
 		}
-		else {
+		else
 			JAH_ASSERT(false, "Unsupported image format!");
-		}
 
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
 		glTextureStorage2D(m_RendererID, 1, internalFormat, m_Width, m_Height);

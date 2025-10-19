@@ -1,87 +1,153 @@
 #include "Shader.h"
 
+#include <fstream>
 #include "Core/Core.h"
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
 #include<vector>
+#include <array>
 
 namespace Jah {
 
-	Shader::Shader(const std::string& vertexSrc, const std::string& fragmentSrc)
+	static GLenum ShaderTypeFromString(const std::string& type)
 	{
-		GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+		if (type == "vertex")
+			return GL_VERTEX_SHADER;
+		if (type == "fragment")
+			return GL_FRAGMENT_SHADER;
 
-		const GLchar* source = (const GLchar*)vertexSrc.c_str();
-		glShaderSource(vertexShader, 1, &source, 0);
-		glCompileShader(vertexShader);
+		JAH_ASSERT(false, "Unknown shader type!");
+		return 0;
+	}
 
-		GLint isCompiled = 0;
-		glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &isCompiled);
-		if (isCompiled == GL_FALSE)
+	Shader::Shader(const std::filesystem::path& filepath)
+	{
+		std::string source = ReadFile(filepath);
+		auto shaderSources = PreProcess(source);
+		Compile(shaderSources);
+
+		// Assets/Shaders/Shader.glsl
+		auto lastSlash = filepath.string().find_last_of("/\\");
+		lastSlash = lastSlash == std::string::npos ? 0 : lastSlash + 1;
+		const auto& lastDot = filepath.string().rfind('.');
+		auto count = lastDot == std::string::npos ? filepath.string().size() - lastSlash : lastDot - lastSlash;
+		m_Name = filepath.string().substr(lastSlash, count);
+	}
+
+	Shader::Shader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc)
+		: m_Name(name)
+	{
+		std::unordered_map<GLenum, std::string> sources;
+		sources[GL_VERTEX_SHADER] = vertexSrc;
+		sources[GL_FRAGMENT_SHADER] = fragmentSrc;
+		Compile(sources);
+	}
+
+	std::string Shader::ReadFile(const std::filesystem::path& filepath)
+	{
+		std::string result;
+		std::ifstream in(filepath, std::ios::in | std::ios::binary);
+		JAH_ASSERT(in, "Shader filepath does not exist!");
+
+		in.seekg(0, std::ios::end);
+		result.resize(in.tellg());
+		in.seekg(0, std::ios::beg);
+		in.read(&result[0], result.size());
+		in.close();
+
+		return result;
+	}
+
+	std::unordered_map<GLenum, std::string> Shader::PreProcess(const std::string& source)
+	{
+		std::unordered_map<GLenum, std::string> shaderSources;
+
+		const char* typeToken = "#type";
+		size_t typeTokenLength = strlen(typeToken);
+		size_t pos = source.find(typeToken, 0);
+
+		while (pos != std::string::npos)
 		{
-			GLint maxLength = 0;
-			glGetShaderiv(vertexShader, GL_INFO_LOG_LENGTH, &maxLength);
+			size_t eol = source.find_first_of("\r\n", pos);
+			JAH_ASSERT(eol != std::string::npos, "Syntax error!");
+			size_t begin = pos + typeTokenLength + 1;
+			std::string type = source.substr(begin, eol - begin);
+			JAH_ASSERT(ShaderTypeFromString(type), "Invalid shader type!");
 
-			std::vector<GLchar> infoLog(maxLength);
-			glGetShaderInfoLog(vertexShader, maxLength, &maxLength, &infoLog[0]);
-
-			glDeleteShader(vertexShader);
-
-			JAH_ASSERT(false, "Vertex shader failed to compile!\n{}", infoLog.data());
+			size_t nextLinePos = source.find_first_not_of("\r\n", eol);
+			pos = source.find(typeToken, nextLinePos);
+			shaderSources[ShaderTypeFromString(type)] = 
+				source.substr(nextLinePos, 
+					pos - (nextLinePos == std::string::npos ? source.size() - 1 : nextLinePos));
 		}
 
-		GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-		source = (const GLchar*)fragmentSrc.c_str();
-		glShaderSource(fragmentShader, 1, &source, 0);
+		return shaderSources;
+	}
 
-		glCompileShader(fragmentShader);
-
-		glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &isCompiled);
-		if (isCompiled == GL_FALSE)
+	void Shader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources)
+	{
+		GLuint program = glCreateProgram();
+		JAH_ASSERT(shaderSources.size() <= 2, "Only support two shaders!");
+		std::array<GLuint, 2> glShaderIDs{};
+		int glShaderIndex = 0;
+		for (auto& kv : shaderSources)
 		{
-			GLint maxLength = 0;
-			glGetShaderiv(fragmentShader, GL_INFO_LOG_LENGTH, &maxLength);
+			GLenum type = kv.first;
+			const std::string& source = kv.second;
 
-			std::vector<GLchar> infoLog(maxLength);
-			glGetShaderInfoLog(fragmentShader, maxLength, &maxLength, &infoLog[0]);
+			GLuint shader = glCreateShader(type);
 
-			glDeleteShader(fragmentShader);
-			glDeleteShader(vertexShader);
+			const GLchar* sourceCStr = source.c_str();
+			glShaderSource(shader, 1, &sourceCStr, nullptr);
+			glCompileShader(shader);
 
-			JAH_ASSERT(false, "Fragment shader failed to compile!\n{}", infoLog.data());
+			GLint isCompiled = 0;
+			glGetShaderiv(shader, GL_COMPILE_STATUS, &isCompiled);
+			if (isCompiled == GL_FALSE)
+			{
+				GLint maxLength = 0;
+				glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &maxLength);
+
+				std::vector<GLchar> infoLog(maxLength);
+				glGetShaderInfoLog(shader, maxLength, &maxLength, &infoLog[0]);
+
+				glDeleteShader(shader);
+
+				JAH_ASSERT(false, "Shader failed to compile!\n{}", infoLog.data());
+			}
+
+			glAttachShader(program, shader);
+			glShaderIDs[glShaderIndex++] = shader;
 		}
 
-		m_RendererID = glCreateProgram();
-
-		glAttachShader(m_RendererID, vertexShader);
-		glAttachShader(m_RendererID, fragmentShader);
-
-		glLinkProgram(m_RendererID);
+		glLinkProgram(program);
 
 		// Note the different functions here: glGetProgram* instead of glGetShader*.
 		GLint isLinked = 0;
-		glGetProgramiv(m_RendererID, GL_LINK_STATUS, (int*)&isLinked);
+		glGetProgramiv(program, GL_LINK_STATUS, (int*)&isLinked);
 		if (isLinked == GL_FALSE)
 		{
 			GLint maxLength = 0;
-			glGetProgramiv(m_RendererID, GL_INFO_LOG_LENGTH, &maxLength);
+			glGetProgramiv(program, GL_INFO_LOG_LENGTH, &maxLength);
 
 			// The maxLength includes the NULL character
 			std::vector<GLchar> infoLog(maxLength);
-			glGetProgramInfoLog(m_RendererID, maxLength, &maxLength, &infoLog[0]);
+			glGetProgramInfoLog(program, maxLength, &maxLength, &infoLog[0]);
 
 			// We don't need the m_RendererID anymore.
-			glDeleteProgram(m_RendererID);
+			glDeleteProgram(program);
 			// Don't leak shaders either.
-			glDeleteShader(vertexShader);
-			glDeleteShader(fragmentShader);
 
+			for (auto id : glShaderIDs)
+				glDeleteShader(id);
+			
 			JAH_ASSERT(false, "Shader link failure!\n{}", infoLog.data());
 		}
 
-		// Always detach shaders after a successful link.
-		glDetachShader(m_RendererID, vertexShader);
-		glDetachShader(m_RendererID, fragmentShader);
+		for (auto id : glShaderIDs)
+			glDetachShader(program, id);
+
+		m_RendererID = program;
 	}
 
 	Shader::~Shader()
@@ -141,5 +207,43 @@ namespace Jah {
 		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniformMatrix4fv(location, 1, GL_FALSE,glm::value_ptr(matrix));
 	}			
+
+
+	void ShaderLibrary::Add(const Shared<Shader>& shader)
+	{
+		const std::string& name = shader->GetName();
+		Add(name, shader);
+	}
+
+	void ShaderLibrary::Add(const std::string& name, const Shared<Shader>& shader)
+	{
+		JAH_ASSERT(!Exists(name), "Shader already exists");
+		m_Shaders[name] = shader;
+	}
+
+	Jah::Shared<Jah::Shader> ShaderLibrary::Load(const std::filesystem::path& filepath)
+	{
+		Shared<Shader> shader = std::make_shared<Shader>(filepath);
+		Add(shader);
+		return shader;
+	}
+
+	Jah::Shared<Jah::Shader> ShaderLibrary::Load(const std::string& name, std::filesystem::path& filepath)
+	{
+		Shared<Shader> shader = std::make_shared<Shader>(filepath);
+		Add(name, shader);
+		return shader;
+	}
+
+	Jah::Shared<Jah::Shader> ShaderLibrary::Get(const std::string& name)
+	{
+		JAH_ASSERT(Exists(name), "Shader not found!");
+		return m_Shaders[name];
+	}
+
+	bool ShaderLibrary::Exists(const std::string& name)
+	{
+		return m_Shaders.find(name) != m_Shaders.end();
+	}
 
 }																				
