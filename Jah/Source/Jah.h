@@ -16,7 +16,7 @@
 #include "Core/Renderer/Shader.h"
 #include "Core/Renderer/Buffer.h"
 #include "Core/Renderer/VertexArray.h"
-#include "Core/Renderer/Camera.h"
+#include "Core/Renderer/OrthographicCameraController.h"
 #include "Core/Renderer/Texture.h"
 // -------------------------------------
 

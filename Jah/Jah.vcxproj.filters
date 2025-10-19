@@ -1371,6 +1371,7 @@
     <ClInclude Include="Source\Jah.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Core\Renderer\OrthographicCameraController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\stb_image\stb_image.cpp">
@@ -1415,5 +1416,6 @@
     <ClCompile Include="Source\Core\Window.cpp">
       <Filter>Source\Core</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Core\Renderer\OrthographicCameraController.cpp" />
   </ItemGroup>
 </Project>

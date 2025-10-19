@@ -11,7 +11,7 @@ class ExampleLayer : public Jah::Layer
 {
 public:
 	ExampleLayer()
-		: Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_SquarePosition(0.0f), m_TriangleColor(0.0f)
+		: Layer("Example"), m_CameraController(1600.0f / 900.0f, true), m_SquarePosition(0.0f), m_TriangleColor(0.0f)
 	{
 		m_VertexArray = std::make_shared<Jah::VertexArray>();
 		m_VertexArray->Bind();
@@ -72,6 +72,9 @@ public:
 
 	void OnUpdate(Jah::Timestep timestep) override
 	{
+		
+		m_CameraController.OnUpdate(timestep);
+
 		// Move Square
 		if (Jah::Input::IsKeyPressed(JAH_KEY_A))
 			m_SquarePosition.x -= m_SquareMoveSpeed * timestep;
@@ -85,30 +88,13 @@ public:
 		if (Jah::Input::IsKeyPressed(JAH_KEY_S))
 			m_SquarePosition.y -= m_SquareMoveSpeed * timestep;
 
-		// Move Camera
-		if (Jah::Input::IsKeyPressed(JAH_KEY_J))
-			m_CameraPosition.x -= m_CameraSpeed * timestep;
-
-		if (Jah::Input::IsKeyPressed(JAH_KEY_L))
-			m_CameraPosition.x += m_CameraSpeed * timestep;
-
-		if (Jah::Input::IsKeyPressed(JAH_KEY_I))
-			m_CameraPosition.y += m_CameraSpeed * timestep;
-
-		if (Jah::Input::IsKeyPressed(JAH_KEY_K))
-			m_CameraPosition.y -= m_CameraSpeed * timestep;
-
-		// Space to rotate
-		if (Jah::Input::IsKeyPressed(JAH_KEY_SPACE))
-			m_CameraRotation += m_CameraRotationSpeed * timestep;
 
 		Jah::Renderer::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		Jah::Renderer::Clear();
 
-		m_Camera.SetPosition(m_CameraPosition);
-		m_Camera.SetRotation(m_CameraRotation);
+	
 
-		Jah::Renderer::BeginScene(m_Camera);
+		Jah::Renderer::BeginScene(m_CameraController.GetCamera());
 
 		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
@@ -153,7 +139,7 @@ public:
 
 	void OnEvent(Jah::Event& event) override
 	{
-		
+		m_CameraController.OnEvent(event);
 	}
 
 private:
@@ -164,7 +150,7 @@ private:
 	
 	Jah::Shared<Jah::Texture2D> m_Texture;
 
-	Jah::OrthographicCamera m_Camera;
+	Jah::OrthographicCameraController m_CameraController;
 	glm::vec3 m_CameraPosition{ 0.0f, 0.0f, 0.0f };
 	float m_CameraSpeed = 1.0f;
 	float m_CameraRotation = 0.0f;
