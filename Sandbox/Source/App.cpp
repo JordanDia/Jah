@@ -1,4 +1,5 @@
 #include <Jah.h>
+#include <Core/EntryPoint.h>
 #include <iostream>
 #include <print>
 #include <memory>
@@ -6,6 +7,9 @@
 #include <imgui.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
+#include "Sandbox2D.h"
+
 
 class ExampleLayer : public Jah::Layer
 {
@@ -161,21 +165,24 @@ private:
 	glm::vec3 m_TriangleColor;
 };
 
-class App : public Jah::Application
+class Sandbox : public Jah::Application
 {
 public:
-	App()
+	Sandbox()
 	{
-		PushLayer(new ExampleLayer());
+		// PushLayer(new ExampleLayer());
+		PushLayer(new Sandbox2D());
 	}
 
-	~App()
+	~Sandbox()
 	{
 
 	}
 };
 
+
+
 Jah::Application* Jah::CreateApplication()
 {
-	return new App();
+	return new Sandbox();
 }

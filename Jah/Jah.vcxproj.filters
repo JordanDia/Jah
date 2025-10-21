@@ -1372,6 +1372,7 @@
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="Source\Core\Renderer\OrthographicCameraController.h" />
+    <ClInclude Include="Source\Core\Renderer\Renderer2D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\stb_image\stb_image.cpp">
@@ -1417,5 +1418,6 @@
       <Filter>Source\Core</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\Renderer\OrthographicCameraController.cpp" />
+    <ClCompile Include="Source\Core\Renderer\Renderer2D.cpp" />
   </ItemGroup>
 </Project>

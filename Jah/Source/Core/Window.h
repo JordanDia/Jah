@@ -58,8 +58,9 @@ namespace Jah {
 		struct WindowData
 		{
 			std::string Title;
-			uint32_t Width, Height;
-			bool VSync;
+			uint32_t Width = 0;
+			uint32_t Height = 0;
+			bool VSync = false;
 			std::function<void(Event&)> EventCallback;
 		};
 

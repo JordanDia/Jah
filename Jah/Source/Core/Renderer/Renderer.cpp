@@ -1,5 +1,7 @@
 #include "Renderer.h"
 
+
+#include "Renderer2D.h"
 #include <glad/glad.h>
 
 namespace Jah {
@@ -10,11 +12,18 @@ namespace Jah {
 	{
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		Renderer2D::Init();
 	}
 
 	void Renderer::Shutdown()
 	{
 
+	}
+
+	void Renderer::OnWindowResize(uint32_t width, uint32_t height)
+	{
+		glViewport(0, 0, width, height);
 	}
 
 	void Renderer::BeginScene(OrthographicCamera& camera)
@@ -27,8 +36,8 @@ namespace Jah {
 
 	}
 
-	void Renderer::Submit(const std::shared_ptr<Shader>& shader,
-		const std::shared_ptr<VertexArray>& vertexArray,
+	void Renderer::Submit(const Shared<Shader>& shader,
+		const Shared<VertexArray>& vertexArray,
 		const glm::mat4& transform,
 		const Shared<Texture2D>& texture
 	)
@@ -43,8 +52,8 @@ namespace Jah {
 			shader->UploadUniformInt("u_Texture", 0);
 		}
 
-		vertexArray->Bind();
-		glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+
+		DrawIndexed(vertexArray);
 	}
 
 	void Renderer::SetClearColor(const glm::vec4& color)
@@ -55,6 +64,12 @@ namespace Jah {
 	void Renderer::Clear()
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
+	}
+
+	void Renderer::DrawIndexed(const Shared<VertexArray>& vertexArray)
+	{
+		vertexArray->Bind();
+		glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
 	}
 
 }

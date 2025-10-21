@@ -18,10 +18,5 @@
 #include "Core/Renderer/VertexArray.h"
 #include "Core/Renderer/OrthographicCameraController.h"
 #include "Core/Renderer/Texture.h"
+#include "Core/Renderer/Renderer2D.h"
 // -------------------------------------
-
-
-
-// ---- Entry Point ---------
-#include "Core/EntryPoint.h"
-// --------------------------

@@ -583,6 +583,7 @@
     <ClInclude Include="Source\Core\Renderer\GraphicsContext.h" />
     <ClInclude Include="Source\Core\Renderer\OrthographicCameraController.h" />
     <ClInclude Include="Source\Core\Renderer\Renderer.h" />
+    <ClInclude Include="Source\Core\Renderer\Renderer2D.h" />
     <ClInclude Include="Source\Core\Renderer\Shader.h" />
     <ClInclude Include="Source\Core\Renderer\Texture.h" />
     <ClInclude Include="Source\Core\Renderer\VertexArray.h" />
@@ -602,6 +603,7 @@
     <ClCompile Include="Source\Core\Renderer\GraphicsContext.cpp" />
     <ClCompile Include="Source\Core\Renderer\OrthographicCameraController.cpp" />
     <ClCompile Include="Source\Core\Renderer\Renderer.cpp" />
+    <ClCompile Include="Source\Core\Renderer\Renderer2D.cpp" />
     <ClCompile Include="Source\Core\Renderer\Shader.cpp" />
     <ClCompile Include="Source\Core\Renderer\Texture.cpp" />
     <ClCompile Include="Source\Core\Renderer\VertexArray.cpp" />

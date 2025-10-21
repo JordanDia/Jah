@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "Core.h"
 #include <iostream>
+#include <functional>
 
 
 #include <glad/glad.h>
@@ -10,8 +11,6 @@
 
 
 namespace Jah {
-
-	Application* Application::s_Instance = nullptr;
 
 	Application::Application()
 	{
@@ -41,14 +40,17 @@ namespace Jah {
 			Timestep timestep = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
-			for (Layer* layer : m_LayerStack)
-				layer->OnUpdate(timestep);
+			if (!m_Minimized)
+			{
+				for (Layer* layer : m_LayerStack)
+					layer->OnUpdate(timestep);
+			}
 
 			m_ImGuiLayer->Begin();
 			for (Layer* layer : m_LayerStack)
 				layer->OnImGuiRender();
 			m_ImGuiLayer->End();
-
+		
 			m_Window->OnUpdate();
 		}
 	}
@@ -57,17 +59,8 @@ namespace Jah {
 	{
 		EventDispatcher dispatcher(e);
 
-
-		dispatcher.Dispatch<WindowResizeEvent>([this](WindowResizeEvent& event) {
-			std::cout << event.ToString() << std::endl;
-			return false;
-			});
-
-		dispatcher.Dispatch<WindowCloseEvent>([this](WindowCloseEvent& event) {
-			std::cout << "Window closed" << std::endl;
-			m_Running = false;
-			return true;
-			});
+		dispatcher.Dispatch<WindowResizeEvent>(std::bind(&Application::OnWindowResize, this, std::placeholders::_1));
+		dispatcher.Dispatch<WindowCloseEvent>(std::bind(&Application::OnWindowClose, this, std::placeholders::_1));
 
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
 		{
@@ -87,6 +80,27 @@ namespace Jah {
 	{
 		m_LayerStack.PushOverlay(overlay);
 		overlay->OnAttach();
+	}
+
+	bool Application::OnWindowClose(WindowCloseEvent& e)
+	{
+		std::cout << "Window closed" << std::endl;
+		m_Running = false;
+		return true;
+	}
+
+	bool Application::OnWindowResize(WindowResizeEvent& e)
+	{
+		if (e.GetWidth() == 0 || e.GetHeight() == 0)
+		{
+			m_Minimized = true;
+			return false;
+		}
+
+		m_Minimized = false;
+		Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
+
+		return false;
 	}
 
 }
