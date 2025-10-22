@@ -106,6 +106,7 @@ project "Sandbox"
 		"%{wks.location}/Jah/External",
 		IncludeDirs.ImGui,
 		IncludeDirs.glm,
+		IncludeDirs.Glad,
     }
 
     links {

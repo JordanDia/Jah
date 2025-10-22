@@ -47,5 +47,5 @@ void Sandbox2D::OnImGuiRender()
 
 void Sandbox2D::OnEvent(Jah::Event& event)
 {
-
+	m_CameraController.OnEvent(event);
 }
