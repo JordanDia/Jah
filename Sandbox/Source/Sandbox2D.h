@@ -24,6 +24,7 @@ private:
 	// Temporary
 	Jah::Shared<Jah::VertexArray> m_SquareVertexArray;
 	Jah::Shared<Jah::Shader> m_Shader;
+	Jah::Shared<Jah::Texture2D> m_GokuTexture;
 
 	glm::vec3 m_SquareColor = { 0.3f, 0.35f, 1.0f };
 };

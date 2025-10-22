@@ -3,6 +3,7 @@
 #include "Renderer.h"
 #include "VertexArray.h"
 #include "Shader.h"
+#include "Texture.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -11,7 +12,8 @@ namespace Jah {
 	struct Renderer2DStorage
 	{
 		Shared<VertexArray> VertexArray;
-		Shared<Shader> Shader;
+		Shared<Shader> SquareShader;
+		Shared<Shader> TextureShader;
 	};
 
 	static Renderer2DStorage* s_Data = nullptr;
@@ -22,15 +24,16 @@ namespace Jah {
 
 		s_Data->VertexArray = std::make_shared<Jah::VertexArray>();
 
-		float squareVertices[4 * 3] = {
-				-0.5f, -0.5f, 0.0f,
-				 0.5f, -0.5f, 0.0f,
-				 0.5f,  0.5f, 0.0f,
-				-0.5f,  0.5f, 0.0f,
+		float squareVertices[4 * 5] = {
+				-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+				 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+				 0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+				-0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
 		};
 		std::shared_ptr<Jah::VertexBuffer> squareVB = std::make_shared<Jah::VertexBuffer>(squareVertices, sizeof(squareVertices));
 		Jah::BufferLayout squareLayout = {
 			{ Jah::ShaderDataType::Float3, "a_Position" },
+			{ Jah::ShaderDataType::Float2, "a_TexCoord" },
 		};
 		squareVB->SetLayout(squareLayout);
 		s_Data->VertexArray->AddVertexBuffer(squareVB);
@@ -42,7 +45,10 @@ namespace Jah {
 		std::shared_ptr<Jah::IndexBuffer> squareIB = std::make_shared<Jah::IndexBuffer>(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
 		s_Data->VertexArray->SetIndexBuffer(squareIB);
 
-		s_Data->Shader = std::make_shared<Jah::Shader>("Assets/Shaders/SquareShader.glsl");
+		s_Data->SquareShader = std::make_shared<Jah::Shader>("Assets/Shaders/SquareShader.glsl");
+		s_Data->TextureShader = std::make_shared<Jah::Shader>("Assets/Shaders/Texture.glsl");
+		s_Data->TextureShader->Bind();
+		s_Data->TextureShader->UploadUniformInt("u_Texture", 0);
 	}
 
 	void Renderer2D::Shutdown()
@@ -52,8 +58,14 @@ namespace Jah {
 
 	void Renderer2D::BeginScene(OrthographicCamera& camera)
 	{
-		s_Data->Shader->Bind();
-		s_Data->Shader->UploadUniformMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+		s_Data->SquareShader->Bind();
+		s_Data->SquareShader->UploadUniformMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+
+
+		s_Data->TextureShader->Bind();
+		s_Data->TextureShader->UploadUniformMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+
+		
 		
 	}
 
@@ -69,13 +81,29 @@ namespace Jah {
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2 size, const glm::vec4& color)
 	{
-		s_Data->Shader->Bind();
-		s_Data->Shader->UploadUniformFloat4("u_Color", color);
+		s_Data->SquareShader->Bind();
+		s_Data->SquareShader->UploadUniformFloat4("u_Color", color);
 		
-		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) *
-			glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
-		s_Data->Shader->UploadUniformMat4("u_Transform", transform);
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+		s_Data->SquareShader->UploadUniformMat4("u_Transform", transform);
 
+		s_Data->VertexArray->Bind();
+		Renderer::DrawIndexed(s_Data->VertexArray);
+	}
+
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2 size, const Shared<Texture2D> texture)
+	{
+		DrawQuad({ position.x, position.y, 0 }, size, texture);
+	}
+
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2 size, const Shared<Texture2D> texture)
+	{
+		s_Data->TextureShader->Bind();
+
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+		s_Data->TextureShader->UploadUniformMat4("u_Transform", transform);
+
+		texture->Bind();
 		s_Data->VertexArray->Bind();
 		Renderer::DrawIndexed(s_Data->VertexArray);
 	}
