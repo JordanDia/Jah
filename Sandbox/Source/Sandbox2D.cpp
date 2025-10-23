@@ -34,6 +34,7 @@ void Sandbox2D::OnUpdate(Jah::Timestep timestep)
 
 	Jah::Renderer2D::DrawQuad({ 0.0f, 0.0f }, { 1.0f, 1.0f }, m_GokuTexture);
 	Jah::Renderer2D::DrawQuad({ -0.3f, -1.0f }, { 0.5f, 0.5f }, { 0.3f, 0.35f, 0.8f, 1.0f });
+	Jah::Renderer2D::DrawRotatedQuad({ 0.8f, 0.8f }, { 0.5f, 0.5f }, 45.0f, { 0.3f, 0.35f, 0.8f, 1.0f });
 
 	Jah::Renderer2D::EndScene();
 }
