@@ -29,7 +29,7 @@ namespace Jah {
 		static void SetClearColor(const glm::vec4& color);
 		static void Clear();
 
-		static void DrawIndexed(const Shared<VertexArray>& vertexArray);
+		static void DrawIndexed(const Shared<VertexArray>& vertexArray, uint32_t indexCount = 0);
 
 	private:
 		struct SceneData

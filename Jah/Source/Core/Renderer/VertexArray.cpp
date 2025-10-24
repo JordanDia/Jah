@@ -50,7 +50,7 @@ namespace Jah {
 		glBindVertexArray(m_RendererID);
 		vertexBuffer->Bind();
 
-		JAH_ASSERT(vertexBuffer->GetLayout().GetElements().size(), "Vertex buffer has no layout!");
+		JAH_ASSERT(!vertexBuffer->GetLayout().GetElements().empty(), "Vertex buffer has no layout!");
 
 		uint32_t index = 0;
 		const auto& layout = vertexBuffer->GetLayout();

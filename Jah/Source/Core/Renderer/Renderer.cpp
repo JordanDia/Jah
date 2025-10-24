@@ -66,10 +66,11 @@ namespace Jah {
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
 
-	void Renderer::DrawIndexed(const Shared<VertexArray>& vertexArray)
+	void Renderer::DrawIndexed(const Shared<VertexArray>& vertexArray, uint32_t indexCount)
 	{
-		vertexArray->Bind();
-		glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+		uint32_t count = indexCount ? vertexArray->GetIndexBuffer()->GetCount() : indexCount;
+		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 }
