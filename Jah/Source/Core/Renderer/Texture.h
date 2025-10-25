@@ -33,6 +33,11 @@ namespace Jah {
 
 		void Bind(uint32_t slot = 0) const override;
 
+		bool operator==(const Texture2D& other) const
+		{
+			return m_RendererID == other.m_RendererID;
+		}
+
 	private:
 		std::string m_Path;
 		uint32_t m_Width = 0;
