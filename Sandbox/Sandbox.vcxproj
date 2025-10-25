@@ -137,10 +137,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\ParticleSystem.h" />
     <ClInclude Include="Source\Sandbox2D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\App.cpp" />
+    <ClCompile Include="Source\ParticleSystem.cpp" />
     <ClCompile Include="Source\Sandbox2D.cpp" />
   </ItemGroup>
   <ItemGroup>

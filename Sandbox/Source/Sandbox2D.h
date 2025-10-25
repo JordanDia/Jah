@@ -5,6 +5,8 @@
 #include <memory>
 #include <glm/glm.hpp>
 
+#include "ParticleSystem.h"
+
 
 class Sandbox2D : public Jah::Layer
 {
@@ -27,4 +29,7 @@ private:
 	Jah::Shared<Jah::Texture2D> m_GokuTexture;
 
 	glm::vec3 m_SquareColor = { 0.3f, 0.35f, 1.0f };
+	Jah::ParticleProps m_ParticleProps;
+	Jah::ParticleSystem m_ParticleSystem;
+
 };
