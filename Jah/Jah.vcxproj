@@ -585,6 +585,7 @@
     <ClInclude Include="Source\Core\Renderer\Renderer.h" />
     <ClInclude Include="Source\Core\Renderer\Renderer2D.h" />
     <ClInclude Include="Source\Core\Renderer\Shader.h" />
+    <ClInclude Include="Source\Core\Renderer\SubTexture2D.h" />
     <ClInclude Include="Source\Core\Renderer\Texture.h" />
     <ClInclude Include="Source\Core\Renderer\VertexArray.h" />
     <ClInclude Include="Source\Core\Timestep.h" />
@@ -592,6 +593,7 @@
     <ClInclude Include="Source\Jah.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="External\GLFW\build\tests\test_SubTexture2D.cpp" />
     <ClCompile Include="External\stb_image\stb_image.cpp" />
     <ClCompile Include="Source\Core\Application.cpp" />
     <ClCompile Include="Source\Core\ImGui\ImGuiLayer.cpp" />
@@ -605,6 +607,7 @@
     <ClCompile Include="Source\Core\Renderer\Renderer.cpp" />
     <ClCompile Include="Source\Core\Renderer\Renderer2D.cpp" />
     <ClCompile Include="Source\Core\Renderer\Shader.cpp" />
+    <ClCompile Include="Source\Core\Renderer\SubTexture2D.cpp" />
     <ClCompile Include="Source\Core\Renderer\Texture.cpp" />
     <ClCompile Include="Source\Core\Renderer\VertexArray.cpp" />
     <ClCompile Include="Source\Core\Window.cpp" />

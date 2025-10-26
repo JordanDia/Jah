@@ -18,5 +18,6 @@
 #include "Core/Renderer/VertexArray.h"
 #include "Core/Renderer/OrthographicCameraController.h"
 #include "Core/Renderer/Texture.h"
+#include "Core/Renderer/SubTexture2D.h"
 #include "Core/Renderer/Renderer2D.h"
 // -------------------------------------

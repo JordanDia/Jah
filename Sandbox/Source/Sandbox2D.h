@@ -27,9 +27,13 @@ private:
 	Jah::Shared<Jah::VertexArray> m_SquareVertexArray;
 	Jah::Shared<Jah::Shader> m_Shader;
 	Jah::Shared<Jah::Texture2D> m_GokuTexture;
+	Jah::Shared<Jah::Texture2D> m_SpriteSheet;
+	Jah::Shared<Jah::SubTexture2D> m_GrassSprite;
 
-	glm::vec3 m_SquareColor = { 0.3f, 0.35f, 1.0f };
+	glm::vec4 m_SquareColor = { 0.3f, 0.35f, 1.0f, 1.0f };
 	Jah::ParticleProps m_ParticleProps;
 	Jah::ParticleSystem m_ParticleSystem;
+
+	float m_FPS = 0.0f;
 
 };

@@ -1377,6 +1377,7 @@
     <ClInclude Include="Source\Jah.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Core\Renderer\SubTexture2D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\stb_image\stb_image.cpp">
@@ -1427,5 +1428,7 @@
     <ClCompile Include="Source\Core\Window.cpp">
       <Filter>Source\Core</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Core\Renderer\SubTexture2D.cpp" />
+    <ClCompile Include="External\GLFW\build\tests\test_SubTexture2D.cpp" />
   </ItemGroup>
 </Project>

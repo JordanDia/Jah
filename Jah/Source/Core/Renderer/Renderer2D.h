@@ -2,6 +2,7 @@
 
 #include "Camera.h"
 #include "Texture.h"
+#include "SubTexture2D.h"
 
 namespace Jah {
 
@@ -20,12 +21,15 @@ namespace Jah {
 		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color);
 		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const Shared<Texture2D> texture);
 		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const Shared<Texture2D> texture);
+		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const Shared<SubTexture2D> subtexture);
+		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const Shared<SubTexture2D> subtexture);
 
 		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const glm::vec4& color);
 		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const glm::vec4& color);
 		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Shared<Texture2D> texture);
 		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Shared<Texture2D> texture);
-
+		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Shared<SubTexture2D> subtexture);
+		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Shared<SubTexture2D> subtexture);
 
 		struct Statistics
 		{
