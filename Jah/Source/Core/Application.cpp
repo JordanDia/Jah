@@ -1,24 +1,18 @@
+#include "jahpch.h"
 #include "Application.h"
-#include "Core.h"
-#include <iostream>
-#include <functional>
-
 
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
 #include "Core/Renderer/Renderer.h"
 
-
-
 namespace Jah {
 
-	Application::Application()
+	Application::Application(const std::string& name)
 	{
-
 		JAH_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
 
-		m_Window = std::unique_ptr<Window>(Window::Create());
+		m_Window = std::unique_ptr<Window>(Window::Create(name));
 		m_Window->SetEventCallback([this](Event& e) { OnEvent(e); });
 
 		Renderer::Init();
@@ -80,6 +74,11 @@ namespace Jah {
 	{
 		m_LayerStack.PushOverlay(overlay);
 		overlay->OnAttach();
+	}
+
+	void Application::Close()
+	{
+		m_Running = false;
 	}
 
 	bool Application::OnWindowClose(WindowCloseEvent& e)

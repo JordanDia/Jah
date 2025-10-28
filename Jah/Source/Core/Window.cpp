@@ -1,10 +1,11 @@
+#include "jahpch.h"
+
+
 #include "Window.h"
 #include "Events/ApplicationEvent.h"
 #include "Events/KeyEvent.h"
 #include "Events/MouseEvent.h"
-#include "Core.h"
-#include <iostream>
-#include <print>
+
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -60,6 +61,7 @@ namespace Jah {
 		m_Data.Width = props.Width;
 		m_Data.Height = props.Height;
 
+		JAH_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
 
 		if (!s_GLFWInitialized)
 		{

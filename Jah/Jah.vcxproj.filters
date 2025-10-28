@@ -1341,10 +1341,16 @@
     <ClInclude Include="Source\Core\LayerStack.h">
       <Filter>Source\Core</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Core\Log.h">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Core\Renderer\Buffer.h">
       <Filter>Source\Core\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Core\Renderer\Camera.h">
+      <Filter>Source\Core\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Core\Renderer\Framebuffer.h">
       <Filter>Source\Core\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Core\Renderer\GraphicsContext.h">
@@ -1362,6 +1368,9 @@
     <ClInclude Include="Source\Core\Renderer\Shader.h">
       <Filter>Source\Core\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Core\Renderer\SubTexture2D.h">
+      <Filter>Source\Core\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Core\Renderer\Texture.h">
       <Filter>Source\Core\Renderer</Filter>
     </ClInclude>
@@ -1377,7 +1386,9 @@
     <ClInclude Include="Source\Jah.h">
       <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Core\Renderer\SubTexture2D.h" />
+    <ClInclude Include="Source\jahpch.h">
+      <Filter>Source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\stb_image\stb_image.cpp">
@@ -1398,10 +1409,16 @@
     <ClCompile Include="Source\Core\LayerStack.cpp">
       <Filter>Source\Core</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Core\Log.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Core\Renderer\Buffer.cpp">
       <Filter>Source\Core\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\Renderer\Camera.cpp">
+      <Filter>Source\Core\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\Renderer\Framebuffer.cpp">
       <Filter>Source\Core\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\Renderer\GraphicsContext.cpp">
@@ -1419,6 +1436,9 @@
     <ClCompile Include="Source\Core\Renderer\Shader.cpp">
       <Filter>Source\Core\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Core\Renderer\SubTexture2D.cpp">
+      <Filter>Source\Core\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Core\Renderer\Texture.cpp">
       <Filter>Source\Core\Renderer</Filter>
     </ClCompile>
@@ -1428,7 +1448,8 @@
     <ClCompile Include="Source\Core\Window.cpp">
       <Filter>Source\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Core\Renderer\SubTexture2D.cpp" />
-    <ClCompile Include="External\GLFW\build\tests\test_SubTexture2D.cpp" />
+    <ClCompile Include="Source\jahpch.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

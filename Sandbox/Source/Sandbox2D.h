@@ -23,6 +23,8 @@ public:
 private:
 	Jah::OrthographicCameraController m_CameraController;
 
+	Jah::Shared<Jah::Framebuffer> m_FrameBuffer;
+
 	// Temporary
 	Jah::Shared<Jah::VertexArray> m_SquareVertexArray;
 	Jah::Shared<Jah::Shader> m_Shader;

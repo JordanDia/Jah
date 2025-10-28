@@ -1,5 +1,9 @@
 #pragma once
 
+
+#include <memory>
+#include <string_view>
+
 #include "Window.h"
 
 #include "Core/Core.h"
@@ -11,7 +15,6 @@
 
 #include "LayerStack.h"
 
-#include <memory>
 
 #include "ImGui/ImGuiLayer.h"
 #include "Renderer/Shader.h"
@@ -24,7 +27,7 @@ namespace Jah {
 	class Application
 	{
 	public:
-		Application();
+		Application(const std::string& name = "Jah Application");
 		virtual ~Application();
 
 		void Run();
@@ -34,6 +37,10 @@ namespace Jah {
 		void PushOverlay(Layer* overlay);
 
 		inline Window& GetWindow() { return *m_Window; }
+
+		void Close();
+
+		ImGuiLayer* GetImGuiLayer() { return m_ImGuiLayer; }
 
 		inline static Application& Get() { return *s_Instance; }
 

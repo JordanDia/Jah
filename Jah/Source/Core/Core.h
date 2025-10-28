@@ -37,3 +37,5 @@ namespace Jah {
 	using Shared = std::shared_ptr<T>;
 
 }
+
+#include "Core/Log.h"

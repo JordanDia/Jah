@@ -73,15 +73,17 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>jahpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>GLFW_INCLUDE_NONE;JAH_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>Source;External\GLFW\include;External\Glad\include;External\imgui;External\imgui\backends;External\glm;External\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Source;External\GLFW\include;External\Glad\include;External\imgui;External\imgui\backends;External\glm;External\stb_image;External\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -95,10 +97,11 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>jahpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>GLFW_INCLUDE_NONE;JAH_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>Source;External\GLFW\include;External\Glad\include;External\imgui;External\imgui\backends;External\glm;External\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Source;External\GLFW\include;External\Glad\include;External\imgui;External\imgui\backends;External\glm;External\stb_image;External\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -106,7 +109,7 @@
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalOptions>/MT %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/utf-8 /MT %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -121,10 +124,11 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>jahpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>GLFW_INCLUDE_NONE;JAH_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>Source;External\GLFW\include;External\Glad\include;External\imgui;External\imgui\backends;External\glm;External\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Source;External\GLFW\include;External\Glad\include;External\imgui;External\imgui\backends;External\glm;External\stb_image;External\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -132,6 +136,7 @@
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -578,8 +583,10 @@
     <ClInclude Include="Source\Core\KeyCodes.h" />
     <ClInclude Include="Source\Core\Layer.h" />
     <ClInclude Include="Source\Core\LayerStack.h" />
+    <ClInclude Include="Source\Core\Log.h" />
     <ClInclude Include="Source\Core\Renderer\Buffer.h" />
     <ClInclude Include="Source\Core\Renderer\Camera.h" />
+    <ClInclude Include="Source\Core\Renderer\Framebuffer.h" />
     <ClInclude Include="Source\Core\Renderer\GraphicsContext.h" />
     <ClInclude Include="Source\Core\Renderer\OrthographicCameraController.h" />
     <ClInclude Include="Source\Core\Renderer\Renderer.h" />
@@ -591,17 +598,19 @@
     <ClInclude Include="Source\Core\Timestep.h" />
     <ClInclude Include="Source\Core\Window.h" />
     <ClInclude Include="Source\Jah.h" />
+    <ClInclude Include="Source\jahpch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="External\GLFW\build\tests\test_SubTexture2D.cpp" />
     <ClCompile Include="External\stb_image\stb_image.cpp" />
     <ClCompile Include="Source\Core\Application.cpp" />
     <ClCompile Include="Source\Core\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="Source\Core\Input.cpp" />
     <ClCompile Include="Source\Core\Layer.cpp" />
     <ClCompile Include="Source\Core\LayerStack.cpp" />
+    <ClCompile Include="Source\Core\Log.cpp" />
     <ClCompile Include="Source\Core\Renderer\Buffer.cpp" />
     <ClCompile Include="Source\Core\Renderer\Camera.cpp" />
+    <ClCompile Include="Source\Core\Renderer\Framebuffer.cpp" />
     <ClCompile Include="Source\Core\Renderer\GraphicsContext.cpp" />
     <ClCompile Include="Source\Core\Renderer\OrthographicCameraController.cpp" />
     <ClCompile Include="Source\Core\Renderer\Renderer.cpp" />
@@ -611,6 +620,9 @@
     <ClCompile Include="Source\Core\Renderer\Texture.cpp" />
     <ClCompile Include="Source\Core\Renderer\VertexArray.cpp" />
     <ClCompile Include="Source\Core\Window.cpp" />
+    <ClCompile Include="Source\jahpch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="External\GLFW\GLFW.vcxproj">

@@ -1,3 +1,4 @@
+#include "jahpch.h"
 #include "OrthographicCameraController.h"
 
 #include "Core/Input.h"
@@ -55,6 +56,14 @@ namespace Jah {
 		});
 	}
 
+	void OrthographicCameraController::OnResize(float width, float height)
+	{
+		m_AspectRatio = width / height;
+		m_Bounds = { -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel };
+		m_Camera.SetProjection(m_Bounds.Left, m_Bounds.Right, m_Bounds.Bottom, m_Bounds.Top);
+	}
+
+
 	bool OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent& e)
 	{
 		m_ZoomLevel -= e.GetYOffset() * 0.5f;
@@ -68,8 +77,8 @@ namespace Jah {
 	{
 		m_ZoomLevel = (float)e.GetWidth() / (float)e.GetHeight();
 		m_ZoomLevel = std::max(m_ZoomLevel, 0.25f);
-		m_Bounds = { -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel };
-		m_Camera.SetProjection(m_Bounds.Left, m_Bounds.Right, m_Bounds.Bottom, m_Bounds.Top);
+
+		OnResize((float)e.GetWidth(), (float)e.GetHeight());
 		return false;
 	}
 

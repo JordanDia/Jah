@@ -1,3 +1,4 @@
+#include "jahpch.h"
 #include "Core/Renderer/GraphicsContext.h"
 #include "Core/Core.h"
 
@@ -17,6 +18,11 @@ namespace Jah {
 		glfwMakeContextCurrent(m_Window);
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		JAH_ASSERT(status, "Failed to initialize Glad!")
+
+		JAH_CORE_INFO("OpenGL Info:");
+		JAH_CORE_INFO("  Vendor: {0}", (const char*)glGetString(GL_VENDOR));
+		JAH_CORE_INFO("  Renderer: {0}", (const char*)glGetString(GL_RENDERER));
+		JAH_CORE_INFO("  Version: {0}", (const char*)glGetString(GL_VERSION));
 	}
 
 	void GraphicsContext::SwapBuffers()
