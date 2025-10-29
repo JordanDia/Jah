@@ -3,7 +3,7 @@
 
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
-#include "Core/Renderer/Renderer.h"
+#include "Renderer/Renderer.h"
 
 namespace Jah {
 

@@ -31,14 +31,14 @@
     <Filter Include="Source\Core">
       <UniqueIdentifier>{6E95150F-DA4A-8E04-633F-88DBCFF38408}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Core\Events">
-      <UniqueIdentifier>{92191B46-7EFD-DB9B-E75D-D6EED360C61D}</UniqueIdentifier>
+    <Filter Include="Source\Events">
+      <UniqueIdentifier>{7ABAF22F-E67A-6E66-AFB5-B7E31B35B342}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Core\ImGui">
-      <UniqueIdentifier>{18E5BF76-84FB-BD0C-CD72-492E39C88E94}</UniqueIdentifier>
+    <Filter Include="Source\ImGui">
+      <UniqueIdentifier>{000933F2-EC6B-C296-95F1-FA4C81338E19}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Core\Renderer">
-      <UniqueIdentifier>{D4D44230-C063-CCF9-6982-E0F455F0DC9F}</UniqueIdentifier>
+    <Filter Include="Source\Renderer">
+      <UniqueIdentifier>{BC4F86EE-28DB-F3B2-31EC-76A79DF64FB3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1314,21 +1314,6 @@
     <ClInclude Include="Source\Core\EntryPoint.h">
       <Filter>Source\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Core\Events\ApplicationEvent.h">
-      <Filter>Source\Core\Events</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Core\Events\Event.h">
-      <Filter>Source\Core\Events</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Core\Events\KeyEvent.h">
-      <Filter>Source\Core\Events</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Core\Events\MouseEvent.h">
-      <Filter>Source\Core\Events</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Core\ImGui\ImGuiLayer.h">
-      <Filter>Source\Core\ImGui</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Core\Input.h">
       <Filter>Source\Core</Filter>
     </ClInclude>
@@ -1344,51 +1329,70 @@
     <ClInclude Include="Source\Core\Log.h">
       <Filter>Source\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Core\Renderer\Buffer.h">
-      <Filter>Source\Core\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Core\Renderer\Camera.h">
-      <Filter>Source\Core\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Core\Renderer\Framebuffer.h">
-      <Filter>Source\Core\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Core\Renderer\GraphicsContext.h">
-      <Filter>Source\Core\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Core\Renderer\OrthographicCameraController.h">
-      <Filter>Source\Core\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Core\Renderer\Renderer.h">
-      <Filter>Source\Core\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Core\Renderer\Renderer2D.h">
-      <Filter>Source\Core\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Core\Renderer\Shader.h">
-      <Filter>Source\Core\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Core\Renderer\SubTexture2D.h">
-      <Filter>Source\Core\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Core\Renderer\Texture.h">
-      <Filter>Source\Core\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Core\Renderer\VertexArray.h">
-      <Filter>Source\Core\Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Core\Timestep.h">
       <Filter>Source\Core</Filter>
     </ClInclude>
     <ClInclude Include="Source\Core\Window.h">
       <Filter>Source\Core</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Events\ApplicationEvent.h">
+      <Filter>Source\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Events\Event.h">
+      <Filter>Source\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Events\KeyEvent.h">
+      <Filter>Source\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Events\MouseEvent.h">
+      <Filter>Source\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ImGui\ImGuiLayer.h">
+      <Filter>Source\ImGui</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Jah.h">
       <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Renderer\Buffer.h">
+      <Filter>Source\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Renderer\Camera.h">
+      <Filter>Source\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Renderer\Framebuffer.h">
+      <Filter>Source\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Renderer\GraphicsContext.h">
+      <Filter>Source\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Renderer\OrthographicCameraController.h">
+      <Filter>Source\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Renderer\Renderer.h">
+      <Filter>Source\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Renderer\Renderer2D.h">
+      <Filter>Source\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Renderer\Shader.h">
+      <Filter>Source\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Renderer\SubTexture2D.h">
+      <Filter>Source\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Renderer\Texture.h">
+      <Filter>Source\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Renderer\VertexArray.h">
+      <Filter>Source\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Source\jahpch.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Scene\Scene.h" />
+    <ClInclude Include="Source\Scene\Entity.h" />
+    <ClInclude Include="Source\Scene\Registry.h" />
+    <ClInclude Include="Source\Scene\Components.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\stb_image\stb_image.cpp">
@@ -1396,9 +1400,6 @@
     </ClCompile>
     <ClCompile Include="Source\Core\Application.cpp">
       <Filter>Source\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Core\ImGui\ImGuiLayer.cpp">
-      <Filter>Source\Core\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\Input.cpp">
       <Filter>Source\Core</Filter>
@@ -1412,44 +1413,48 @@
     <ClCompile Include="Source\Core\Log.cpp">
       <Filter>Source\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Core\Renderer\Buffer.cpp">
-      <Filter>Source\Core\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Core\Renderer\Camera.cpp">
-      <Filter>Source\Core\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Core\Renderer\Framebuffer.cpp">
-      <Filter>Source\Core\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Core\Renderer\GraphicsContext.cpp">
-      <Filter>Source\Core\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Core\Renderer\OrthographicCameraController.cpp">
-      <Filter>Source\Core\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Core\Renderer\Renderer.cpp">
-      <Filter>Source\Core\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Core\Renderer\Renderer2D.cpp">
-      <Filter>Source\Core\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Core\Renderer\Shader.cpp">
-      <Filter>Source\Core\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Core\Renderer\SubTexture2D.cpp">
-      <Filter>Source\Core\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Core\Renderer\Texture.cpp">
-      <Filter>Source\Core\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Core\Renderer\VertexArray.cpp">
-      <Filter>Source\Core\Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Core\Window.cpp">
       <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ImGui\ImGuiLayer.cpp">
+      <Filter>Source\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Renderer\Buffer.cpp">
+      <Filter>Source\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Renderer\Camera.cpp">
+      <Filter>Source\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Renderer\Framebuffer.cpp">
+      <Filter>Source\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Renderer\GraphicsContext.cpp">
+      <Filter>Source\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Renderer\OrthographicCameraController.cpp">
+      <Filter>Source\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Renderer\Renderer.cpp">
+      <Filter>Source\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Renderer\Renderer2D.cpp">
+      <Filter>Source\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Renderer\Shader.cpp">
+      <Filter>Source\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Renderer\SubTexture2D.cpp">
+      <Filter>Source\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Renderer\Texture.cpp">
+      <Filter>Source\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Renderer\VertexArray.cpp">
+      <Filter>Source\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Source\jahpch.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Scene\Scene.cpp" />
   </ItemGroup>
 </Project>

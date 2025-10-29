@@ -7,6 +7,7 @@
 
 
 namespace Jah {
+
 	EditorLayer::EditorLayer()
 		: Layer("Editor Layer"), m_CameraController(1600.0f / 900.0f, true), m_ParticleSystem(100000)
 	{
@@ -15,10 +16,10 @@ namespace Jah {
 
 	void EditorLayer::OnAttach()
 	{
-		m_GokuTexture = std::make_shared<Jah::Texture2D>("Assets/Textures/goku_pfp.jpg");
-		m_SpriteSheet = std::make_shared<Jah::Texture2D>("Assets/Textures/tilemap_packed.png");
+		m_GokuTexture = std::make_shared<Texture2D>("Assets/Textures/goku_pfp.jpg");
+		m_SpriteSheet = std::make_shared<Texture2D>("Assets/Textures/tilemap_packed.png");
 
-		m_GrassSprite = Jah::SubTexture2D::CreateFromCoords(m_SpriteSheet, { 0, 8 }, { 18, 18 });
+		m_GrassSprite = SubTexture2D::CreateFromCoords(m_SpriteSheet, { 0, 8 }, { 18, 18 });
 		m_SquareColor = { 0.0f, 0.4f, 1.0f, 1.0f };
 
 		m_ParticleProps.ColorBegin = { 0.0f, 0.4f, 1.0f, 1.0f };
@@ -31,10 +32,17 @@ namespace Jah {
 		m_ParticleProps.VelocityVariation = { 3.0f, 1.0f };
 		m_ParticleProps.Position = { 0.0f, 0.0f };
 
-		Jah::FramebufferSpecification framebufferSpec;
-		framebufferSpec.Width = Jah::Application::Get().GetWindow().GetWidth();
-		framebufferSpec.Height = Jah::Application::Get().GetWindow().GetHeight();
-		m_Framebuffer = std::make_shared<Jah::Framebuffer>(framebufferSpec);
+		FramebufferSpecification framebufferSpec;
+		framebufferSpec.Width = Application::Get().GetWindow().GetWidth();
+		framebufferSpec.Height = Application::Get().GetWindow().GetHeight();
+		m_Framebuffer = std::make_shared<Framebuffer>(framebufferSpec);
+
+		m_ActiveScene = std::make_shared<Scene>();
+
+		Entity square = m_ActiveScene->CreateEntity();
+		square.AddComponent<TransformComponent>(glm::vec3(1.0f, 1.0f, 0.0f));
+		square.AddComponent<SpriteRendererComponent>();
+
 	}
 
 	void EditorLayer::OnDetach()
@@ -42,8 +50,10 @@ namespace Jah {
 
 	}
 
-	void EditorLayer::OnUpdate(Jah::Timestep timestep)
+	void EditorLayer::OnUpdate(Timestep timestep)
 	{
+	
+
 		m_FPS = 1.0f / timestep;
 
 		static float rotation = 0.0f;
@@ -52,38 +62,42 @@ namespace Jah {
 		if (m_ViewportFocused)
 			m_CameraController.OnUpdate(timestep);
 
-		Jah::Renderer2D::ResetStats();
+		Renderer2D::ResetStats();
 		m_Framebuffer->Bind();
 
-		Jah::Renderer::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
-		Jah::Renderer::Clear();
+		Renderer::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
+		Renderer::Clear();
 
-		Jah::Renderer2D::BeginScene(m_CameraController.GetCamera());
+		Renderer2D::BeginScene(m_CameraController.GetCamera());
+
+
+		m_ActiveScene->OnUpdate(timestep, m_CameraController.GetCamera());
+
 
 #if 0
-		//Jah::Renderer2D::DrawQuad({ 0.0f, 0.0f }, { 1.0f, 1.0f }, m_GokuTexture);
-		Jah::Renderer2D::DrawQuad({ -0.5f, 0.4f }, { 0.5f, 0.5f }, { 0.3f, 0.35f, 0.8f, 1.0f });
-		Jah::Renderer2D::DrawRotatedQuad({ 0.8f, 0.8f }, { 0.5f, 0.5f }, 45.0f, { 0.3f, 0.35f, 0.8f, 1.0f });
+		Renderer2D::DrawQuad({ 0.0f, 0.0f }, { 1.0f, 1.0f }, m_GokuTexture);
+		Renderer2D::DrawQuad({ -0.5f, 0.4f }, { 0.5f, 0.5f }, { 0.3f, 0.35f, 0.8f, 1.0f });
+		Renderer2D::DrawRotatedQuad({ 0.8f, 0.8f }, { 0.5f, 0.5f }, 45.0f, { 0.3f, 0.35f, 0.8f, 1.0f });
 
-		Jah::Renderer2D::DrawRotatedQuad({ 0.0f, 0.0f }, { 1.0f, 1.0f }, rotation, m_GokuTexture);
+		Renderer2D::DrawRotatedQuad({ 0.0f, 0.0f }, { 1.0f, 1.0f }, rotation, m_GokuTexture);
 
 		for (float y = -5.0f; y < 5.0f; y += 0.5f)
 		{
 			for (float x = -5.0f; x < 5.0f; x += 0.5f)
 			{
 				glm::vec4 color = { (x + 5.0f) / 10, (y + 5.0f) / 10, 0.0f, 0.5f };
-				Jah::Renderer2D::DrawQuad({ x, y }, { 0.45f, 0.45f }, color);
+				Renderer2D::DrawQuad({ x, y }, { 0.45f, 0.45f }, color);
 			}
 		}
 
 #endif
 
-		if (Jah::Input::IsMouseButtonPressed(JAH_MOUSE_BUTTON_1))
+		if (Input::IsMouseButtonPressed(JAH_MOUSE_BUTTON_1))
 		{
 
-			auto [x, y] = Jah::Input::GetMousePosition();
-			auto width = Jah::Application::Get().GetWindow().GetWidth();
-			auto height = Jah::Application::Get().GetWindow().GetHeight();
+			auto [x, y] = Input::GetMousePosition();
+			auto width = Application::Get().GetWindow().GetWidth();
+			auto height = Application::Get().GetWindow().GetHeight();
 
 			auto bounds = m_CameraController.GetBounds();
 			x = (x / width) * bounds.GetWidth() - bounds.GetWidth() * 0.5f;
@@ -102,11 +116,11 @@ namespace Jah {
 		m_ParticleProps.ColorBegin = m_SquareColor;
 		m_ParticleSystem.OnUpdate(timestep);
 
-		Jah::Renderer2D::DrawRotatedQuad({ 0.0f, 0.0f }, { 1.0f, 1.0f }, rotation, m_GrassSprite);
+		Renderer2D::DrawRotatedQuad({ 0.0f, 0.0f }, { 1.0f, 1.0f }, rotation, m_GrassSprite);
 
 		m_ParticleSystem.OnRender();
 
-		Jah::Renderer2D::EndScene();
+		Renderer2D::EndScene();
 		m_Framebuffer->Unbind();
 	}
 
@@ -175,7 +189,7 @@ namespace Jah {
 				ImGui::Separator();
 
 				if (ImGui::MenuItem("Exit"))
-					Jah::Application::Get().Close();
+					Application::Get().Close();
 
 				if (ImGui::MenuItem("Reset Layout"))
 					ImGui::LoadIniSettingsFromMemory("");
@@ -190,7 +204,7 @@ namespace Jah {
 
 		ImGui::Begin("Settings");
 
-		auto& stats = Jah::Renderer2D::GetStats();
+		auto& stats = Renderer2D::GetStats();
 		ImGui::Text("Renderer2D Stats");
 		ImGui::Text("Draw Calls: %d", stats.DrawCalls);
 		ImGui::Text("Quads: %d", stats.QuadCount);
@@ -228,7 +242,7 @@ namespace Jah {
 
 	}
 
-	void EditorLayer::OnEvent(Jah::Event& event)
+	void EditorLayer::OnEvent(Event& event)
 	{
 		m_CameraController.OnEvent(event);
 	}

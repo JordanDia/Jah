@@ -1,5 +1,5 @@
 #include "jahpch.h"
-#include "Core/Renderer/GraphicsContext.h"
+#include "Renderer/GraphicsContext.h"
 #include "Core/Core.h"
 
 #include <glad/glad.h>
