@@ -24,19 +24,19 @@ namespace Jah {
 		template<typename T>
 		T& GetComponent()
 		{
-
+			return m_Scene->GetRegistry().Get<T>(m_ID);
 		}
 
 		template<typename T>
 		T& HasComponent()
 		{
-
+			return m_Scene->GetRegistry().Has<T>(m_ID);
 		}
 
 		template<typename T>
 		void RemoveComponent()
 		{
-
+			return m_Scene->GetRegistry().Remove<T>(m_ID);
 		}
 
 		EntityID GetID() const { return m_ID; }

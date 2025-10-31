@@ -21,7 +21,10 @@ namespace Jah {
 
 		void DestroyEntity(EntityID entityID)
 		{
-
+			for (auto& [componentID, componentMap] : m_ComponentPools)
+			{
+				componentMap.erase(entityID);
+			}
 		}
 
 		template<typename T, typename... Args>
@@ -40,12 +43,12 @@ namespace Jah {
 			auto componentID = std::type_index(typeid(T));
 
 			auto it = m_ComponentPools.find(componentID);
-			JAH_ASSERT(it == m_ComponentPools.end(), "Component not found in pool!");
+			JAH_ASSERT(it != m_ComponentPools.end(), "Component not found in pool!");
 
 			auto& entityComponentMap = it->second;
 			auto entityIt = entityComponentMap.find(entityID);
 
-			JAH_ASSERT(entityIt != entityComponentMap.end());
+			JAH_ASSERT(entityIt != entityComponentMap.end(), "Entity not found in component map!");
 			return std::any_cast<T&>(entityIt->second);
 		}
 
@@ -65,7 +68,12 @@ namespace Jah {
 		template<typename T>
 		void Remove(EntityID entityID)
 		{
+			auto componentID = std::type_index(typeid(T));
+			auto it = m_ComponentPools.find(componentID);
+			if (it == m_ComponentPools.end())
+				return;
 
+			it->second.erase(entityID);
 		}
 
 		template<typename... Components>

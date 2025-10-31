@@ -48,7 +48,8 @@ namespace Jah {
 		glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH24_STENCIL8, m_Specification.Width, m_Specification.Height);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, m_DepthAttachment, 0);
 
-		JAH_ASSERT(GL_FRAMEBUFFER == GL_FRAMEBUFFER_COMPLETE, "Framebuffer is incomplete");
+		GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+		JAH_ASSERT(status == GL_FRAMEBUFFER_COMPLETE, "Framebuffer is incomplete");
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}

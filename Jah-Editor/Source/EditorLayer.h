@@ -24,15 +24,17 @@ namespace Jah {
 	private:
 		Shared<Scene> m_ActiveScene;
 		OrthographicCameraController m_CameraController;
+		Entity m_CameraEntity;
+		Entity m_SecondCamera;
+		bool m_PrimaryCamera = true;
 
 		Shared<Jah::Framebuffer> m_Framebuffer;
 
 		// Temporary
-		Shared<Jah::VertexArray> m_SquareVertexArray;
-		Shared<Jah::Shader> m_Shader;
-		Shared<Jah::Texture2D> m_GokuTexture;
-		Shared<Jah::Texture2D> m_SpriteSheet;
-		Shared<Jah::SubTexture2D> m_GrassSprite;
+		Shared<VertexArray> m_SquareVertexArray;
+		Shared<Shader> m_Shader;
+		Shared<Texture2D> m_GokuTexture;
+		Shared<Texture2D> m_SpriteSheet;
 
 		glm::vec4 m_SquareColor = { 0.3f, 0.35f, 1.0f, 1.0f };
 		ParticleProps m_ParticleProps;

@@ -19,7 +19,6 @@ namespace Jah {
 		m_GokuTexture = std::make_shared<Texture2D>("Assets/Textures/goku_pfp.jpg");
 		m_SpriteSheet = std::make_shared<Texture2D>("Assets/Textures/tilemap_packed.png");
 
-		m_GrassSprite = SubTexture2D::CreateFromCoords(m_SpriteSheet, { 0, 8 }, { 18, 18 });
 		m_SquareColor = { 0.0f, 0.4f, 1.0f, 1.0f };
 
 		m_ParticleProps.ColorBegin = { 0.0f, 0.4f, 1.0f, 1.0f };
@@ -39,10 +38,19 @@ namespace Jah {
 
 		m_ActiveScene = std::make_shared<Scene>();
 
-		Entity square = m_ActiveScene->CreateEntity();
-		square.AddComponent<TransformComponent>(glm::vec3(1.0f, 1.0f, 0.0f));
-		square.AddComponent<SpriteRendererComponent>();
+		Entity square = m_ActiveScene->CreateEntity("Grass Sprite");
+		auto& spriteComponent = square.AddComponent<SpriteRendererComponent>(m_SpriteSheet);
+		
+		glm::vec2 textureSize = { m_SpriteSheet->GetWidth(), m_SpriteSheet->GetHeight() };
+		auto [texMin, texMax] = GetTexCoords({ 0, 8 }, { 18, 18 }, textureSize);
+		spriteComponent.TexCoordMin = texMin;
+		spriteComponent.TexCoordMax = texMax;
 
+		m_CameraEntity = m_ActiveScene->CreateEntity("Camera Entity");
+		m_CameraEntity.AddComponent<CameraComponent>();
+
+		m_SecondCamera = m_ActiveScene->CreateEntity("Clip Space Camera");
+		auto& cameraComponent = m_SecondCamera.AddComponent<CameraComponent>();
 	}
 
 	void EditorLayer::OnDetach()
@@ -52,12 +60,7 @@ namespace Jah {
 
 	void EditorLayer::OnUpdate(Timestep timestep)
 	{
-	
-
 		m_FPS = 1.0f / timestep;
-
-		static float rotation = 0.0f;
-		rotation += timestep * 20.0f;
 
 		if (m_ViewportFocused)
 			m_CameraController.OnUpdate(timestep);
@@ -67,32 +70,20 @@ namespace Jah {
 
 		Renderer::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		Renderer::Clear();
+#if 0
 
 		Renderer2D::BeginScene(m_CameraController.GetCamera());
-
-
-		m_ActiveScene->OnUpdate(timestep, m_CameraController.GetCamera());
-
-
-#if 0
-		Renderer2D::DrawQuad({ 0.0f, 0.0f }, { 1.0f, 1.0f }, m_GokuTexture);
-		Renderer2D::DrawQuad({ -0.5f, 0.4f }, { 0.5f, 0.5f }, { 0.3f, 0.35f, 0.8f, 1.0f });
-		Renderer2D::DrawRotatedQuad({ 0.8f, 0.8f }, { 0.5f, 0.5f }, 45.0f, { 0.3f, 0.35f, 0.8f, 1.0f });
-
-		Renderer2D::DrawRotatedQuad({ 0.0f, 0.0f }, { 1.0f, 1.0f }, rotation, m_GokuTexture);
-
-		for (float y = -5.0f; y < 5.0f; y += 0.5f)
-		{
-			for (float x = -5.0f; x < 5.0f; x += 0.5f)
-			{
-				glm::vec4 color = { (x + 5.0f) / 10, (y + 5.0f) / 10, 0.0f, 0.5f };
-				Renderer2D::DrawQuad({ x, y }, { 0.45f, 0.45f }, color);
-			}
-		}
-
 #endif
 
-		if (Input::IsMouseButtonPressed(JAH_MOUSE_BUTTON_1))
+
+		m_ActiveScene->OnUpdate(timestep);
+		auto& cameraComponent = m_CameraEntity.GetComponent<CameraComponent>();
+		m_ActiveScene->OnRender(cameraComponent.Camera);
+		//m_ActiveScene->OnRender(m_CameraController.GetCamera());
+
+#if 0
+
+	if (Input::IsMouseButtonPressed(JAH_MOUSE_BUTTON_1))
 		{
 
 			auto [x, y] = Input::GetMousePosition();
@@ -116,11 +107,10 @@ namespace Jah {
 		m_ParticleProps.ColorBegin = m_SquareColor;
 		m_ParticleSystem.OnUpdate(timestep);
 
-		Renderer2D::DrawRotatedQuad({ 0.0f, 0.0f }, { 1.0f, 1.0f }, rotation, m_GrassSprite);
-
 		m_ParticleSystem.OnRender();
 
 		Renderer2D::EndScene();
+#endif
 		m_Framebuffer->Unbind();
 	}
 
@@ -213,7 +203,28 @@ namespace Jah {
 		ImGui::Text("FPS: %.1f", m_FPS);
 
 		ImGui::ColorEdit3("Square Color", glm::value_ptr(m_SquareColor));
+		
+		auto& transform = m_CameraEntity.GetComponent<TransformComponent>();
+		ImGui::DragFloat2("Camera X/Y", glm::value_ptr(transform.Translation), 0.1f);
+		ImGui::DragFloat("Camera Rotation (Z)", &transform.Rotation.z, 0.1f);
+
+		if (ImGui::Checkbox("Camera A", &m_PrimaryCamera))
+		{
+			m_CameraEntity.GetComponent<CameraComponent>().Primary = m_PrimaryCamera;
+			m_SecondCamera.GetComponent<CameraComponent>().Primary = !m_PrimaryCamera;
+		}
+
+		{
+			auto& camera = m_SecondCamera.GetComponent<CameraComponent>().Camera;
+			float orthoSize = camera.GetOrthographicSize();
+			if (ImGui::DragFloat("Second Camera Ortho Size", &orthoSize))
+				camera.SetOrthographicSize(orthoSize);
+		}
+		
 		ImGui::End();
+
+
+
 
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
@@ -230,6 +241,8 @@ namespace Jah {
 			m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 				
 			m_CameraController.OnResize(viewportPanelSize.x, viewportPanelSize.y);
+
+			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		}
 		
 		uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();

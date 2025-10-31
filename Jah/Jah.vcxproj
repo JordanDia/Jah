@@ -598,11 +598,11 @@
     <ClInclude Include="Source\Renderer\SubTexture2D.h" />
     <ClInclude Include="Source\Renderer\Texture.h" />
     <ClInclude Include="Source\Renderer\VertexArray.h" />
-    <ClInclude Include="Source\jahpch.h" />
     <ClInclude Include="Source\Scene\Components.h" />
     <ClInclude Include="Source\Scene\Entity.h" />
     <ClInclude Include="Source\Scene\Registry.h" />
     <ClInclude Include="Source\Scene\Scene.h" />
+    <ClInclude Include="Source\jahpch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\stb_image\stb_image.cpp" />
@@ -624,10 +624,10 @@
     <ClCompile Include="Source\Renderer\SubTexture2D.cpp" />
     <ClCompile Include="Source\Renderer\Texture.cpp" />
     <ClCompile Include="Source\Renderer\VertexArray.cpp" />
+    <ClCompile Include="Source\Scene\Scene.cpp" />
     <ClCompile Include="Source\jahpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Source\Scene\Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="External\GLFW\GLFW.vcxproj">

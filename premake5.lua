@@ -72,6 +72,10 @@ project "Jah"
 	pchheader "jahpch.h"
 	pchsource "Jah/Source/jahpch.cpp"
 
+	filter "system:windows"
+		systemversion "latest"
+		buildoptions { "/utf-8" }
+
 	filter "configurations:Debug"
 		defines { "JAH_DEBUG" }
 		symbols "On"
@@ -86,10 +90,6 @@ project "Jah"
 		defines { "JAH_DIST" }
 		optimize "On"
 		runtime "Release"
-
-	filter "system:windows"
-		systemversion "latest"
-		buildoptions { "/utf-8" }
 
 	filter { "system:windows", "configurations:Release" }
 		buildoptions "/MT"
