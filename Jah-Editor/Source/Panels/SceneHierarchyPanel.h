@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Scene/Scene.h"
 #include "Core/Core.h"
-#include "Core/Log.h"
+#include "Scene/Scene.h"
+#include "Scene/Entity.h"
 
 namespace Jah {
 
@@ -15,8 +15,13 @@ namespace Jah {
 		void SetContext(const Shared<Scene>& context);
 
 		void OnImGuiRender();
+
+	private:
+		void DrawEntityNode(EntityID entityID);
+		void DrawComponents(EntityID entityID);
 	private:
 		Shared<Scene> m_Context;
+		EntityID m_SelectionContext = 0;
 	};
 
 }
