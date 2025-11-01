@@ -94,24 +94,48 @@ namespace Jah {
 
 	void Scene::OnUpdate(Timestep timestep)
 	{
-		auto view = m_Registry.View<TransformComponent, SpriteRendererComponent>();
-
-		for (auto entityID : view)
 		{
-			auto& transform = m_Registry.Get<TransformComponent>(entityID);
+			auto view = m_Registry.View<NativeScriptComponent>();
 
-			if (m_Registry.Has<TagComponent>(entityID))
+			for (auto entityID : view)
 			{
-				auto& tag = m_Registry.Get<TagComponent>(entityID);
-				if (tag.Name == "Grass Sprite")
+				auto& nsc = m_Registry.Get<NativeScriptComponent>(entityID);
+				if (!nsc.Instance)
 				{
-					static float rotationZ = 0.0f;
-					rotationZ += timestep * 0.5f;
+					nsc.Instance = nsc.InstantiateScript();
+					nsc.Instance->m_Entity = Entity{ entityID, this };
+					nsc.Instance->OnCreate();
+				}
 
-					transform.Rotation = glm::vec3(0.0f, 0.0f, rotationZ);
+				nsc.Instance->OnUpdate(timestep);
+
+
+			}
+		}
+
+
+		{
+
+			auto view = m_Registry.View<TransformComponent, SpriteRendererComponent>();
+
+			for (auto entityID : view)
+			{
+				auto& transform = m_Registry.Get<TransformComponent>(entityID);
+
+				if (m_Registry.Has<TagComponent>(entityID))
+				{
+					auto& tag = m_Registry.Get<TagComponent>(entityID);
+					if (tag.Name == "Grass Sprite")
+					{
+						static float rotationZ = 0.0f;
+						rotationZ += timestep * 0.5f;
+
+						transform.Rotation = glm::vec3(0.0f, 0.0f, rotationZ);
+					}
 				}
 			}
 		}
+		
 	}
 
 	void Scene::OnViewportResize(uint32_t width, uint32_t height)

@@ -7,8 +7,9 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
 
-namespace Jah {
+#include "ScriptableEntity.h"
 
+namespace Jah {
 	
 
 	struct TagComponent
@@ -66,6 +67,44 @@ namespace Jah {
 		CameraComponent() = default;
 		CameraComponent(const CameraComponent&) = default;
 	};
+
+	struct NativeScriptComponent
+	{
+		ScriptableEntity* Instance = nullptr;
+
+		using InstantiateFn = ScriptableEntity * (*)();
+		using DestroyFn = void (*)(NativeScriptComponent*);
+
+		InstantiateFn InstantiateScript = nullptr;
+		DestroyFn DestroyScript = nullptr;
+
+		template<typename T>
+		void Bind()
+		{
+			InstantiateScript = []() -> ScriptableEntity* { return new T(); };
+			DestroyScript = [](NativeScriptComponent* nsc)
+				{
+					delete static_cast<T*>(nsc->Instance);
+					nsc->Instance = nullptr;
+				};
+		}
+	};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	static std::pair<glm::vec2, glm::vec2> GetTexCoords(
 		const glm::vec2& coords,

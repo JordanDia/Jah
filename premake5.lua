@@ -137,6 +137,10 @@ project "Sandbox"
 		optimize "On"
 		runtime "Release"
 
+	filter "system:windows"
+		systemversion "latest"
+		buildoptions { "/utf-8" }
+
 project "Jah-Editor"
 	location "Jah-Editor"
 	kind "ConsoleApp"

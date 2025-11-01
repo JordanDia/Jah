@@ -7,6 +7,9 @@
 
 #include "ParticleSystem.h"
 
+
+#include "Panels/SceneHierarchyPanel.h"
+
 namespace Jah {
 
 	class EditorLayer : public Layer
@@ -39,6 +42,8 @@ namespace Jah {
 		glm::vec4 m_SquareColor = { 0.3f, 0.35f, 1.0f, 1.0f };
 		ParticleProps m_ParticleProps;
 		ParticleSystem m_ParticleSystem;
+
+		SceneHierarchyPanel m_SceneHierarchyPanel;
 
 		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
 

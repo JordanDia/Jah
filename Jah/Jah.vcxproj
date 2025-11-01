@@ -602,6 +602,7 @@
     <ClInclude Include="Source\Scene\Entity.h" />
     <ClInclude Include="Source\Scene\Registry.h" />
     <ClInclude Include="Source\Scene\Scene.h" />
+    <ClInclude Include="Source\Scene\ScriptableEntity.h" />
     <ClInclude Include="Source\jahpch.h" />
   </ItemGroup>
   <ItemGroup>

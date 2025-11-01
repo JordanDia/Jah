@@ -51,6 +51,37 @@ namespace Jah {
 
 		m_SecondCamera = m_ActiveScene->CreateEntity("Clip Space Camera");
 		auto& cameraComponent = m_SecondCamera.AddComponent<CameraComponent>();
+
+		class CameraController : public ScriptableEntity
+		{
+		public:
+			void OnCreate() override
+			{
+				std::cout << "CameraController::OnCreate" << std::endl;
+			}
+
+			void OnDestroy() override
+			{
+
+			}
+
+			void OnUpdate(Timestep ts) override
+			{
+				auto& transform = GetComponent<TransformComponent>().Translation;
+				float speed = 5.0f;
+
+				if (Input::IsKeyPressed(JAH_KEY_A))
+					transform.x -= speed * ts;
+				if (Input::IsKeyPressed(JAH_KEY_D))
+					transform.x += speed * ts;
+				if (Input::IsKeyPressed(JAH_KEY_W))
+					transform.y += speed * ts;
+				if (Input::IsKeyPressed(JAH_KEY_S))
+					transform.y -= speed * ts;
+			}
+		};
+		
+		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 	}
 
 	void EditorLayer::OnDetach()
@@ -212,6 +243,8 @@ namespace Jah {
 		{
 			m_CameraEntity.GetComponent<CameraComponent>().Primary = m_PrimaryCamera;
 			m_SecondCamera.GetComponent<CameraComponent>().Primary = !m_PrimaryCamera;
+
+
 		}
 
 		{

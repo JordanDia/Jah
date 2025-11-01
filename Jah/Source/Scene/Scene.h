@@ -4,6 +4,8 @@
 #include "Core/Timestep.h"
 #include "Renderer/Camera.h"
 
+#include <string>
+
 namespace Jah {
 
 	class Entity;

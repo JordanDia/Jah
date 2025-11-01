@@ -16,7 +16,9 @@ namespace Jah {
 
 		uint32_t CreateEntity()
 		{
-			return m_NextEntityID++;
+			EntityID entity = m_NextEntityID++;
+			m_Entities.push_back(entity);
+			return entity;
 		}
 
 		void DestroyEntity(EntityID entityID)
@@ -105,8 +107,11 @@ namespace Jah {
 			return result;
 		}
 
+		const std::vector<EntityID>& GetEntities() const { return m_Entities; }
+
 	private:
 		std::unordered_map<std::type_index, std::unordered_map<uint32_t, std::any>> m_ComponentPools;
+		std::vector<EntityID> m_Entities;
 		uint32_t m_NextEntityID = 1;
 	};
 }
