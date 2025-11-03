@@ -11,7 +11,6 @@ namespace Jah {
 	EditorLayer::EditorLayer()
 		: Layer("Editor Layer"), m_CameraController(1600.0f / 900.0f, true), m_ParticleSystem(100000)
 	{
-
 	}
 
 	void EditorLayer::OnAttach()
@@ -40,6 +39,12 @@ namespace Jah {
 
 		Entity square = m_ActiveScene->CreateEntity("Grass Sprite");
 		auto& spriteComponent = square.AddComponent<SpriteRendererComponent>(m_SpriteSheet);
+
+		Entity redSquare = m_ActiveScene->CreateEntity("Red Square");
+
+		auto& redSquareSrc = redSquare.AddComponent<SpriteRendererComponent>();\
+		redSquareSrc.Color = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+		
 		
 		glm::vec2 textureSize = { m_SpriteSheet->GetWidth(), m_SpriteSheet->GetHeight() };
 		auto [texMin, texMax] = GetTexCoords({ 0, 8 }, { 18, 18 }, textureSize);
