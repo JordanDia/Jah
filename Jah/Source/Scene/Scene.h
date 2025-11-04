@@ -17,7 +17,7 @@ namespace Jah {
 		~Scene() = default;
 
 		Entity CreateEntity(const std::string& name = std::string());
-		void DestroyEntity(Entity entity);
+		void DestroyEntity(EntityID entityID);
 
 		void OnRender(Camera& camera);
 		void OnRender(OrthographicCamera& camera);
@@ -28,9 +28,15 @@ namespace Jah {
 		Registry& GetRegistry() { return m_Registry; }
 
 	private:
+		template<typename T>
+		void OnComponentAdded(EntityID entity, T& component);
+
+	private:
 		Registry m_Registry;
-		uint32_t m_ViewportWidth;
-		uint32_t m_ViewportHeight;
+		uint32_t m_ViewportWidth = 0;
+		uint32_t m_ViewportHeight = 0;
+
+		friend class Entity;
 	};
 
 }

@@ -18,7 +18,9 @@ namespace Jah {
 		template<typename T, typename... Args>
 		T& AddComponent(Args&&... args)
 		{
-			return m_Scene->GetRegistry().Add<T>(m_ID, std::forward<Args>(args)...);
+			T& component = m_Scene->GetRegistry().Add<T>(m_ID, std::forward<Args>(args)...);
+			m_Scene->OnComponentAdded<T>(m_ID, component);
+			return component;
 		}
 
 		template<typename T>

@@ -40,10 +40,7 @@ namespace Jah {
 		Entity square = m_ActiveScene->CreateEntity("Grass Sprite");
 		auto& spriteComponent = square.AddComponent<SpriteRendererComponent>(m_SpriteSheet);
 
-		Entity redSquare = m_ActiveScene->CreateEntity("Red Square");
-
-		auto& redSquareSrc = redSquare.AddComponent<SpriteRendererComponent>();\
-		redSquareSrc.Color = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+		
 		
 		
 		glm::vec2 textureSize = { m_SpriteSheet->GetWidth(), m_SpriteSheet->GetHeight() };
@@ -108,47 +105,11 @@ namespace Jah {
 
 		Renderer::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		Renderer::Clear();
-#if 0
-
-		Renderer2D::BeginScene(m_CameraController.GetCamera());
-#endif
 
 
 		m_ActiveScene->OnUpdate(timestep);
-		auto& cameraComponent = m_CameraEntity.GetComponent<CameraComponent>();
-		m_ActiveScene->OnRender(cameraComponent.Camera);
-		//m_ActiveScene->OnRender(m_CameraController.GetCamera());
+		
 
-#if 0
-
-	if (Input::IsMouseButtonPressed(JAH_MOUSE_BUTTON_1))
-		{
-
-			auto [x, y] = Input::GetMousePosition();
-			auto width = Application::Get().GetWindow().GetWidth();
-			auto height = Application::Get().GetWindow().GetHeight();
-
-			auto bounds = m_CameraController.GetBounds();
-			x = (x / width) * bounds.GetWidth() - bounds.GetWidth() * 0.5f;
-			y = (y / height) * bounds.GetHeight() - bounds.GetHeight() * 0.5f;
-
-			// Apply camera offset so mouse world position follows camera
-			x += m_CameraController.GetCamera().GetPosition().x;
-			y += m_CameraController.GetCamera().GetPosition().y;
-
-			m_ParticleProps.Position = { x, y };
-
-			for (int i = 0; i < 5; i++)
-				m_ParticleSystem.Emit(m_ParticleProps);
-		}
-
-		m_ParticleProps.ColorBegin = m_SquareColor;
-		m_ParticleSystem.OnUpdate(timestep);
-
-		m_ParticleSystem.OnRender();
-
-		Renderer2D::EndScene();
-#endif
 		m_Framebuffer->Unbind();
 	}
 
@@ -244,6 +205,7 @@ namespace Jah {
 
 		ImGui::ColorEdit3("Square Color", glm::value_ptr(m_SquareColor));
 		
+		/*
 		auto& transform = m_CameraEntity.GetComponent<TransformComponent>();
 		ImGui::DragFloat2("Camera X/Y", glm::value_ptr(transform.Translation), 0.1f);
 		ImGui::DragFloat("Camera Rotation (Z)", &transform.Rotation.z, 0.1f);
@@ -262,6 +224,8 @@ namespace Jah {
 			if (ImGui::DragFloat("Second Camera Ortho Size", &orthoSize))
 				camera.SetOrthographicSize(orthoSize);
 		}
+
+		*/
 		
 		ImGui::End();
 

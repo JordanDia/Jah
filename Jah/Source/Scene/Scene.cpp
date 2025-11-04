@@ -18,9 +18,9 @@ namespace Jah {
 		return entity;
 	}
 
-	void Scene::DestroyEntity(Entity entity)
+	void Scene::DestroyEntity(EntityID entityID)
 	{
-		m_Registry.DestroyEntity(entity.GetID());
+		m_Registry.DestroyEntity(entityID);
 	}
 
 	void Scene::OnRender(OrthographicCamera& camera)
@@ -46,47 +46,7 @@ namespace Jah {
 	void Scene::OnRender(Camera& camera)
 	{
 
-		Camera* mainCamera = nullptr;
-		glm::mat4 cameraTransform;
-		{
-
-			auto view = m_Registry.View<TransformComponent, CameraComponent>();
-			
-			for (auto entityID : view)
-			{
-				auto& transformComponent = m_Registry.Get<TransformComponent>(entityID);
-				auto& cameraComponent = m_Registry.Get<CameraComponent>(entityID);
-
-				if (cameraComponent.Primary)
-				{
-					mainCamera = &cameraComponent.Camera;
-					cameraTransform = transformComponent.GetTransform();
-					break;
-				}
-			}
-		}
-
-		if (mainCamera)
-		{
-
-			Renderer2D::BeginScene(*mainCamera, cameraTransform);
-
-			{
-				auto view = m_Registry.View<TransformComponent, SpriteRendererComponent>();
-
-				for (auto entityID : view)
-				{
-					auto& transform = m_Registry.Get<TransformComponent>(entityID);
-					auto& spriteRenderer = m_Registry.Get<SpriteRendererComponent>(entityID);
-
-					Renderer2D::DrawSprite(transform.GetTransform(), spriteRenderer);
-				}
-
-			}
-
-			Renderer2D::EndScene();
-		}
-
+		
 
 
 		
@@ -135,7 +95,47 @@ namespace Jah {
 				}
 			}
 		}
-		
+
+		Camera* mainCamera = nullptr;
+		glm::mat4 cameraTransform;
+		{
+			auto view = m_Registry.View<TransformComponent, CameraComponent>();
+
+			for (auto entityID : view)
+			{
+				auto& transformComponent = m_Registry.Get<TransformComponent>(entityID);
+				auto& cameraComponent = m_Registry.Get<CameraComponent>(entityID);
+
+				if (cameraComponent.Primary)
+				{
+					mainCamera = &cameraComponent.Camera;
+					cameraTransform = transformComponent.GetTransform();
+					break;
+				}
+			}
+		}
+
+		if (mainCamera)
+		{
+
+			Renderer2D::BeginScene(*mainCamera, cameraTransform);
+
+			{
+				auto view = m_Registry.View<TransformComponent, SpriteRendererComponent>();
+
+				for (auto entityID : view)
+				{
+					auto& transform = m_Registry.Get<TransformComponent>(entityID);
+					auto& spriteRenderer = m_Registry.Get<SpriteRendererComponent>(entityID);
+
+					Renderer2D::DrawSprite(transform.GetTransform(), spriteRenderer);
+				}
+
+			}
+
+			Renderer2D::EndScene();
+		}
+
 	}
 
 	void Scene::OnViewportResize(uint32_t width, uint32_t height)
@@ -154,4 +154,39 @@ namespace Jah {
 		}
 	}
 
+	template<typename T>
+	void Scene::OnComponentAdded(EntityID entityID, T& component)
+	{
+		static_assert(false);
+	}
+
+	template<>
+	void Scene::OnComponentAdded<TransformComponent>(EntityID entityID, TransformComponent& component)
+	{
+
+	}
+
+	template<>
+	void Scene::OnComponentAdded<CameraComponent>(EntityID entityID, CameraComponent& component)
+	{
+		component.Camera.SetViewportSize(m_ViewportWidth, m_ViewportHeight);
+	}
+
+	template<>
+	void Scene::OnComponentAdded<SpriteRendererComponent>(EntityID entityID, SpriteRendererComponent& component)
+	{
+		
+	}
+
+	template<>
+	void Scene::OnComponentAdded<TagComponent>(EntityID entityID, TagComponent& component)
+	{
+
+	}
+
+	template<>
+	void Scene::OnComponentAdded<NativeScriptComponent>(EntityID entityID, NativeScriptComponent& component)
+	{
+
+	}
 }

@@ -27,6 +27,14 @@ namespace Jah {
 			{
 				componentMap.erase(entityID);
 			}
+
+			auto it = std::find_if(m_Entities.begin(), m_Entities.end(),
+				[entityID](EntityID id) {
+					return id == entityID;
+				});
+
+			if (it != m_Entities.end())
+				m_Entities.erase(it);
 		}
 
 		template<typename T, typename... Args>
