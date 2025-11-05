@@ -103,6 +103,9 @@ namespace Jah {
 
 			for (auto entityID : view)
 			{
+				if (!m_Registry.Has<CameraComponent>(entityID) || !m_Registry.Has<TransformComponent>(entityID))
+					continue;
+
 				auto& transformComponent = m_Registry.Get<TransformComponent>(entityID);
 				auto& cameraComponent = m_Registry.Get<CameraComponent>(entityID);
 
@@ -125,6 +128,7 @@ namespace Jah {
 
 				for (auto entityID : view)
 				{
+
 					auto& transform = m_Registry.Get<TransformComponent>(entityID);
 					auto& spriteRenderer = m_Registry.Get<SpriteRendererComponent>(entityID);
 

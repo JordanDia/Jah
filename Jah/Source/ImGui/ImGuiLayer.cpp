@@ -29,6 +29,9 @@ namespace Jah {
 		io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
 		io.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;
 
+		io.FontDefault = io.Fonts->AddFontFromFileTTF("Assets/Fonts/Inter/Inter_18pt-Medium.ttf", 16.0f);
+		io.Fonts->AddFontFromFileTTF("Assets/Fonts/Inter/Inter_18pt-Bold.ttf", 16.0f);
+
 		ImGuiStyle& style = ImGui::GetStyle();
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		{
@@ -120,6 +123,5 @@ namespace Jah {
 		colors[ImGuiCol_TitleBgActive] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
 		colors[ImGuiCol_TitleBgCollapsed] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
 	}
-
 
 }

@@ -30,7 +30,7 @@ namespace Jah {
 		}
 
 		template<typename T>
-		T& HasComponent()
+		bool HasComponent()
 		{
 			return m_Scene->GetRegistry().Has<T>(m_ID);
 		}
@@ -42,9 +42,6 @@ namespace Jah {
 		}
 
 		EntityID GetID() const { return m_ID; }
-
-		template<typename T>
-		bool HasComponent();
 
 		bool operator==(const Entity& other) const { return m_ID == other.m_ID; }
 		bool operator!=(const Entity& other) const { return !(*this == other); }
