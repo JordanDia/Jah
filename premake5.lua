@@ -1,6 +1,6 @@
 workspace "Jah"
 	architecture "x64"
-	startproject "Sandbox"
+	startproject "Jah-Editor"
 
 	configurations {
 		"Debug",
