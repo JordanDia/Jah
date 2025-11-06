@@ -1,6 +1,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <functional>
 #include <typeindex>
 #include <any>
 #include <vector>
@@ -113,6 +114,12 @@ namespace Jah {
 			}
 
 			return result;
+		}
+
+		template<typename Func>
+		void Each(Func&& func)
+		{
+			std::for_each(m_Entities.begin(), m_Entities.end(), func);
 		}
 
 		const std::vector<EntityID>& GetEntities() const { return m_Entities; }

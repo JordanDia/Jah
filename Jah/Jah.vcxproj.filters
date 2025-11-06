@@ -1401,6 +1401,9 @@
     <ClInclude Include="Source\Scene\Scene.h">
       <Filter>Source\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Scene\SceneSerializer.h">
+      <Filter>Source\Scene</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Scene\ScriptableEntity.h">
       <Filter>Source\Scene</Filter>
     </ClInclude>
@@ -1467,6 +1470,9 @@
       <Filter>Source\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene\Scene.cpp">
+      <Filter>Source\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\SceneSerializer.cpp">
       <Filter>Source\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Source\jahpch.cpp">

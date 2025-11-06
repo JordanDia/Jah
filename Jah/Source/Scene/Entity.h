@@ -42,9 +42,12 @@ namespace Jah {
 		}
 
 		EntityID GetID() const { return m_ID; }
+		operator uint32_t() const { return (uint32_t)m_ID; }
 
 		bool operator==(const Entity& other) const { return m_ID == other.m_ID; }
 		bool operator!=(const Entity& other) const { return !(*this == other); }
+
+
 		
 	private:
 		EntityID m_ID = 0;

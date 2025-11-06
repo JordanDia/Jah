@@ -28,4 +28,5 @@
 #include "Scene/Entity.h"
 #include "Scene/Components.h"
 #include "Scene/ScriptableEntity.h"
+#include "Scene/SceneSerializer.h"
 // -------------------------------------

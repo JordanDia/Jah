@@ -7,3 +7,6 @@
 [submodule "Jah/External/spdlog"]
 	path = Jah/External/spdlog
 	url = https://github.com/gabime/spdlog.git
+[submodule "Jah/External/yaml-cpp"]
+	path = Jah/External/yaml-cpp
+	url = https://github.com/JordanDia/yaml-cpp

@@ -37,11 +37,11 @@ namespace Jah {
 
 		m_ActiveScene = std::make_shared<Scene>();
 
-		Entity square = m_ActiveScene->CreateEntity("Grass Sprite");
-		auto& spriteComponent = square.AddComponent<SpriteRendererComponent>(m_SpriteSheet);
+#if 0
 
-		
-		
+		Entity grassSprite = m_ActiveScene->CreateEntity("Grass Sprite");
+		auto& spriteComponent = grassSprite.AddComponent<SpriteRendererComponent>(m_SpriteSheet);
+
 		
 		glm::vec2 textureSize = { m_SpriteSheet->GetWidth(), m_SpriteSheet->GetHeight() };
 		auto [texMin, texMax] = GetTexCoords({ 0, 8 }, { 18, 18 }, textureSize);
@@ -87,8 +87,11 @@ namespace Jah {
 		};
 		
 		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+#endif
 
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
+		
 	}
 
 	void EditorLayer::OnDetach()
@@ -185,13 +188,27 @@ namespace Jah {
 				ImGui::MenuItem("Padding", nullptr, &opt_padding);
 				ImGui::Separator();
 
-				if (ImGui::MenuItem("Exit"))
-					Application::Get().Close();
+			
+				
 
 				if (ImGui::MenuItem("Reset Layout"))
 					ImGui::LoadIniSettingsFromMemory("");
 
+				std::filesystem::path path = std::filesystem::path("Assets") / "Scenes" / "Example.jah";
+				if (ImGui::MenuItem("Serialize"))
+				{
+					SceneSerializer serializer(m_ActiveScene);
+					serializer.Serialize(path);
+				}
+					
+				if (ImGui::MenuItem("Deserialize"))
+				{
+					SceneSerializer serializer(m_ActiveScene);
+					serializer.Deserialize(path);
+				}
 
+				if (ImGui::MenuItem("Exit"))
+					Application::Get().Close();
 
 				ImGui::EndMenu();
 			}

@@ -4,6 +4,7 @@
 #include <format>
 #include <cstdlib>
 #include <memory>
+#include <filesystem>
 
 #ifdef JAH_DEBUG
     #define JAH_ENABLE_ASSERTS

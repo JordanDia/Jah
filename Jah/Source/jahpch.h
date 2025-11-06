@@ -6,11 +6,13 @@
 #include <utility>
 #include <algorithm>
 #include <functional>
+#include <cstdint>
 
 #include <string>
 #include <sstream>
 #include <array>
 #include <vector>
+#include <fstream>
 #include <unordered_map>
 #include <unordered_set>
 #include <Windows.h>

@@ -20,12 +20,14 @@ IncludeDirs = {
 	["glm"] = "Jah/External/glm",
 	["stb_image"] = "Jah/External/stb_image",
 	["spdlog"] = "Jah/External/spdlog/include",
+	["yaml_cpp"] = "Jah/External/yaml-cpp/include",
 }
 
 group "Dependencies"
 	include "Jah/External/GLFW"
 	include "Jah/External/Glad"
 	include "Jah/External/imgui"
+	include "Jah/External/yaml-cpp"
 group ""
 
 project "Jah"
@@ -40,6 +42,8 @@ project "Jah"
 
 	defines {
 		"GLFW_INCLUDE_NONE",
+		"_CRT_SECURE_NO_WARNINGS",
+		"YAML_CPP_STATIC_DEFINE",
 	}
 
 	files {
@@ -55,8 +59,11 @@ project "Jah"
 		"GLFW",
 		"Glad",
 		"ImGui",
+		"yaml-cpp",
 		"opengl32.lib",
 	}
+
+
 
 	includedirs {
 		"%{prj.name}/Source/",
@@ -67,6 +74,7 @@ project "Jah"
 		IncludeDirs.glm,
 		IncludeDirs.stb_image,
 		IncludeDirs.spdlog,
+		IncludeDirs.yaml_cpp
 	}
 
 	pchheader "jahpch.h"
