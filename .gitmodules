@@ -10,3 +10,6 @@
 [submodule "Jah/External/yaml-cpp"]
 	path = Jah/External/yaml-cpp
 	url = https://github.com/JordanDia/yaml-cpp
+[submodule "Jah/External/ImGuizmo"]
+	path = Jah/External/ImGuizmo
+	url = https://github.com/JordanDia/ImGuizmo

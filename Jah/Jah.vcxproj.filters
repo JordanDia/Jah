@@ -4,6 +4,9 @@
     <Filter Include="External">
       <UniqueIdentifier>{089DB854-F469-1360-1D83-010809AF48EE}</UniqueIdentifier>
     </Filter>
+    <Filter Include="External\ImGuizmo">
+      <UniqueIdentifier>{683857F5-D44E-558B-1DC6-E0AC891B2613}</UniqueIdentifier>
+    </Filter>
     <Filter Include="External\glm">
       <UniqueIdentifier>{576B6B0A-43CE-FAAE-EC53-3365D895C631}</UniqueIdentifier>
     </Filter>
@@ -37,14 +40,23 @@
     <Filter Include="Source\ImGui">
       <UniqueIdentifier>{000933F2-EC6B-C296-95F1-FA4C81338E19}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Math">
+      <UniqueIdentifier>{EFD51A0F-5B8B-9304-E47F-8DDB50348A08}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source\Renderer">
       <UniqueIdentifier>{BC4F86EE-28DB-F3B2-31EC-76A79DF64FB3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Scene">
       <UniqueIdentifier>{F300E3F2-DF63-7297-88E9-AA4D742B3E1A}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Utils">
+      <UniqueIdentifier>{369510F3-22F8-9F97-CB7D-D84DB7BF6B1A}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="External\ImGuizmo\ImGuizmo.h">
+      <Filter>External\ImGuizmo</Filter>
+    </ClInclude>
     <ClInclude Include="External\glm\glm\common.hpp">
       <Filter>External\glm\glm</Filter>
     </ClInclude>
@@ -1356,6 +1368,9 @@
     <ClInclude Include="Source\Jah.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Math\Math.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Renderer\Buffer.h">
       <Filter>Source\Renderer</Filter>
     </ClInclude>
@@ -1407,11 +1422,17 @@
     <ClInclude Include="Source\Scene\ScriptableEntity.h">
       <Filter>Source\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Utils\Utils.h">
+      <Filter>Source\Utils</Filter>
+    </ClInclude>
     <ClInclude Include="Source\jahpch.h">
       <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="External\ImGuizmo\ImGuizmo.cpp">
+      <Filter>External\ImGuizmo</Filter>
+    </ClCompile>
     <ClCompile Include="External\stb_image\stb_image.cpp">
       <Filter>External\stb_image</Filter>
     </ClCompile>
@@ -1435,6 +1456,9 @@
     </ClCompile>
     <ClCompile Include="Source\ImGui\ImGuiLayer.cpp">
       <Filter>Source\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\Math.cpp">
+      <Filter>Source\Math</Filter>
     </ClCompile>
     <ClCompile Include="Source\Renderer\Buffer.cpp">
       <Filter>Source\Renderer</Filter>
@@ -1474,6 +1498,9 @@
     </ClCompile>
     <ClCompile Include="Source\Scene\SceneSerializer.cpp">
       <Filter>Source\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Utils\Utils.cpp">
+      <Filter>Source\Utils</Filter>
     </ClCompile>
     <ClCompile Include="Source\jahpch.cpp">
       <Filter>Source</Filter>

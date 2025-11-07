@@ -24,6 +24,13 @@ namespace Jah {
 		void OnUpdate(Jah::Timestep timestep) override;
 		void OnImGuiRender() override;
 		void OnEvent(Jah::Event& event) override;
+
+	private:
+		bool OnKeyPressed(KeyPressedEvent& event);
+
+		void NewScene();
+		void OpenScene();
+		void SaveSceneAs();
 	private:
 		Shared<Scene> m_ActiveScene;
 		OrthographicCameraController m_CameraController;
@@ -44,6 +51,8 @@ namespace Jah {
 		ParticleSystem m_ParticleSystem;
 
 		SceneHierarchyPanel m_SceneHierarchyPanel;
+
+		int m_GizmoType = -1;
 
 		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
 

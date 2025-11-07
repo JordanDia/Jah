@@ -27,6 +27,8 @@ namespace Jah {
 
 		Registry& GetRegistry() { return m_Registry; }
 
+		Entity GetPrimaryCameraEntity();
+
 	private:
 		template<typename T>
 		void OnComponentAdded(EntityID entity, T& component);

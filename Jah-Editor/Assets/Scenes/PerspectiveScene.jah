@@ -5,7 +5,7 @@ Entities:
       Tag: Grass Sprite
     TransformComponent:
       Translation: [0, 0, 0]
-      Rotation: [0, 0, 13.699838]
+      Rotation: [0, 0, 20.7997]
       Scale: [1, 1, 1]
     SpriteRendererComponent:
       Color: [0, 0, 0, 1]
@@ -13,12 +13,12 @@ Entities:
     TagComponent:
       Tag: Camera Entity
     TransformComponent:
-      Translation: [0, 0, 0]
+      Translation: [0, 0, 14.2]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     CameraComponent:
       Camera:
-        ProjectionType: 1
+        ProjectionType: 0
         PerspectiveFOV: 0.7853982
         PerspectiveNear: 0.01
         PerspectiveFar: 1000
@@ -47,10 +47,10 @@ Entities:
       FixedAspectRatio: false
   - Entity: 123456789
     TagComponent:
-      Tag: Blue Square
+      Tag: Red Square
     TransformComponent:
-      Translation: [2.4, 0, 0]
+      Translation: [2.4, 3.8, -29.5]
       Rotation: [0, 0, 0.7853982]
       Scale: [1, 1, 1]
     SpriteRendererComponent:
-      Color: [0.3, 0.4, 1, 1]
+      Color: [1, 0.3, 0.3, 1]

@@ -4,6 +4,10 @@
 #include <imgui.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "Utils/Utils.h"
+
+#include "ImGuizmo.h"
+#include "Math/Math.h"
 
 
 namespace Jah {
@@ -188,24 +192,15 @@ namespace Jah {
 				ImGui::MenuItem("Padding", nullptr, &opt_padding);
 				ImGui::Separator();
 
-			
-				
 
-				if (ImGui::MenuItem("Reset Layout"))
-					ImGui::LoadIniSettingsFromMemory("");
+				if (ImGui::MenuItem("New", "Ctrl+N"))
+					NewScene();
 
-				std::filesystem::path path = std::filesystem::path("Assets") / "Scenes" / "Example.jah";
-				if (ImGui::MenuItem("Serialize"))
-				{
-					SceneSerializer serializer(m_ActiveScene);
-					serializer.Serialize(path);
-				}
-					
-				if (ImGui::MenuItem("Deserialize"))
-				{
-					SceneSerializer serializer(m_ActiveScene);
-					serializer.Deserialize(path);
-				}
+				if (ImGui::MenuItem("Open", "Ctrl+O"))
+					OpenScene();
+
+				if (ImGui::MenuItem("Save As", "Ctrl+Shift+S"))
+					SaveSceneAs();
 
 				if (ImGui::MenuItem("Exit"))
 					Application::Get().Close();
@@ -229,41 +224,16 @@ namespace Jah {
 		ImGui::Text("FPS: %.1f", m_FPS);
 
 		ImGui::ColorEdit3("Square Color", glm::value_ptr(m_SquareColor));
-		
-		/*
-		auto& transform = m_CameraEntity.GetComponent<TransformComponent>();
-		ImGui::DragFloat2("Camera X/Y", glm::value_ptr(transform.Translation), 0.1f);
-		ImGui::DragFloat("Camera Rotation (Z)", &transform.Rotation.z, 0.1f);
-
-		if (ImGui::Checkbox("Camera A", &m_PrimaryCamera))
-		{
-			m_CameraEntity.GetComponent<CameraComponent>().Primary = m_PrimaryCamera;
-			m_SecondCamera.GetComponent<CameraComponent>().Primary = !m_PrimaryCamera;
-
-
-		}
-
-		{
-			auto& camera = m_SecondCamera.GetComponent<CameraComponent>().Camera;
-			float orthoSize = camera.GetOrthographicSize();
-			if (ImGui::DragFloat("Second Camera Ortho Size", &orthoSize))
-				camera.SetOrthographicSize(orthoSize);
-		}
-
-		*/
+	
 		
 		ImGui::End();
 
-
-
-
-
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
-		ImGui::Begin("Viewport");
+		ImGui::Begin("Viewport"); // Viewport
 
 		m_ViewportFocused = ImGui::IsWindowFocused();
 		m_ViewportHovered = ImGui::IsWindowHovered();
-		Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused || !m_ViewportHovered);
+		Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused && !m_ViewportHovered);
 
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 		if ((m_ViewportSize.x != viewportPanelSize.x || m_ViewportSize.y != viewportPanelSize.y) && viewportPanelSize.x > 0 && viewportPanelSize.y > 0)
@@ -278,7 +248,53 @@ namespace Jah {
 		
 		uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
 		ImGui::Image((void*)textureID, ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
-		ImGui::End();
+
+		// Gizmos
+		Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
+		if (selectedEntity && m_GizmoType != -1)
+		{
+			ImGuizmo::SetOrthographic(false);
+			ImGuizmo::SetDrawlist();
+
+
+			float windowWidth = (float)ImGui::GetWindowWidth();
+			float windowHeight = (float)ImGui::GetWindowHeight();
+			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+
+			auto cameraEntity = m_ActiveScene->GetPrimaryCameraEntity();
+			const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
+			const glm::mat4& cameraProjection = camera.GetProjection();
+			glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
+
+			// Entity transform
+			auto& tc = selectedEntity.GetComponent<TransformComponent>();
+			glm::mat4 transform = tc.GetTransform();
+			
+			// Snapping
+			bool snap = Input::IsKeyPressed(JAH_KEY_LEFT_SHIFT);
+			float snapValue = 0.5f;
+			if (m_GizmoType == ImGuizmo::OPERATION::ROTATE)
+				snapValue = 15.0f;
+
+			float snapValues[3] = { snapValue, snapValue, snapValue };
+
+			ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection),
+				(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
+				nullptr, snap ? snapValues : nullptr);
+
+			if (ImGuizmo::IsUsing())
+			{
+				glm::vec3 translation, rotation, scale;
+				Math::DecomposeTransform(transform, translation, rotation, scale);
+
+				glm::vec3 deltaRotation = rotation - tc.Rotation;
+				tc.Translation = translation;
+				tc.Rotation += deltaRotation;
+				tc.Scale = scale;
+			}
+		}
+
+		ImGui::End(); // Viewport
 		ImGui::PopStyleVar();
 
 		ImGui::End();
@@ -289,6 +305,102 @@ namespace Jah {
 	void EditorLayer::OnEvent(Event& event)
 	{
 		m_CameraController.OnEvent(event);
+
+		EventDispatcher dispatcher(event);
+		dispatcher.Dispatch<KeyPressedEvent>(std::bind(&EditorLayer::OnKeyPressed, this, std::placeholders::_1));
+	}
+
+	bool EditorLayer::OnKeyPressed(KeyPressedEvent& event)
+	{
+		if (event.GetRepeatCount() > 0)
+			return false;
+
+
+		bool control = Input::IsKeyPressed(JAH_KEY_LEFT_CONTROL) || Input::IsKeyPressed(JAH_KEY_RIGHT_CONTROL);
+		bool shift = Input::IsKeyPressed(JAH_KEY_LEFT_SHIFT) || Input::IsKeyPressed(JAH_KEY_RIGHT_SHIFT);
+		switch (event.GetKeyCode())
+		{
+		case JAH_KEY_N:
+		{
+			if (control)
+				NewScene();
+
+			break;
+		}
+
+		case JAH_KEY_O:
+		{
+			if (control)
+				OpenScene();
+
+			break;
+
+		}
+
+		case JAH_KEY_S:
+		{
+			if (control && shift)
+				SaveSceneAs();
+
+			break;
+
+		}
+
+		// Gizmos
+
+		case JAH_KEY_1:
+		{
+			m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
+			break;
+		}
+		case JAH_KEY_2:
+		{
+			m_GizmoType = ImGuizmo::OPERATION::ROTATE;
+			break;
+		}
+		case JAH_KEY_3:
+		{
+			m_GizmoType = ImGuizmo::OPERATION::SCALE;
+			break;
+		}
+		case JAH_KEY_4:
+		{
+			m_GizmoType = -1;
+			break;
+		}
+		
+		}
+	}
+
+	void EditorLayer::NewScene()
+	{
+		m_ActiveScene = std::make_shared<Scene>();
+		m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+	}
+
+	void EditorLayer::OpenScene()
+	{
+		std::string filepath = FileDialogs::OpenFile("Jah Scene (*.jah)\0*.jah\0");
+		if (!filepath.empty())
+		{
+			m_ActiveScene = std::make_shared<Scene>();
+			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+			m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
+			SceneSerializer serializer(m_ActiveScene);
+			serializer.Deserialize(filepath);
+		}
+	}
+
+	void EditorLayer::SaveSceneAs()
+	{
+		std::string filepath = FileDialogs::SaveFile("Jah Scene (*.jah)\0*.jah\0");
+		if (!filepath.empty())
+		{
+			SceneSerializer serializer(m_ActiveScene);
+			serializer.Serialize(filepath);
+		}
 	}
 
 }

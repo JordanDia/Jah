@@ -16,6 +16,8 @@ namespace Jah {
 
 		void OnImGuiRender();
 
+		Entity GetSelectedEntity() { return { m_SelectionContext, m_Context.get() }; }
+
 	private:
 		void DrawEntityNode(EntityID entityID);
 		void DrawComponents(EntityID entityID);

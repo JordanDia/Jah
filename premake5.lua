@@ -21,6 +21,7 @@ IncludeDirs = {
 	["stb_image"] = "Jah/External/stb_image",
 	["spdlog"] = "Jah/External/spdlog/include",
 	["yaml_cpp"] = "Jah/External/yaml-cpp/include",
+	["ImGuizmo"] = "Jah/External/ImGuizmo",
 }
 
 group "Dependencies"
@@ -53,6 +54,8 @@ project "Jah"
 		"%{prj.name}/External/stb_image/**.cpp",
 		"%{prj.name}/External/glm/glm/**.hpp",
 		"%{prj.name}/External/glm/glm/**.inl",
+		"%{prj.name}/External/ImGuizmo/ImGuizmo.h",
+		"%{prj.name}/External/ImGuizmo/ImGuizmo.cpp",
 	}
 
 	links {
@@ -74,11 +77,15 @@ project "Jah"
 		IncludeDirs.glm,
 		IncludeDirs.stb_image,
 		IncludeDirs.spdlog,
-		IncludeDirs.yaml_cpp
+		IncludeDirs.yaml_cpp,
+		IncludeDirs.ImGuizmo
 	}
 
 	pchheader "jahpch.h"
 	pchsource "Jah/Source/jahpch.cpp"
+
+	filter "files:Jah/External/ImGuizmo/**.cpp"
+		flags { "NoPCH" }
 
 	filter "system:windows"
 		systemversion "latest"
@@ -162,6 +169,8 @@ project "Jah-Editor"
     files {
         "%{prj.name}/Source/**.h",
         "%{prj.name}/Source/**.cpp",
+		"%{wks.location}/Jah/External/ImGuizmo/ImGuizmo.h",
+		"%{wks.location}/Jah/External/ImGuizmo/ImGuizmo.cpp",
     }
 
     includedirs {
@@ -171,11 +180,14 @@ project "Jah-Editor"
 		IncludeDirs.glm,
 		IncludeDirs.Glad,
 		IncludeDirs.spdlog,
+		IncludeDirs.ImGuizmo,
     }
 
     links {
         "Jah"
     }
+
+
 
 	filter "configurations:Debug"
 		defines { "JAH_DEBUG" }

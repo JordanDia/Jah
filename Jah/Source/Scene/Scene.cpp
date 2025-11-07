@@ -158,6 +158,18 @@ namespace Jah {
 		}
 	}
 
+	Entity Scene::GetPrimaryCameraEntity()
+	{
+		auto view = m_Registry.View<CameraComponent>();
+		for (auto entityID : view)
+		{
+			const auto& camera = m_Registry.Get<CameraComponent>(entityID);
+			if (camera.Primary)
+				return { entityID, this };
+		}
+		return {};
+	}
+
 	template<typename T>
 	void Scene::OnComponentAdded(EntityID entityID, T& component)
 	{

@@ -7,6 +7,8 @@
 #include "backends/imgui_impl_opengl3.h"
 #include <GLFW/glfw3.h>
 
+#include "ImGuizmo.h"
+
 namespace Jah {
 
 	ImGuiLayer::ImGuiLayer()
@@ -71,6 +73,7 @@ namespace Jah {
 		ImGui_ImplGlfw_NewFrame();
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui::NewFrame();
+		ImGuizmo::BeginFrame();
 	}
 
 	void ImGuiLayer::End()
