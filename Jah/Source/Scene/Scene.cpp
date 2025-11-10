@@ -36,7 +36,7 @@ namespace Jah {
 				auto& transform = m_Registry.Get<TransformComponent>(entityID);
 				auto& spriteRenderer = m_Registry.Get<SpriteRendererComponent>(entityID);
 
-				Renderer2D::DrawSprite(transform.GetTransform(), spriteRenderer);
+				Renderer2D::DrawSprite(transform.GetTransform(), spriteRenderer, (int)entityID);
 			}
 
 		}
@@ -66,7 +66,7 @@ namespace Jah {
 				auto& transform = m_Registry.Get<TransformComponent>(entityID);
 				auto& spriteRenderer = m_Registry.Get<SpriteRendererComponent>(entityID);
 
-				Renderer2D::DrawSprite(transform.GetTransform(), spriteRenderer);
+				Renderer2D::DrawSprite(transform.GetTransform(), spriteRenderer, (int)entityID);
 			}
 
 		}
@@ -153,7 +153,7 @@ namespace Jah {
 					auto& transform = m_Registry.Get<TransformComponent>(entityID);
 					auto& spriteRenderer = m_Registry.Get<SpriteRendererComponent>(entityID);
 
-					Renderer2D::DrawSprite(transform.GetTransform(), spriteRenderer);
+					Renderer2D::DrawSprite(transform.GetTransform(), spriteRenderer, (int)entityID);
 				}
 
 			}

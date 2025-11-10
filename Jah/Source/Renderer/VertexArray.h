@@ -17,7 +17,7 @@ namespace Jah {
 		void Bind() const;
 		void Unbind() const;
 
-		void AddVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer);
+		void AddVertexBuffer(const Shared<VertexBuffer>& vertexBuffer);
 		void SetIndexBuffer(const std::shared_ptr<IndexBuffer>& indexBuffer);
 
 		inline const std::vector<std::shared_ptr<VertexBuffer>>& GetVertexBuffers() const { return m_VertexBuffers; }

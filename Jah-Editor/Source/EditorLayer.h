@@ -27,6 +27,8 @@ namespace Jah {
 
 	private:
 		bool OnKeyPressed(KeyPressedEvent& event);
+		bool OnMouseButtonPressed(MouseButtonPressedEvent& event);
+		
 
 		void NewScene();
 		void OpenScene();
@@ -37,6 +39,8 @@ namespace Jah {
 		Entity m_CameraEntity;
 		Entity m_SecondCamera;
 		bool m_PrimaryCamera = true;
+
+		Entity m_HoveredEntity;
 
 		EditorCamera m_EditorCamera;
 

@@ -55,6 +55,11 @@ namespace Jah {
 		ImGui::End();
 	}
 
+	void SceneHierarchyPanel::SetSelectedEntity(Entity entity)
+	{
+		m_SelectionContext = entity;
+	}
+
 	void SceneHierarchyPanel::DrawEntityNode(EntityID entityID)
 	{
 		auto& tag = m_Context->GetRegistry().Get<TagComponent>(entityID);

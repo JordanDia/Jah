@@ -149,10 +149,10 @@ namespace Jah {
 		int mouseX = (int)mx;
 		int mouseY = (int)my;
 
-		if (mouseX >= 0 && mouseX <= (int)viewportSize.x && mouseY >= 0 && mouseY <= (int)viewportSize.y)
+		if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y)
 		{
 			int pixelData = m_Framebuffer->ReadPixel(1, mouseX, mouseY);
-			JAH_CORE_WARN("Pixel Data = {0}", pixelData);
+			m_HoveredEntity = pixelData != -1 ? Entity(pixelData, m_ActiveScene.get()) : Entity();
 		}
 
 		m_Framebuffer->Unbind();
@@ -248,7 +248,12 @@ namespace Jah {
 
 		m_SceneHierarchyPanel.OnImGuiRender();
 
-		ImGui::Begin("Settings");
+		ImGui::Begin("Stats");
+
+		std::string name = "None";
+		if (m_HoveredEntity)
+			name = m_HoveredEntity.GetComponent<TagComponent>().Name;
+		ImGui::Text("Hovered Entity: %s", name.c_str());
 
 		auto& stats = Renderer2D::GetStats();
 		ImGui::Text("Renderer2D Stats");
@@ -257,16 +262,18 @@ namespace Jah {
 		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
 		ImGui::Text("FPS: %.1f", m_FPS);
-
-		//ImGui::ColorEdit3("Square Color", glm::value_ptr(m_SquareColor));
-	
 		
 		ImGui::End();
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
 		ImGui::Begin("Viewport"); // Viewport
+		
+		auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
+		auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
+		auto viewportOffset = ImGui::GetWindowPos(); // Includes tab bar
 
-		auto viewportOffset = ImGui::GetCursorPos(); // Includes tab bar
+		m_ViewportBounds[0] = { viewportMinRegion.x + viewportOffset.x, viewportMinRegion.y + viewportOffset.y };
+		m_ViewportBounds[1] = { viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y };
 
 		m_ViewportFocused = ImGui::IsWindowFocused();
 		m_ViewportHovered = ImGui::IsWindowHovered();
@@ -278,10 +285,7 @@ namespace Jah {
 		uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
 		ImGui::Image((void*)textureID, ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 	
-		ImVec2 minBound = ImGui::GetItemRectMin();
-		ImVec2 maxBound = ImGui::GetItemRectMax();
-		m_ViewportBounds[0] = { minBound.x, minBound.y };
-		m_ViewportBounds[1] = { maxBound.x, maxBound.y };
+		
 
 		// Gizmos
 		Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
@@ -347,6 +351,7 @@ namespace Jah {
 
 		EventDispatcher dispatcher(event);
 		dispatcher.Dispatch<KeyPressedEvent>(std::bind(&EditorLayer::OnKeyPressed, this, std::placeholders::_1));
+		dispatcher.Dispatch<MouseButtonPressedEvent>(std::bind(&EditorLayer::OnMouseButtonPressed, this, std::placeholders::_1));
 	}
 
 	bool EditorLayer::OnKeyPressed(KeyPressedEvent& event)
@@ -409,6 +414,16 @@ namespace Jah {
 		}
 		
 		}
+	}
+
+	bool EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent& event)
+	{
+		if (event.GetMouseButton() == JAH_MOUSE_BUTTON_1)
+		{
+			if (m_ViewportHovered && !ImGuizmo::IsOver())
+				m_SceneHierarchyPanel.SetSelectedEntity(m_HoveredEntity);
+		}
+		return false;
 	}
 
 	void EditorLayer::NewScene()

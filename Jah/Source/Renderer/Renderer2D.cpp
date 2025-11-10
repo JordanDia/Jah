@@ -14,10 +14,12 @@ namespace Jah {
 
 	struct QuadVertex
 	{
-		glm::vec3 Position;
-		glm::vec4 Color;
-		glm::vec2 TexCoord;
-		float TexIndex;
+		glm::vec3 Position{};
+		glm::vec4 Color{};
+		glm::vec2 TexCoord{};
+		float TexIndex = 0;
+
+		int EntityID = 0;
 	};
 
 	struct Renderer2DData
@@ -52,10 +54,11 @@ namespace Jah {
 
 		Data.QuadVertexBuffer = std::make_shared<VertexBuffer>(Data.MaxVertices * sizeof(QuadVertex));
 		Data.QuadVertexBuffer->SetLayout({
-			{ Jah::ShaderDataType::Float3, "a_Position" },
-			{ Jah::ShaderDataType::Float4, "a_Color" },
-			{ Jah::ShaderDataType::Float2, "a_TexCoord" },
-			{ Jah::ShaderDataType::Float, "a_TexIndex" },
+			{ ShaderDataType::Float3,	"a_Position"	},
+			{ ShaderDataType::Float4,	"a_Color"		},
+			{ ShaderDataType::Float2,	"a_TexCoord"	},
+			{ ShaderDataType::Float,	"a_TexIndex"	},
+			{ ShaderDataType::Int,		"a_EntityID"	},
 		});
 		Data.QuadVertexArray->AddVertexBuffer(Data.QuadVertexBuffer);
 
@@ -385,7 +388,7 @@ namespace Jah {
 		Data.Stats.QuadCount++;
 	}
 
-	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color)
+	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color, int entityID)
 	{
 		if (Data.QuadIndexCount >= Renderer2DData::MaxIndices)
 			FlushAndReset();
@@ -407,6 +410,7 @@ namespace Jah {
 			Data.QuadVertexBufferPtr->Color = color;
 			Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
 			Data.QuadVertexBufferPtr->TexIndex = whiteTextureIndex;
+			Data.QuadVertexBufferPtr->EntityID = entityID;
 			Data.QuadVertexBufferPtr++;
 
 		}
@@ -415,7 +419,7 @@ namespace Jah {
 		Data.Stats.QuadCount++;
 	}
 
-	void Renderer2D::DrawQuad(const glm::mat4& transform, const Shared<Texture2D>& texture, const glm::vec2& texCoordMin, const glm::vec2& texCoordMax)
+	void Renderer2D::DrawQuad(const glm::mat4& transform, const Shared<Texture2D>& texture, const glm::vec2& texCoordMin, const glm::vec2& texCoordMax, int entityID)
 	{
 		if (Data.QuadIndexCount >= Renderer2DData::MaxIndices)
 			FlushAndReset();
@@ -456,6 +460,7 @@ namespace Jah {
 			Data.QuadVertexBufferPtr->Color = color;
 			Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
 			Data.QuadVertexBufferPtr->TexIndex = textureIndex;
+			Data.QuadVertexBufferPtr->EntityID = entityID;
 			Data.QuadVertexBufferPtr++;
 
 		}
@@ -464,12 +469,12 @@ namespace Jah {
 		Data.Stats.QuadCount++;
 	}
 
-	void Renderer2D::DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src)
+	void Renderer2D::DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, int entityID)
 	{
 		if (src.Texture)
-			DrawQuad(transform, src.Texture, src.TexCoordMin, src.TexCoordMax);
+			DrawQuad(transform, src.Texture, src.TexCoordMin, src.TexCoordMax, entityID);
 		else
-			DrawQuad(transform, src.Color);
+			DrawQuad(transform, src.Color, entityID);
 	}
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const glm::vec4& color)

@@ -222,12 +222,7 @@ namespace Jah {
 	{
 		JAH_ASSERT(attachmentIndex < m_ColorAttachments.size());
 
-		// int value = -1;
-		// glClearTexImage(m_ColorAttachments[1], 0, GL_RED_INTEGER, GL_INT, &value);
-
 		auto& spec = m_ColorAttachmentSpecifications[attachmentIndex];
-		auto format = spec.TextureFormat;
-
 		glClearTexImage(m_ColorAttachments[attachmentIndex], 0, Utils::JahFBTextureFormatToGL(spec.TextureFormat), GL_INT, &value);
 	}
 
@@ -236,8 +231,6 @@ namespace Jah {
 		glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
 		glViewport(0, 0, m_Specification.Width, m_Specification.Height);
 
-		int value = -1;
-		glClearTexImage(m_ColorAttachments[1], 0, GL_RED_INTEGER, GL_INT, &value);
 	}
 
 	void Framebuffer::Unbind()
