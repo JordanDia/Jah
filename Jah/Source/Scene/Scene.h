@@ -2,7 +2,7 @@
 
 #include "Registry.h"
 #include "Core/Timestep.h"
-#include "Renderer/Camera.h"
+#include "Renderer/EditorCamera.h"
 
 #include <string>
 
@@ -21,7 +21,8 @@ namespace Jah {
 
 		void OnRender(Camera& camera);
 		void OnRender(OrthographicCamera& camera);
-		void OnUpdate(Timestep timestep);
+		void OnUpdateEditor(Timestep timestep, EditorCamera& camera);
+		void OnUpdateRuntime(Timestep timestep);
 
 		void OnViewportResize(uint32_t width, uint32_t height);
 

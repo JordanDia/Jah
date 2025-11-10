@@ -35,11 +35,13 @@ namespace Jah {
 		m_ParticleProps.Position = { 0.0f, 0.0f };
 
 		FramebufferSpecification framebufferSpec;
+		framebufferSpec.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::Depth };
 		framebufferSpec.Width = Application::Get().GetWindow().GetWidth();
 		framebufferSpec.Height = Application::Get().GetWindow().GetHeight();
 		m_Framebuffer = std::make_shared<Framebuffer>(framebufferSpec);
 
 		m_ActiveScene = std::make_shared<Scene>();
+		m_EditorCamera = EditorCamera(30.0f, 16.0f / 9.0f, 0.1f, 1000.0f);
 
 #if 0
 
@@ -105,20 +107,53 @@ namespace Jah {
 
 	void EditorLayer::OnUpdate(Timestep timestep)
 	{
+
+		
+
+		if (FramebufferSpecification spec = m_Framebuffer->GetSpecification();
+			m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f &&
+			(spec.Width != m_ViewportSize.x || spec.Height != m_ViewportSize.y))
+		{
+			m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+			m_EditorCamera.SetViewportSize(m_ViewportSize.x, m_ViewportSize.y);	
+
+			if (m_ActiveScene)
+				m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+
+		}
+
 		m_FPS = 1.0f / timestep;
 
 		if (m_ViewportFocused)
 			m_CameraController.OnUpdate(timestep);
+		m_EditorCamera.OnUpdate(timestep);
 
+		// Render
 		Renderer2D::ResetStats();
 		m_Framebuffer->Bind();
 
 		Renderer::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		Renderer::Clear();
 
+		// Clear our entity ID attachment to -1
+		m_Framebuffer->ClearAttachment(1, -1);
 
-		m_ActiveScene->OnUpdate(timestep);
-		
+		m_ActiveScene->OnUpdateEditor(timestep, m_EditorCamera);
+
+		auto [mx, my] = ImGui::GetMousePos();
+		mx -= m_ViewportBounds[0].x;
+		my -= m_ViewportBounds[0].y;
+		glm::vec2 viewportSize = m_ViewportBounds[1] - m_ViewportBounds[0];
+		my = viewportSize.y - my;
+
+		int mouseX = (int)mx;
+		int mouseY = (int)my;
+
+		if (mouseX >= 0 && mouseX <= (int)viewportSize.x && mouseY >= 0 && mouseY <= (int)viewportSize.y)
+		{
+			int pixelData = m_Framebuffer->ReadPixel(1, mouseX, mouseY);
+			JAH_CORE_WARN("Pixel Data = {0}", pixelData);
+		}
 
 		m_Framebuffer->Unbind();
 	}
@@ -223,7 +258,7 @@ namespace Jah {
 		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
 		ImGui::Text("FPS: %.1f", m_FPS);
 
-		ImGui::ColorEdit3("Square Color", glm::value_ptr(m_SquareColor));
+		//ImGui::ColorEdit3("Square Color", glm::value_ptr(m_SquareColor));
 	
 		
 		ImGui::End();
@@ -231,23 +266,22 @@ namespace Jah {
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
 		ImGui::Begin("Viewport"); // Viewport
 
+		auto viewportOffset = ImGui::GetCursorPos(); // Includes tab bar
+
 		m_ViewportFocused = ImGui::IsWindowFocused();
 		m_ViewportHovered = ImGui::IsWindowHovered();
 		Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused && !m_ViewportHovered);
 
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-		if ((m_ViewportSize.x != viewportPanelSize.x || m_ViewportSize.y != viewportPanelSize.y) && viewportPanelSize.x > 0 && viewportPanelSize.y > 0)
-		{
-			m_Framebuffer->Resize((uint32_t)viewportPanelSize.x, (uint32_t)viewportPanelSize.y);
-			m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
-				
-			m_CameraController.OnResize(viewportPanelSize.x, viewportPanelSize.y);
-
-			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
-		}
+		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 		
 		uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
 		ImGui::Image((void*)textureID, ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+	
+		ImVec2 minBound = ImGui::GetItemRectMin();
+		ImVec2 maxBound = ImGui::GetItemRectMax();
+		m_ViewportBounds[0] = { minBound.x, minBound.y };
+		m_ViewportBounds[1] = { maxBound.x, maxBound.y };
 
 		// Gizmos
 		Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
@@ -261,10 +295,14 @@ namespace Jah {
 			float windowHeight = (float)ImGui::GetWindowHeight();
 			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
 
-			auto cameraEntity = m_ActiveScene->GetPrimaryCameraEntity();
+			/*auto cameraEntity = m_ActiveScene->GetPrimaryCameraEntity();
 			const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
 			const glm::mat4& cameraProjection = camera.GetProjection();
-			glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
+			glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());*/
+
+			// Editor Camera
+			const glm::mat4& cameraProjection = m_EditorCamera.GetProjection();
+			glm::mat4 cameraView = m_EditorCamera.GetViewMatrix();
 
 			// Entity transform
 			auto& tc = selectedEntity.GetComponent<TransformComponent>();
@@ -305,6 +343,7 @@ namespace Jah {
 	void EditorLayer::OnEvent(Event& event)
 	{
 		m_CameraController.OnEvent(event);
+		m_EditorCamera.OnEvent(event);
 
 		EventDispatcher dispatcher(event);
 		dispatcher.Dispatch<KeyPressedEvent>(std::bind(&EditorLayer::OnKeyPressed, this, std::placeholders::_1));

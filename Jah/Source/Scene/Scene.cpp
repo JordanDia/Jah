@@ -6,6 +6,7 @@
 #include "Renderer/Renderer2D.h"
 
 
+
 namespace Jah {
 
 	Entity Scene::CreateEntity(const std::string& name)
@@ -52,7 +53,28 @@ namespace Jah {
 		
 	}
 
-	void Scene::OnUpdate(Timestep timestep)
+	void Scene::OnUpdateEditor(Timestep timestep, EditorCamera& camera)
+	{
+		Renderer2D::BeginScene(camera);
+
+		{
+			auto view = m_Registry.View<TransformComponent, SpriteRendererComponent>();
+
+			for (auto entityID : view)
+			{
+
+				auto& transform = m_Registry.Get<TransformComponent>(entityID);
+				auto& spriteRenderer = m_Registry.Get<SpriteRendererComponent>(entityID);
+
+				Renderer2D::DrawSprite(transform.GetTransform(), spriteRenderer);
+			}
+
+		}
+
+		Renderer2D::EndScene();
+	}
+
+	void Scene::OnUpdateRuntime(Timestep timestep)
 	{
 		{
 			auto view = m_Registry.View<NativeScriptComponent>();
@@ -100,7 +122,6 @@ namespace Jah {
 		glm::mat4 cameraTransform;
 		{
 			auto view = m_Registry.View<TransformComponent, CameraComponent>();
-
 			for (auto entityID : view)
 			{
 				if (!m_Registry.Has<CameraComponent>(entityID) || !m_Registry.Has<TransformComponent>(entityID))

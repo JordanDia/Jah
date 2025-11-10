@@ -1428,6 +1428,7 @@
     <ClInclude Include="Source\jahpch.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Renderer\EditorCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\ImGuizmo\ImGuizmo.cpp">
@@ -1505,5 +1506,6 @@
     <ClCompile Include="Source\jahpch.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Renderer\EditorCamera.cpp" />
   </ItemGroup>
 </Project>

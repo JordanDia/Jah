@@ -7,8 +7,8 @@
 
 #include "ParticleSystem.h"
 
-
 #include "Panels/SceneHierarchyPanel.h"
+#include "Renderer/EditorCamera.h"
 
 namespace Jah {
 
@@ -38,6 +38,8 @@ namespace Jah {
 		Entity m_SecondCamera;
 		bool m_PrimaryCamera = true;
 
+		EditorCamera m_EditorCamera;
+
 		Shared<Jah::Framebuffer> m_Framebuffer;
 
 		// Temporary
@@ -55,6 +57,7 @@ namespace Jah {
 		int m_GizmoType = -1;
 
 		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
+		glm::vec2 m_ViewportBounds[2];
 
 		bool m_ViewportFocused = false;
 		bool m_ViewportHovered = false;

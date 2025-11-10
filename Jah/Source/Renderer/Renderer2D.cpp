@@ -8,6 +8,7 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <array>
+#include "Core/Log.h"
 
 namespace Jah {
 
@@ -131,6 +132,20 @@ namespace Jah {
 
 	
 
+	void Renderer2D::BeginScene(EditorCamera& camera)
+	{
+
+		glm::mat4 viewProj = camera.GetViewProjection();
+
+		Data.TextureShader->Bind();
+		Data.TextureShader->UploadUniformMat4("u_ViewProjection", viewProj);
+
+		Data.QuadIndexCount = 0;
+		Data.QuadVertexBufferPtr = Data.QuadVertexBufferBase;
+
+		Data.TextureSlotIndex = 1;
+	}
+
 	void Renderer2D::EndScene()
 	{
 		uint32_t dataSize = uint32_t((uint8_t*)Data.QuadVertexBufferPtr - (uint8_t*)Data.QuadVertexBufferBase);
@@ -141,14 +156,17 @@ namespace Jah {
 
 	void Renderer2D::Flush()
 	{
-		for (uint32_t i = 0; i < Data.TextureSlotIndex; i++)
-		{
-			Data.TextureSlots[i]->Bind(i);
+		if (Data.QuadIndexCount) {
+
+			for (uint32_t i = 0; i < Data.TextureSlotIndex; i++)
+			{
+				Data.TextureSlots[i]->Bind(i);
+			}
+
+			Renderer::DrawIndexed(Data.QuadVertexArray, Data.QuadIndexCount);
+
+			Data.Stats.DrawCalls++;
 		}
-
-		Renderer::DrawIndexed(Data.QuadVertexArray, Data.QuadIndexCount);
-
-		Data.Stats.DrawCalls++;
 	}
 
 	void Renderer2D::FlushAndReset()

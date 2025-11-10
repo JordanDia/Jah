@@ -4,6 +4,7 @@
 #include "Texture.h"
 #include "SubTexture2D.h"
 #include "Scene/Components.h"
+#include "Renderer/EditorCamera.h"
 
 namespace Jah {
 
@@ -14,6 +15,7 @@ namespace Jah {
 		static void Shutdown();
 
 		static void BeginScene(Camera& camera, glm::mat4& transform);
+		static void BeginScene(EditorCamera& camera);
 		static void BeginScene(OrthographicCamera& camera);
 		static void EndScene();
 		static void Flush();
