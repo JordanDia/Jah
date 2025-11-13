@@ -1377,6 +1377,9 @@
     <ClInclude Include="Source\Renderer\Camera.h">
       <Filter>Source\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Renderer\EditorCamera.h">
+      <Filter>Source\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Renderer\Framebuffer.h">
       <Filter>Source\Renderer</Filter>
     </ClInclude>
@@ -1428,7 +1431,6 @@
     <ClInclude Include="Source\jahpch.h">
       <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Renderer\EditorCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\ImGuizmo\ImGuizmo.cpp">
@@ -1465,6 +1467,9 @@
       <Filter>Source\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Source\Renderer\Camera.cpp">
+      <Filter>Source\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Renderer\EditorCamera.cpp">
       <Filter>Source\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Source\Renderer\Framebuffer.cpp">
@@ -1506,6 +1511,5 @@
     <ClCompile Include="Source\jahpch.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Renderer\EditorCamera.cpp" />
   </ItemGroup>
 </Project>

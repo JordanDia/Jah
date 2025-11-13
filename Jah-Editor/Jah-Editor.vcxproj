@@ -141,12 +141,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Jah\External\ImGuizmo\ImGuizmo.h" />
     <ClInclude Include="Source\EditorLayer.h" />
     <ClInclude Include="Source\Panels\ContentBrowserPanel.h" />
     <ClInclude Include="Source\Panels\SceneHierarchyPanel.h" />
     <ClInclude Include="Source\ParticleSystem.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Jah\External\ImGuizmo\ImGuizmo.cpp" />
     <ClCompile Include="Source\EditorLayer.cpp" />
     <ClCompile Include="Source\JahEditorApp.cpp" />
     <ClCompile Include="Source\Panels\ContentBrowserPanel.cpp" />
