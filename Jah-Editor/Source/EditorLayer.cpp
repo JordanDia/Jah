@@ -12,6 +12,8 @@
 
 namespace Jah {
 
+	extern const std::filesystem::path g_AssetPath;
+
 	EditorLayer::EditorLayer()
 		: Layer("Editor Layer"), m_CameraController(1600.0f / 900.0f, true), m_ParticleSystem(100000)
 	{
@@ -19,8 +21,6 @@ namespace Jah {
 
 	void EditorLayer::OnAttach()
 	{
-		m_GokuTexture = std::make_shared<Texture2D>("Assets/Textures/goku_pfp.jpg");
-		m_SpriteSheet = std::make_shared<Texture2D>("Assets/Textures/tilemap_packed.png");
 
 		m_SquareColor = { 0.0f, 0.4f, 1.0f, 1.0f };
 
@@ -208,7 +208,7 @@ namespace Jah {
 		ImGuiIO& io = ImGui::GetIO();
 		ImGuiStyle& style = ImGui::GetStyle();
 		float minWinSizeX = style.WindowMinSize.x;
-		style.WindowMinSize.x = 370.0f;
+		style.WindowMinSize.x = 200.0f;
 		if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
 		{
 			ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
@@ -247,6 +247,7 @@ namespace Jah {
 		}
 
 		m_SceneHierarchyPanel.OnImGuiRender();
+		m_ContentBrowserPanel.OnImGuiRender();
 
 		ImGui::Begin("Stats");
 
@@ -283,9 +284,17 @@ namespace Jah {
 		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 		
 		uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
-		ImGui::Image((void*)textureID, ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+		ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 	
-		
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+			{
+				const wchar_t* path = reinterpret_cast<const wchar_t*>(payload->Data);
+				OpenScene(std::filesystem::path(g_AssetPath) / path);
+			}
+			ImGui::EndDragDropTarget();
+		}
 
 		// Gizmos
 		Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
@@ -437,13 +446,19 @@ namespace Jah {
 	{
 		std::string filepath = FileDialogs::OpenFile("Jah Scene (*.jah)\0*.jah\0");
 		if (!filepath.empty())
+			OpenScene(filepath);
+	}
+
+	void EditorLayer::OpenScene(const std::filesystem::path& path)
+	{
+		if (!path.empty())
 		{
 			m_ActiveScene = std::make_shared<Scene>();
 			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 			m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 
 			SceneSerializer serializer(m_ActiveScene);
-			serializer.Deserialize(filepath);
+			serializer.Deserialize(path.string());
 		}
 	}
 

@@ -8,6 +8,7 @@
 #include "ParticleSystem.h"
 
 #include "Panels/SceneHierarchyPanel.h"
+#include "Panels/ContentBrowserPanel.h"
 #include "Renderer/EditorCamera.h"
 
 namespace Jah {
@@ -32,6 +33,7 @@ namespace Jah {
 
 		void NewScene();
 		void OpenScene();
+		void OpenScene(const std::filesystem::path& path);
 		void SaveSceneAs();
 	private:
 		Shared<Scene> m_ActiveScene;
@@ -41,23 +43,17 @@ namespace Jah {
 		bool m_PrimaryCamera = true;
 
 		Entity m_HoveredEntity;
-
 		EditorCamera m_EditorCamera;
 
 		Shared<Jah::Framebuffer> m_Framebuffer;
 
-		// Temporary
-		Shared<VertexArray> m_SquareVertexArray;
-		Shared<Shader> m_Shader;
-		Shared<Texture2D> m_GokuTexture;
-		Shared<Texture2D> m_SpriteSheet;
+
 
 		glm::vec4 m_SquareColor = { 0.3f, 0.35f, 1.0f, 1.0f };
 		ParticleProps m_ParticleProps;
 		ParticleSystem m_ParticleSystem;
 
-		SceneHierarchyPanel m_SceneHierarchyPanel;
-
+		
 		int m_GizmoType = -1;
 
 		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
@@ -67,6 +63,11 @@ namespace Jah {
 		bool m_ViewportHovered = false;
 
 		float m_FPS = 0.0f;
+
+		// Panels
+		SceneHierarchyPanel m_SceneHierarchyPanel;
+		ContentBrowserPanel m_ContentBrowserPanel;
+
 
 	};
 

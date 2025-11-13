@@ -33,6 +33,8 @@ namespace Jah {
 
 		void Bind(uint32_t slot = 0) const override;
 
+		inline uint32_t GetRendererID() const { return m_RendererID; }
+
 		bool operator==(const Texture2D& other) const
 		{
 			return m_RendererID == other.m_RendererID;

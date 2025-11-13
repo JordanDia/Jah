@@ -27,6 +27,7 @@
     <ClInclude Include="Source\ParticleSystem.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Panels\ContentBrowserPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\EditorLayer.cpp">
@@ -41,5 +42,6 @@
     <ClCompile Include="Source\ParticleSystem.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Panels\ContentBrowserPanel.cpp" />
   </ItemGroup>
 </Project>

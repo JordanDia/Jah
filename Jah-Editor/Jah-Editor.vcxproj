@@ -142,12 +142,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Source\EditorLayer.h" />
+    <ClInclude Include="Source\Panels\ContentBrowserPanel.h" />
     <ClInclude Include="Source\Panels\SceneHierarchyPanel.h" />
     <ClInclude Include="Source\ParticleSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\EditorLayer.cpp" />
     <ClCompile Include="Source\JahEditorApp.cpp" />
+    <ClCompile Include="Source\Panels\ContentBrowserPanel.cpp" />
     <ClCompile Include="Source\Panels\SceneHierarchyPanel.cpp" />
     <ClCompile Include="Source\ParticleSystem.cpp" />
   </ItemGroup>
