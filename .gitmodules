@@ -1,6 +1,6 @@
 [submodule "Jah/External/imgui"]
 	path = Jah/External/imgui
-	url = https://github.com/JordanDia/imgui.git
+	url = https://github.com/JordanDia/imgui
 	branch = docking-fixed
 [submodule "Jah/External/glm"]
 	path = Jah/External/glm
