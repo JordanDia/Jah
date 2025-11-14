@@ -84,7 +84,7 @@ namespace Jah {
 			case FramebufferTextureFormat::RED_INTEGER: return GL_RED_INTEGER;
 			}
 
-			JAH_ASSERT(false);
+			JAH_ASSERT(false, "FramebufferTextureFormat not found!");
 			return 0;
 		}
 
@@ -96,7 +96,7 @@ namespace Jah {
 			case FramebufferTextureFormat::RED_INTEGER: return GL_RED_INTEGER;
 			}
 
-			JAH_ASSERT(false);
+			JAH_ASSERT(false, "GLDataType type not found!");
 			return 0;
 		}
 
@@ -176,7 +176,7 @@ namespace Jah {
 		
 		if (m_ColorAttachments.size() > 1)
 		{
-			JAH_ASSERT(m_ColorAttachments.size() <= 4);
+			JAH_ASSERT(m_ColorAttachments.size() <= 4, "Too many color attachments!");
 			GLenum buffers[4] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3 };
 			glDrawBuffers(m_ColorAttachments.size(), buffers);
 		}
@@ -220,7 +220,7 @@ namespace Jah {
 
 	void Framebuffer::ClearAttachment(uint32_t attachmentIndex, int value)
 	{
-		JAH_ASSERT(attachmentIndex < m_ColorAttachments.size());
+		JAH_ASSERT(attachmentIndex < m_ColorAttachments.size(), "Out of bounds index error!");
 
 		auto& spec = m_ColorAttachmentSpecifications[attachmentIndex];
 		glClearTexImage(m_ColorAttachments[attachmentIndex], 0, Utils::JahFBTextureFormatToGL(spec.TextureFormat), GL_INT, &value);

@@ -66,7 +66,7 @@ namespace Jah {
 
 		void ClearAttachment(uint32_t attachmentIndex, int value);
 
-		const uint32_t GetColorAttachmentRendererID(uint32_t index = 0) const { JAH_ASSERT(index < m_ColorAttachments.size()); return m_ColorAttachments[index]; }
+		const uint32_t GetColorAttachmentRendererID(uint32_t index = 0) const { JAH_ASSERT(index < m_ColorAttachments.size(), "Out of bounds error!"); return m_ColorAttachments[index]; }
 
 		const FramebufferSpecification& GetSpecification() const { return m_Specification; }
 
