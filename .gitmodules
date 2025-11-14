@@ -1,17 +1,17 @@
-[submodule "Jah/External/imgui"]
-	path = Jah/External/imgui
-	url = https://github.com/JordanDia/imgui
-	branch = docking-fixed
 [submodule "Jah/External/glm"]
 	path = Jah/External/glm
 	url = https://github.com/g-truc/glm
 [submodule "Jah/External/spdlog"]
 	path = Jah/External/spdlog
 	url = https://github.com/gabime/spdlog.git
-[submodule "Jah/External/yaml-cpp"]
-	path = Jah/External/yaml-cpp
-	url = https://github.com/JordanDia/yaml-cpp
-	branch = main
 [submodule "Jah/External/ImGuizmo"]
 	path = Jah/External/ImGuizmo
 	url = https://github.com/JordanDia/ImGuizmo
+[submodule "Jah/External/imgui"]
+	path = Jah/External/imgui
+	url = https://github.com/JordanDia/imgui
+	branch = docking-fixed
+[submodule "Jah/External/yaml-cpp"]
+	path = Jah/External/yaml-cpp
+	url = https://github.com/JordanDia/yaml-cpp
+	branch = master
