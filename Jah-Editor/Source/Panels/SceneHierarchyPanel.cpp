@@ -176,7 +176,7 @@ namespace Jah {
 	template<typename T, typename UIFunction>
 	static void DrawComponent(const std::string& name, EntityID entityID, Shared<Scene> context, UIFunction uiFunction)
 	{
-		const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap;
+		const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowOverlap;
 		Entity entity{ entityID, context.get() };
 
 		if (entity.HasComponent<T>())
