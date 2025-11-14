@@ -11,3 +11,7 @@
 	path = Jah/External/yaml-cpp
 	url = https://github.com/JordanDia/yaml-cpp
 	branch = master
+[submodule "Jah/External/imgui"]
+	path = Jah/External/imgui
+	url = https://github.com/JordanDia/imgui
+	branch = docking-fixed
