@@ -37,8 +37,7 @@ It provides a modern, lightweight framework for building 2D games with OpenGL.
 1. Clone the repository:
 
 ```bash
-git clone --recurse-submodules https://github.com/yourusername/JahEngine.git
-cd JahEngine
+git clone --recurse-submodules https://github.com/JordanDia/Jah.git
 ```
 
 2. Run the GenerateProjects.bat script in the main directory. This will create project files for your compiler/IDE.
