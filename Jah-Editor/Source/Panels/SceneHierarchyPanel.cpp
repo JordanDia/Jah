@@ -9,6 +9,8 @@
 
 namespace Jah {
 
+	extern const std::filesystem::path g_AssetPath;
+
 	SceneHierarchyPanel::SceneHierarchyPanel(const Shared<Scene>& context)
 	{
 		SetContext(context);
@@ -344,9 +346,23 @@ namespace Jah {
 			});
 
 		DrawComponent<SpriteRendererComponent>("SpriteRenderer", entityID, m_Context, [](auto& component)
+		{
+			ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
+
+			//Texture
+			ImGui::Button("Texture", ImVec2(100.0f, 0.0f));
+			if (ImGui::BeginDragDropTarget())
 			{
-				ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
-			});
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+				{
+					const wchar_t* path = reinterpret_cast<const wchar_t*>(payload->Data);
+					std::filesystem::path texturePath = std::filesystem::path(g_AssetPath) / path;
+					component.Texture = CreateShared<Texture2D>(texturePath.string());
+				}
+				ImGui::EndDragDropTarget();
+			}
+		
+		});
 
 		
 	}

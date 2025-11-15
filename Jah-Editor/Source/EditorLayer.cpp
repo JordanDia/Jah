@@ -24,6 +24,9 @@ namespace Jah {
 
 		m_SquareColor = { 0.0f, 0.4f, 1.0f, 1.0f };
 
+		m_IconPlay = CreateShared<Texture2D>("Resources/Icons/PlayButton.png");
+		m_IconStop = CreateShared<Texture2D>("Resources/Icons/StopButton.png");
+
 		m_ParticleProps.ColorBegin = { 0.0f, 0.4f, 1.0f, 1.0f };
 		m_ParticleProps.ColorEnd = { 0.1f, 0.2f, 0.5f, 0.0f };
 		m_ParticleProps.SizeBegin = 0.5f;
@@ -124,9 +127,7 @@ namespace Jah {
 
 		m_FPS = 1.0f / timestep;
 
-		if (m_ViewportFocused)
-			m_CameraController.OnUpdate(timestep);
-		m_EditorCamera.OnUpdate(timestep);
+		
 
 		// Render
 		Renderer2D::ResetStats();
@@ -138,7 +139,27 @@ namespace Jah {
 		// Clear our entity ID attachment to -1
 		m_Framebuffer->ClearAttachment(1, -1);
 
-		m_ActiveScene->OnUpdateEditor(timestep, m_EditorCamera);
+
+		switch (m_SceneState)
+		{
+			case SceneState::Edit:
+			{
+
+				if (m_ViewportFocused)
+					m_CameraController.OnUpdate(timestep);
+
+				m_EditorCamera.OnUpdate(timestep);
+
+				m_ActiveScene->OnUpdateEditor(timestep, m_EditorCamera);
+				break;
+			}
+
+			case SceneState::Play:
+			{
+				m_ActiveScene->OnUpdateRuntime(timestep);
+				break;
+			}
+		}
 
 		auto [mx, my] = ImGui::GetMousePos();
 		mx -= m_ViewportBounds[0].x;
@@ -348,6 +369,8 @@ namespace Jah {
 		ImGui::End(); // Viewport
 		ImGui::PopStyleVar();
 
+		UI_Toolbar();
+
 		ImGui::End();
 		
 
@@ -470,6 +493,50 @@ namespace Jah {
 			SceneSerializer serializer(m_ActiveScene);
 			serializer.Serialize(filepath);
 		}
+	}
+
+	void EditorLayer::OnScenePlay()
+	{
+		m_SceneState = SceneState::Play;
+	}
+
+	void EditorLayer::OnSceneStop()
+	{
+		m_SceneState = SceneState::Edit;
+	}
+
+	void EditorLayer::UI_Toolbar()
+	{
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 2));
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, ImVec2(0, 0));
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
+		auto& colors = ImGui::GetStyle().Colors;
+		auto& buttonHovered = colors[ImGuiCol_ButtonHovered];
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(buttonHovered.x, buttonHovered.y, buttonHovered.z, 0.5f));
+		auto& buttonActive = colors[ImGuiCol_ButtonActive];
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(buttonActive.x, buttonActive.y, buttonActive.z, 0.5f));
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0.0f, 0.0f));
+
+		ImGuiWindowFlags flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse;
+		ImGui::Begin("##Toolbar", nullptr, flags);
+
+		float size = ImGui::GetWindowHeight() - 4.0f;
+		Shared<Texture2D> icon = m_SceneState == SceneState::Edit ? m_IconPlay : m_IconStop;
+		ImTextureRef textureRef(icon->GetRendererID());
+		const char* id = m_SceneState == SceneState::Edit ? "PlayIcon" : "StopIcon";
+		ImGui::SetCursorPosX((ImGui::GetWindowContentRegionMax().x * 0.5f) - (size * 0.5f));
+		if (ImGui::ImageButton(id, textureRef, ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1)))
+		{
+			if (m_SceneState == SceneState::Edit)
+				OnScenePlay();
+			else if (m_SceneState == SceneState::Play)
+				OnSceneStop();
+
+		}
+
+		ImGui::PopStyleColor(3);
+		ImGui::PopStyleVar(3);
+		ImGui::End();
 	}
 
 }

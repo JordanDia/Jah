@@ -35,6 +35,13 @@ namespace Jah {
 		void OpenScene();
 		void OpenScene(const std::filesystem::path& path);
 		void SaveSceneAs();
+
+		void OnScenePlay();
+		void OnSceneStop();
+
+		// UI Panels
+
+		void UI_Toolbar();
 	private:
 		Shared<Scene> m_ActiveScene;
 		OrthographicCameraController m_CameraController;
@@ -64,10 +71,20 @@ namespace Jah {
 
 		float m_FPS = 0.0f;
 
+		enum class SceneState
+		{
+			Edit, Play
+		};
+
+		SceneState m_SceneState = SceneState::Edit;
+
 		// Panels
 		SceneHierarchyPanel m_SceneHierarchyPanel;
 		ContentBrowserPanel m_ContentBrowserPanel;
 
+		// Editor Resources
+		Shared<Texture2D> m_IconPlay;
+		Shared<Texture2D> m_IconStop;
 
 	};
 

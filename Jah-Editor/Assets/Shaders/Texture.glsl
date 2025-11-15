@@ -11,7 +11,7 @@ uniform mat4 u_ViewProjection;
 
 out vec4 v_Color;
 out vec2 v_TexCoord;
-out float v_TexIndex;
+flat out float v_TexIndex;
 flat out int v_EntityID;
 
 void main()
@@ -31,7 +31,7 @@ layout(location = 1) out int color2;
 
 in vec4 v_Color;
 in vec2 v_TexCoord;
-in float v_TexIndex;
+flat in float v_TexIndex;
 flat in int v_EntityID;
 
 uniform vec4 u_Color;

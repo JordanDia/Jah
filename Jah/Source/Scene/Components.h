@@ -46,6 +46,7 @@ namespace Jah {
 	struct SpriteRendererComponent
 	{
 		glm::vec4 Color	{ 0.3f, 0.4f, 1.0f, 1.0f };
+
 		Shared<Texture2D> Texture = nullptr;
 		glm::vec2 TexCoordMin = { 0.0f, 0.0f };
 		glm::vec2 TexCoordMax = { 1.0f, 1.0f };
