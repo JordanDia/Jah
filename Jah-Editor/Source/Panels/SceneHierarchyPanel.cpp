@@ -246,26 +246,43 @@ namespace Jah {
 
 		if (ImGui::BeginPopup("AddComponent"))
 		{
+			Entity entity{ m_SelectionContext, m_Context.get() };
 
-			if (ImGui::MenuItem("Camera"))
+			if (!entity.HasComponent<CameraComponent>())
 			{
-				Entity entity{ m_SelectionContext, m_Context.get() };
-				entity.AddComponent<CameraComponent>();
-				ImGui::CloseCurrentPopup();
+				if (ImGui::MenuItem("Camera"))
+				{
+					entity.AddComponent<CameraComponent>();
+					ImGui::CloseCurrentPopup();
+				}
+
+			}
+		
+			if (!entity.HasComponent<SpriteRendererComponent>())
+			{
+				if (ImGui::MenuItem("Sprite Renderer"))
+				{
+					entity.AddComponent<SpriteRendererComponent>();
+					ImGui::CloseCurrentPopup();
+				}
 			}
 
-			if (ImGui::MenuItem("Sprite Renderer"))
+			if (!entity.HasComponent<Rigidbody2DComponent>())
 			{
-				Entity entity{ m_SelectionContext, m_Context.get() };
-				entity.AddComponent<SpriteRendererComponent>();
-				ImGui::CloseCurrentPopup();
+				if (ImGui::MenuItem("Rigidbody 2D"))
+				{
+					entity.AddComponent<Rigidbody2DComponent>();
+					ImGui::CloseCurrentPopup();
+				}
 			}
 
-			if (ImGui::MenuItem("Transform"))
+			if (!entity.HasComponent<BoxCollider2DComponent>())
 			{
-				Entity entity{ m_SelectionContext, m_Context.get() };
-				entity.AddComponent<TransformComponent>();
-				ImGui::CloseCurrentPopup();
+				if (ImGui::MenuItem("Box Collider 2D"))
+				{
+					entity.AddComponent<BoxCollider2DComponent>();
+					ImGui::CloseCurrentPopup();
+				}
 			}
 
 			ImGui::EndPopup();
@@ -345,6 +362,8 @@ namespace Jah {
 				}
 			});
 
+		
+
 		DrawComponent<SpriteRendererComponent>("SpriteRenderer", entityID, m_Context, [](auto& component)
 		{
 			ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
@@ -361,10 +380,44 @@ namespace Jah {
 				}
 				ImGui::EndDragDropTarget();
 			}
-		
+
 		});
 
-		
+		DrawComponent<Rigidbody2DComponent>("Rigidbody 2D", entityID, m_Context, [](auto& component)
+		{
+			const char* bodyTypeStrings[] = { "Static", "Dynamic", "Kinematic" };
+			const char* currentBodyTypeString = bodyTypeStrings[(int)component.Type];
+			if (ImGui::BeginCombo("Body Type", currentBodyTypeString))
+			{
+				for (int i = 0; i < 3; i++)
+				{
+					bool isSelected = currentBodyTypeString == bodyTypeStrings[i];
+
+					if (ImGui::Selectable(bodyTypeStrings[i], isSelected))
+					{
+						currentBodyTypeString = bodyTypeStrings[i];
+						component.Type = (Rigidbody2DComponent::BodyType)i;
+					}
+
+					if (isSelected)
+						ImGui::SetItemDefaultFocus();
+				}
+
+				ImGui::EndCombo();
+			}
+
+		});
+
+		DrawComponent<BoxCollider2DComponent>("Box Collider 2D", entityID, m_Context, [](auto& component)
+		{
+			ImGui::DragFloat2("Offset", glm::value_ptr(component.Offset));
+			ImGui::DragFloat2("Size", glm::value_ptr(component.Size));
+			ImGui::DragFloat("Density", &component.Density, 0.01f, 0.0f, 1.0f);
+			ImGui::DragFloat("Friction", &component.Friction, 0.01f, 0.0f, 1.0f);
+			ImGui::DragFloat("Restitution", &component.Restitution, 0.01f, 0.0f, 1.0f);
+
+
+		});
 	}
 
 }

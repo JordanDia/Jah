@@ -1,16 +1,26 @@
 #pragma once
 
 #include <glm/glm.hpp>
-#include <string>
 #include "Renderer/Camera.h"
+#include "Core/UUID.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
+#include <string>
 #include <glm/gtx/quaternion.hpp>
-
-#include "ScriptableEntity.h"
+#include <box2d/box2d.h>
 
 namespace Jah {
 	
+	struct IDComponent
+	{
+		UUID ID;
+
+		IDComponent() = default;
+		IDComponent(const IDComponent&) = default;
+
+		IDComponent(UUID id)
+			: ID(id) {}
+	};
 
 	struct TagComponent
 	{
@@ -69,6 +79,7 @@ namespace Jah {
 		CameraComponent(const CameraComponent&) = default;
 	};
 
+	class ScriptableEntity;
 	struct NativeScriptComponent
 	{
 		ScriptableEntity* Instance = nullptr;
@@ -91,10 +102,34 @@ namespace Jah {
 		}
 	};
 
+	struct Rigidbody2DComponent
+	{
+		enum class BodyType { Static = 0, Dynamic, Kinematic };
+		BodyType Type = BodyType::Static;
+
+		// Storage for runtime
+		b2BodyId RuntimeBodyID = b2_nullBodyId;
+
+		Rigidbody2DComponent() = default;
+		Rigidbody2DComponent(const Rigidbody2DComponent&) = default;
+	};
 
 
+	struct BoxCollider2DComponent
+	{
 
+		glm::vec2 Offset = { 0.0f, 0.0f };
+		glm::vec2 Size = { 0.5f, 0.5f };
 
+		float Density = 1.0f;
+		float Friction = 0.5f;
+		float Restitution = 0.0f;
+		
+		void* RuntimeFixture = nullptr;
+
+		BoxCollider2DComponent() = default;
+		BoxCollider2DComponent(const BoxCollider2DComponent&) = default;
+	};
 
 
 

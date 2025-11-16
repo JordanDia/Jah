@@ -1431,6 +1431,7 @@
     <ClInclude Include="Source\jahpch.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Core\UUID.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\ImGuizmo\ImGuizmo.cpp">
@@ -1511,5 +1512,6 @@
     <ClCompile Include="Source\jahpch.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Core\UUID.cpp" />
   </ItemGroup>
 </Project>

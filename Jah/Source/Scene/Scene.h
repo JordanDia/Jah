@@ -3,8 +3,10 @@
 #include "Registry.h"
 #include "Core/Timestep.h"
 #include "Renderer/EditorCamera.h"
+#include "Core/UUID.h"
 
 #include <string>
+#include <box2d/id.h>
 
 namespace Jah {
 
@@ -17,7 +19,11 @@ namespace Jah {
 		~Scene() = default;
 
 		Entity CreateEntity(const std::string& name = std::string());
+		Entity CreateEntityWithUUID(UUID uuid, const std::string& name = std::string());
 		void DestroyEntity(EntityID entityID);
+
+		void OnRuntimeStart();
+		void OnRuntimeStop();
 
 		void OnRender(Camera& camera);
 		void OnRender(OrthographicCamera& camera);
@@ -38,6 +44,8 @@ namespace Jah {
 		Registry m_Registry;
 		uint32_t m_ViewportWidth = 0;
 		uint32_t m_ViewportHeight = 0;
+
+		b2WorldId m_PhysicsWorldID;
 
 		friend class Entity;
 		friend class SceneSerializer;

@@ -1,6 +1,6 @@
 Scene: Untitled
 Entities:
-  - Entity: 123456789
+  - Entity: 8613698047502274779
     TagComponent:
       Tag: Grass Sprite
     TransformComponent:
@@ -9,7 +9,7 @@ Entities:
       Scale: [1, 1, 1]
     SpriteRendererComponent:
       Color: [0, 0, 0, 1]
-  - Entity: 123456789
+  - Entity: 1854544087150412769
     TagComponent:
       Tag: Camera Entity
     TransformComponent:
@@ -27,7 +27,7 @@ Entities:
         OrthographicFar: 1
       Primary: true
       FixedAspectRatio: false
-  - Entity: 123456789
+  - Entity: 3467253262213788931
     TagComponent:
       Tag: Clip Space Camera
     TransformComponent:
@@ -45,7 +45,7 @@ Entities:
         OrthographicFar: 1
       Primary: true
       FixedAspectRatio: false
-  - Entity: 123456789
+  - Entity: 7577349984824959853
     TagComponent:
       Tag: Red Square
     TransformComponent:

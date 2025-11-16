@@ -4,6 +4,8 @@
 #include <cstdint>
 #include <memory>
 
+#include "Components.h"
+
 namespace Jah {
 
 	using EntityID = uint32_t;
@@ -40,6 +42,8 @@ namespace Jah {
 		{
 			return m_Scene->GetRegistry().Remove<T>(m_ID);
 		}
+
+		UUID GetUUID() { return GetComponent<IDComponent>().ID; }
 
 		EntityID GetID() const { return m_ID; }
 		operator uint32_t() const { return (uint32_t)m_ID; }

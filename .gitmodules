@@ -15,3 +15,6 @@
 	path = Jah/External/imgui
 	url = https://github.com/JordanDia/imgui
 	branch = docking-fixed
+[submodule "Jah/External/Box2D"]
+	path = Jah/External/Box2D
+	url = https://github.com/JordanDia/box2d

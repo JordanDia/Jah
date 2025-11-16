@@ -4,14 +4,36 @@
 #include "Registry.h"
 
 #include "Renderer/Renderer2D.h"
+#include "ScriptableEntity.h"
+
+#include <box2d/box2d.h>
+#include <cmath>
 
 
 
 namespace Jah {
 
+
+	static b2BodyType Rigidbody2DTypeToBox2DType(Rigidbody2DComponent::BodyType type)
+	{
+		switch (type)
+		{
+		case Rigidbody2DComponent::BodyType::Static: return b2_staticBody;
+		case Rigidbody2DComponent::BodyType::Dynamic: return b2_dynamicBody;
+		case Rigidbody2DComponent::BodyType::Kinematic: return b2_kinematicBody;
+		default: JAH_ASSERT(false, "Invalid body type!");
+		}
+	}
+
 	Entity Scene::CreateEntity(const std::string& name)
 	{
+		return CreateEntityWithUUID(UUID(), name);
+	}
+
+	Entity Scene::CreateEntityWithUUID(UUID uuid, const std::string& name /*= std::string()*/)
+	{
 		Entity entity = { m_Registry.CreateEntity(), this };
+		entity.AddComponent<IDComponent>(uuid);
 		entity.AddComponent<TransformComponent>();
 		auto& tag = entity.AddComponent<TagComponent>();
 		tag.Name = name.empty() ? "Entity" : name;
@@ -22,6 +44,51 @@ namespace Jah {
 	void Scene::DestroyEntity(EntityID entityID)
 	{
 		m_Registry.DestroyEntity(entityID);
+	}
+
+	void Scene::OnRuntimeStart()
+	{
+		b2WorldDef worldDef = b2DefaultWorldDef();
+		worldDef.gravity = { 0.0f, -9.8f };
+		m_PhysicsWorldID = b2CreateWorld(&worldDef);
+
+		auto view = m_Registry.View<Rigidbody2DComponent>();
+		for (auto entityID : view)
+		{
+			Entity entity = { entityID, this };
+			auto& transform = entity.GetComponent<TransformComponent>();
+			auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+
+			b2BodyDef bodyDef = b2DefaultBodyDef();
+			bodyDef.type = Rigidbody2DTypeToBox2DType(rb2d.Type);
+			bodyDef.position = {transform.Translation.x, transform.Translation.y };
+			
+			
+			bodyDef.rotation = b2MakeRot(transform.Rotation.z);
+			
+			b2BodyId bodyID = b2CreateBody(m_PhysicsWorldID, &bodyDef);
+			rb2d.RuntimeBodyID = bodyID;
+
+			if (entity.HasComponent<BoxCollider2DComponent>())
+			{
+				auto& bc2d = entity.GetComponent<BoxCollider2DComponent>();
+
+				b2Polygon boxShape = b2MakeBox(bc2d.Size.x * transform.Scale.x, bc2d.Size.y * transform.Scale.y);
+
+				b2ShapeDef shapeDef = b2DefaultShapeDef();
+				shapeDef.material.friction = bc2d.Friction;
+				shapeDef.material.restitution = bc2d.Restitution;
+				shapeDef.density = 1.0f;
+
+				b2ShapeId shapeId = b2CreatePolygonShape(bodyID, &shapeDef, &boxShape);
+			}
+		}
+	}
+
+	void Scene::OnRuntimeStop()
+	{
+		b2DestroyWorld(m_PhysicsWorldID);
+		m_PhysicsWorldID = b2_nullWorldId;
 	}
 
 	void Scene::OnRender(OrthographicCamera& camera)
@@ -76,6 +143,8 @@ namespace Jah {
 
 	void Scene::OnUpdateRuntime(Timestep timestep)
 	{
+
+		// Update scripts
 		{
 			auto view = m_Registry.View<NativeScriptComponent>();
 
@@ -95,26 +164,28 @@ namespace Jah {
 			}
 		}
 
-
+		// Physics
 		{
+			int32_t subStepCount = 4;
+			b2World_Step(m_PhysicsWorldID, timestep, subStepCount);
 
-			auto view = m_Registry.View<TransformComponent, SpriteRendererComponent>();
-
+			// Retrieve transform from Box2D
+			auto view = m_Registry.View<Rigidbody2DComponent>();
 			for (auto entityID : view)
 			{
-				auto& transform = m_Registry.Get<TransformComponent>(entityID);
+				Entity entity{ entityID, this };
+				auto& transform = entity.GetComponent<TransformComponent>();
+				auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
 
-				if (m_Registry.Has<TagComponent>(entityID))
-				{
-					auto& tag = m_Registry.Get<TagComponent>(entityID);
-					if (tag.Name == "Grass Sprite")
-					{
-						static float rotationZ = 0.0f;
-						rotationZ += timestep * 0.5f;
+				b2BodyId bodyID = rb2d.RuntimeBodyID;
 
-						transform.Rotation = glm::vec3(0.0f, 0.0f, rotationZ);
-					}
-				}
+				const auto& position = b2Body_GetPosition(bodyID);
+				transform.Translation.x = position.x;
+				transform.Translation.y = position.y;
+
+				b2Rot rotation = b2Body_GetRotation(bodyID);
+				float angle = std::atan2(rotation.s, rotation.c);
+				transform.Rotation.z = angle;
 			}
 		}
 
@@ -198,6 +269,12 @@ namespace Jah {
 	}
 
 	template<>
+	void Scene::OnComponentAdded<IDComponent>(EntityID entityID, IDComponent& component)
+	{
+
+	}
+
+	template<>
 	void Scene::OnComponentAdded<TransformComponent>(EntityID entityID, TransformComponent& component)
 	{
 
@@ -206,7 +283,8 @@ namespace Jah {
 	template<>
 	void Scene::OnComponentAdded<CameraComponent>(EntityID entityID, CameraComponent& component)
 	{
-		component.Camera.SetViewportSize(m_ViewportWidth, m_ViewportHeight);
+		if (m_ViewportWidth > 0 && m_ViewportHeight > 0)
+			component.Camera.SetViewportSize(m_ViewportWidth, m_ViewportHeight);
 	}
 
 	template<>
@@ -223,6 +301,18 @@ namespace Jah {
 
 	template<>
 	void Scene::OnComponentAdded<NativeScriptComponent>(EntityID entityID, NativeScriptComponent& component)
+	{
+
+	}
+
+	template<>
+	void Scene::OnComponentAdded<Rigidbody2DComponent>(EntityID entityID, Rigidbody2DComponent& component)
+	{
+
+	}
+
+	template<>
+	void Scene::OnComponentAdded<BoxCollider2DComponent>(EntityID entityID, BoxCollider2DComponent& component)
 	{
 
 	}

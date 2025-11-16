@@ -22,6 +22,7 @@ IncludeDirs = {
 	["spdlog"] = "Jah/External/spdlog/include",
 	["yaml_cpp"] = "Jah/External/yaml-cpp/include",
 	["ImGuizmo"] = "Jah/External/ImGuizmo",
+	["Box2D"] = "Jah/External/Box2D/include",
 }
 
 group "Dependencies"
@@ -29,6 +30,7 @@ group "Dependencies"
 	include "Jah/External/Glad"
 	include "Jah/External/imgui"
 	include "Jah/External/yaml-cpp"
+	include "Jah/External/Box2D"
 group ""
 
 project "Jah"
@@ -63,6 +65,7 @@ project "Jah"
 		"Glad",
 		"ImGui",
 		"yaml-cpp",
+		"Box2D",
 		"opengl32.lib",
 	}
 
@@ -78,7 +81,8 @@ project "Jah"
 		IncludeDirs.stb_image,
 		IncludeDirs.spdlog,
 		IncludeDirs.yaml_cpp,
-		IncludeDirs.ImGuizmo
+		IncludeDirs.ImGuizmo,
+		IncludeDirs.Box2D,
 	}
 
 	pchheader "jahpch.h"
@@ -181,13 +185,12 @@ project "Jah-Editor"
 		IncludeDirs.Glad,
 		IncludeDirs.spdlog,
 		IncludeDirs.ImGuizmo,
+		IncludeDirs.Box2D,
     }
 
     links {
         "Jah"
     }
-
-
 
 	filter "configurations:Debug"
 		defines { "JAH_DEBUG" }
