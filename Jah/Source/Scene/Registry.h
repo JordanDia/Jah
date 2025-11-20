@@ -48,6 +48,19 @@ namespace Jah {
 			return std::any_cast<T&>(entityComponentMap[entityID]);
 		}
 
+		template<typename T, typename... Args>
+		T& AddOrReplace(EntityID entityID, Args&&... args)
+		{
+			if (Has<T>(entityID))
+			{
+				auto& component = Get<T>(entityID);
+				component = T(std::forward<Args>(args)...);
+				return component;
+			}
+
+			return Add<T>(entityID, std::forward<Args>(args)...);
+		}
+
 		template<typename T>
 		T& Get(EntityID entityID)
 		{

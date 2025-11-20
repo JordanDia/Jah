@@ -263,12 +263,18 @@ namespace Jah {
 
 	bool SceneSerializer::Deserialize(const std::filesystem::path& filepath)
 	{
+		YAML::Node data;
 
-		std::ifstream stream(filepath);
-		std::stringstream strStream;
-		strStream << stream.rdbuf();
+		try
+		{
+			data = YAML::LoadFile(filepath.string());
+		}
+		catch (YAML::ParserException e)
+		{
+			JAH_CORE_ERROR("Failed to load .jah file '{0}'\n\t{1}", filepath.string(), e.what());
+			return false;
+		}
 
-		YAML::Node data = YAML::Load(strStream.str());
 		if (!data["Scene"])
 			return false;
 
@@ -276,7 +282,6 @@ namespace Jah {
 		JAH_CORE_TRACE("Deserializing scene '{0}'", sceneName);
 
 		auto entities = data["Entities"];
-
 		if (entities)
 		{
 			for (auto entity : entities)
@@ -348,6 +353,8 @@ namespace Jah {
 				}
 			}
 		}
+
+		return true;
 	}
 
 	bool SceneSerializer::DeserializeRuntime(const std::filesystem::path& filepath)

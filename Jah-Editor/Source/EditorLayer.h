@@ -34,16 +34,24 @@ namespace Jah {
 		void NewScene();
 		void OpenScene();
 		void OpenScene(const std::filesystem::path& path);
+		void SaveScene();
 		void SaveSceneAs();
+
+		void SerializeScene(Shared<Scene> scene, const std::filesystem::path& path);
 
 		void OnScenePlay();
 		void OnSceneStop();
+
+		void DuplicateEntity();
 
 		// UI Panels
 
 		void UI_Toolbar();
 	private:
 		Shared<Scene> m_ActiveScene;
+		Shared<Scene> m_EditorScene;
+		std::filesystem::path m_EditorScenePath;
+
 		OrthographicCameraController m_CameraController;
 		Entity m_CameraEntity;
 		Entity m_SecondCamera;

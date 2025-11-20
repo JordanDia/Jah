@@ -24,9 +24,17 @@ namespace Jah {
 			m_Scene->OnComponentAdded<T>(m_ID, component);
 			return component;
 		}
+		
+		template<typename T, typename... Args>
+		T& AddOrReplaceComponent(Args&&... args)
+		{
+			T& component = m_Scene->GetRegistry().AddOrReplace<T>(m_ID, std::forward<Args>(args)...);
+			m_Scene->OnComponentAdded<T>(m_ID, component);
+			return component;
+		}
 
 		template<typename T>
-		T& GetComponent()
+		T& GetComponent() const
 		{
 			return m_Scene->GetRegistry().Get<T>(m_ID);
 		}
@@ -44,6 +52,7 @@ namespace Jah {
 		}
 
 		UUID GetUUID() { return GetComponent<IDComponent>().ID; }
+		const std::string& GetName() const { return GetComponent<TagComponent>().Name; }
 
 		EntityID GetID() const { return m_ID; }
 		operator uint32_t() const { return (uint32_t)m_ID; }

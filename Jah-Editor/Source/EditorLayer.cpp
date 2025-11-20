@@ -376,6 +376,40 @@ namespace Jah {
 
 	}
 
+	void EditorLayer::UI_Toolbar()
+	{
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 2));
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, ImVec2(0, 0));
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
+		auto& colors = ImGui::GetStyle().Colors;
+		auto& buttonHovered = colors[ImGuiCol_ButtonHovered];
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(buttonHovered.x, buttonHovered.y, buttonHovered.z, 0.5f));
+		auto& buttonActive = colors[ImGuiCol_ButtonActive];
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(buttonActive.x, buttonActive.y, buttonActive.z, 0.5f));
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0.0f, 0.0f));
+
+		ImGuiWindowFlags flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse;
+		ImGui::Begin("##Toolbar", nullptr, flags);
+
+		float size = ImGui::GetWindowHeight() - 4.0f;
+		Shared<Texture2D> icon = m_SceneState == SceneState::Edit ? m_IconPlay : m_IconStop;
+		ImTextureRef textureRef(icon->GetRendererID());
+		const char* id = m_SceneState == SceneState::Edit ? "PlayIcon" : "StopIcon";
+		ImGui::SetCursorPosX((ImGui::GetWindowContentRegionMax().x * 0.5f) - (size * 0.5f));
+		if (ImGui::ImageButton(id, textureRef, ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1)))
+		{
+			if (m_SceneState == SceneState::Edit)
+				OnScenePlay();
+			else if (m_SceneState == SceneState::Play)
+				OnSceneStop();
+
+		}
+
+		ImGui::PopStyleColor(3);
+		ImGui::PopStyleVar(3);
+		ImGui::End();
+	}
+
 	void EditorLayer::OnEvent(Event& event)
 	{
 		m_CameraController.OnEvent(event);
@@ -417,9 +451,20 @@ namespace Jah {
 		{
 			if (control && shift)
 				SaveSceneAs();
+			else if (control)
+				SaveScene();
 
 			break;
 
+		}
+
+
+		// Scene Commands
+		case JAH_KEY_D:
+		{
+			if (control)
+				DuplicateEntity();
+			break;
 		}
 
 		// Gizmos
@@ -463,6 +508,8 @@ namespace Jah {
 		m_ActiveScene = std::make_shared<Scene>();
 		m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
+		m_EditorScenePath = std::filesystem::path();
 	}
 
 	void EditorLayer::OpenScene()
@@ -474,15 +521,35 @@ namespace Jah {
 
 	void EditorLayer::OpenScene(const std::filesystem::path& path)
 	{
-		if (!path.empty())
-		{
-			m_ActiveScene = std::make_shared<Scene>();
-			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
-			m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+		if (m_SceneState != SceneState::Edit)
+			OnSceneStop();
 
-			SceneSerializer serializer(m_ActiveScene);
-			serializer.Deserialize(path.string());
+		if (path.extension().string() != ".jah")
+		{
+			JAH_WARN("Could not load scene {0} - not a scene file", path.filename().string());
+			return;
 		}
+
+		Shared<Scene> newScene = CreateShared<Scene>();
+		SceneSerializer serializer(newScene);
+		if (serializer.Deserialize(path.string()))
+		{
+			m_EditorScene = newScene;
+			m_EditorScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+			m_SceneHierarchyPanel.SetContext(m_EditorScene);
+
+			m_ActiveScene = m_EditorScene;
+			m_EditorScenePath = path;
+		}
+
+	}
+
+	void EditorLayer::SaveScene()
+	{
+		if (!m_EditorScenePath.empty())
+			SerializeScene(m_ActiveScene, m_EditorScenePath);
+		else
+			SaveSceneAs();
 	}
 
 	void EditorLayer::SaveSceneAs()
@@ -490,55 +557,49 @@ namespace Jah {
 		std::string filepath = FileDialogs::SaveFile("Jah Scene (*.jah)\0*.jah\0");
 		if (!filepath.empty())
 		{
-			SceneSerializer serializer(m_ActiveScene);
-			serializer.Serialize(filepath);
+			SerializeScene(m_ActiveScene, filepath);
+			m_EditorScenePath = filepath;
 		}
+	}
+	
+	void EditorLayer::SerializeScene(Shared<Scene> scene, const std::filesystem::path& path)
+	{
+		SceneSerializer serializer(scene);
+		serializer.Serialize(path);
 	}
 
 	void EditorLayer::OnScenePlay()
 	{
-		m_ActiveScene->OnRuntimeStart();
+		if (!m_EditorScene)
+			return;
+
 		m_SceneState = SceneState::Play;
+
+		m_ActiveScene = Scene::Copy(m_EditorScene);
+		m_ActiveScene->OnRuntimeStart();
+
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 	}
 
 	void EditorLayer::OnSceneStop()
 	{
-		m_ActiveScene->OnRuntimeStop();
 		m_SceneState = SceneState::Edit;
+		m_ActiveScene->OnRuntimeStop();
+		m_ActiveScene = m_EditorScene;
+
+		m_SceneHierarchyPanel.SetContext(m_EditorScene);
 	}
 
-	void EditorLayer::UI_Toolbar()
+	void EditorLayer::DuplicateEntity()
 	{
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 2));
-		ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, ImVec2(0, 0));
-		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-		auto& colors = ImGui::GetStyle().Colors;
-		auto& buttonHovered = colors[ImGuiCol_ButtonHovered];
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(buttonHovered.x, buttonHovered.y, buttonHovered.z, 0.5f));
-		auto& buttonActive = colors[ImGuiCol_ButtonActive];
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(buttonActive.x, buttonActive.y, buttonActive.z, 0.5f));
-		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0.0f, 0.0f));
+		if (m_SceneState != SceneState::Edit)
+			return;
 
-		ImGuiWindowFlags flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse;
-		ImGui::Begin("##Toolbar", nullptr, flags);
-
-		float size = ImGui::GetWindowHeight() - 4.0f;
-		Shared<Texture2D> icon = m_SceneState == SceneState::Edit ? m_IconPlay : m_IconStop;
-		ImTextureRef textureRef(icon->GetRendererID());
-		const char* id = m_SceneState == SceneState::Edit ? "PlayIcon" : "StopIcon";
-		ImGui::SetCursorPosX((ImGui::GetWindowContentRegionMax().x * 0.5f) - (size * 0.5f));
-		if (ImGui::ImageButton(id, textureRef, ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1)))
-		{
-			if (m_SceneState == SceneState::Edit)
-				OnScenePlay();
-			else if (m_SceneState == SceneState::Play)
-				OnSceneStop();
-
-		}
-
-		ImGui::PopStyleColor(3);
-		ImGui::PopStyleVar(3);
-		ImGui::End();
+		Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
+		if (m_SceneHierarchyPanel.GetSelectedEntity())
+			m_EditorScene->DuplicateEntity(selectedEntity);
 	}
+
+	
 
 }

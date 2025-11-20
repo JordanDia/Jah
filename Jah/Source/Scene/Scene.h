@@ -18,6 +18,8 @@ namespace Jah {
 		Scene() = default;
 		~Scene() = default;
 
+		static Shared<Scene> Copy(Shared<Scene> other);
+
 		Entity CreateEntity(const std::string& name = std::string());
 		Entity CreateEntityWithUUID(UUID uuid, const std::string& name = std::string());
 		void DestroyEntity(EntityID entityID);
@@ -31,6 +33,8 @@ namespace Jah {
 		void OnUpdateRuntime(Timestep timestep);
 
 		void OnViewportResize(uint32_t width, uint32_t height);
+
+		void DuplicateEntity(Entity entity);
 
 		Registry& GetRegistry() { return m_Registry; }
 

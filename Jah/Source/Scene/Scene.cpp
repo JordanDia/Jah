@@ -2,14 +2,14 @@
 #include "Scene.h"
 #include "Entity.h"
 #include "Registry.h"
+#include "Core/UUID.h"
 
 #include "Renderer/Renderer2D.h"
 #include "ScriptableEntity.h"
 
 #include <box2d/box2d.h>
 #include <cmath>
-
-
+#include <unordered_map>
 
 namespace Jah {
 
@@ -23,6 +23,62 @@ namespace Jah {
 		case Rigidbody2DComponent::BodyType::Kinematic: return b2_kinematicBody;
 		default: JAH_ASSERT(false, "Invalid body type!");
 		}
+	}
+
+	template<typename Component>
+	static void CopyComponent(Registry& dst, Registry& src, const std::unordered_map<UUID, EntityID>& entityMap)
+	{
+		auto view = src.View<Component>();
+		for (auto entityID : view)
+		{
+			UUID uuid = src.Get<IDComponent>(entityID).ID;
+			JAH_ASSERT(entityMap.find(uuid) != entityMap.end(), "Entity not found in entity map!");
+			auto dstEntityID = entityMap.at(uuid);
+
+			auto& component = src.Get<Component>(entityID);
+			dst.Add<Component>(dstEntityID, component);
+		}
+	}
+
+
+	template<typename Component>
+	static void CopyComponentIfExists(Entity dst, Entity src)
+	{
+		if (src.HasComponent<Component>())
+			dst.AddOrReplaceComponent<Component>(src.GetComponent<Component>());
+	}
+
+
+	Shared<Scene> Scene::Copy(Shared<Scene> other)
+	{
+		Shared<Scene> newScene = CreateShared<Scene>();
+
+		newScene->m_ViewportWidth = other->m_ViewportWidth;
+		newScene->m_ViewportHeight = other->m_ViewportHeight;
+
+		auto& srcSceneRegistry = other->m_Registry;
+		auto& dstSceneRegistry = newScene->m_Registry;
+		std::unordered_map<UUID, EntityID> entityMap;
+
+		// Create entities in new scene
+		auto idView = srcSceneRegistry.View<IDComponent>();
+		for (auto entityID : idView)
+		{
+			UUID uuid = srcSceneRegistry.Get<IDComponent>(entityID).ID;
+			const auto& name = srcSceneRegistry.Get<TagComponent>(entityID).Name;
+
+			Entity newEntity = newScene->CreateEntityWithUUID(uuid, name);
+			entityMap[uuid] = newEntity.GetID();
+		}
+
+		CopyComponent<TransformComponent>(dstSceneRegistry, srcSceneRegistry, entityMap);
+		CopyComponent<SpriteRendererComponent>(dstSceneRegistry, srcSceneRegistry, entityMap);
+		CopyComponent<CameraComponent>(dstSceneRegistry, srcSceneRegistry, entityMap);
+		CopyComponent<NativeScriptComponent>(dstSceneRegistry, srcSceneRegistry, entityMap);
+		CopyComponent<Rigidbody2DComponent>(dstSceneRegistry, srcSceneRegistry, entityMap);
+		CopyComponent<BoxCollider2DComponent>(dstSceneRegistry, srcSceneRegistry, entityMap);
+
+		return newScene;
 	}
 
 	Entity Scene::CreateEntity(const std::string& name)
@@ -159,8 +215,6 @@ namespace Jah {
 				}
 
 				nsc.Instance->OnUpdate(timestep);
-
-
 			}
 		}
 
@@ -248,6 +302,19 @@ namespace Jah {
 				cameraComponent.Camera.SetViewportSize(width, height);
 			}
 		}
+	}
+
+	void Scene::DuplicateEntity(Entity entity)
+	{
+		std::string name = entity.GetName(); // copy to avoid possible dangling reference if registry resizes
+		Entity newEntity = CreateEntity(name);
+
+		CopyComponentIfExists<TransformComponent>(newEntity, entity);
+		CopyComponentIfExists<SpriteRendererComponent>(newEntity, entity);
+		CopyComponentIfExists<CameraComponent>(newEntity, entity);
+		CopyComponentIfExists<NativeScriptComponent>(newEntity, entity);
+		CopyComponentIfExists<Rigidbody2DComponent>(newEntity, entity);
+		CopyComponentIfExists<BoxCollider2DComponent>(newEntity, entity);
 	}
 
 	Entity Scene::GetPrimaryCameraEntity()

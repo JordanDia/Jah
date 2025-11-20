@@ -1347,6 +1347,9 @@
     <ClInclude Include="Source\Core\Timestep.h">
       <Filter>Source\Core</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Core\UUID.h">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Core\Window.h">
       <Filter>Source\Core</Filter>
     </ClInclude>
@@ -1431,7 +1434,6 @@
     <ClInclude Include="Source\jahpch.h">
       <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Core\UUID.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\ImGuizmo\ImGuizmo.cpp">
@@ -1453,6 +1455,9 @@
       <Filter>Source\Core</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\Log.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\UUID.cpp">
       <Filter>Source\Core</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\Window.cpp">
@@ -1512,6 +1517,5 @@
     <ClCompile Include="Source\jahpch.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Core\UUID.cpp" />
   </ItemGroup>
 </Project>

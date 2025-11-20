@@ -22,15 +22,3 @@ namespace Jah {
 	}
 
 }
-
-namespace std {
-
-	template<>
-	struct hash<Jah::UUID>
-	{
-		std::size_t operator()(const Jah::UUID& uuid) const
-		{
-			return hash<uint64_t>()((uint64_t)uuid);
-		}
-	};
-}
