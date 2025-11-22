@@ -164,21 +164,30 @@ namespace Jah {
 
 		}
 
+		{
+			auto view = m_Registry.View<TransformComponent, CircleRendererComponent>();
+
+			for (auto entityID : view)
+			{
+
+				auto& transform = m_Registry.Get<TransformComponent>(entityID);
+				auto& circleRenderer = m_Registry.Get<CircleRendererComponent>(entityID);
+
+				Renderer2D::DrawCircle(transform.GetTransform(), circleRenderer.Color, circleRenderer.Thickness, circleRenderer.Fade, (int)entityID);
+			}
+
+		}
+
 		Renderer2D::EndScene();
 	}
 
 	void Scene::OnRender(Camera& camera)
-	{
-
-		
-
-
-		
-	}
+	{}
 
 	void Scene::OnUpdateEditor(Timestep timestep, EditorCamera& camera)
 	{
 		Renderer2D::BeginScene(camera);
+		
 
 		{
 			auto view = m_Registry.View<TransformComponent, SpriteRendererComponent>();
@@ -190,6 +199,20 @@ namespace Jah {
 				auto& spriteRenderer = m_Registry.Get<SpriteRendererComponent>(entityID);
 
 				Renderer2D::DrawSprite(transform.GetTransform(), spriteRenderer, (int)entityID);
+			}
+
+		}
+
+		{
+			auto view = m_Registry.View<TransformComponent, CircleRendererComponent>();
+
+			for (auto entityID : view)
+			{
+
+				auto& transform = m_Registry.Get<TransformComponent>(entityID);
+				auto& circleRenderer = m_Registry.Get<CircleRendererComponent>(entityID);
+
+				Renderer2D::DrawCircle(transform.GetTransform(), circleRenderer.Color, circleRenderer.Thickness, circleRenderer.Fade, (int)entityID);
 			}
 
 		}
@@ -311,6 +334,7 @@ namespace Jah {
 
 		CopyComponentIfExists<TransformComponent>(newEntity, entity);
 		CopyComponentIfExists<SpriteRendererComponent>(newEntity, entity);
+		CopyComponentIfExists<CircleRendererComponent>(newEntity, entity);
 		CopyComponentIfExists<CameraComponent>(newEntity, entity);
 		CopyComponentIfExists<NativeScriptComponent>(newEntity, entity);
 		CopyComponentIfExists<Rigidbody2DComponent>(newEntity, entity);
@@ -358,6 +382,12 @@ namespace Jah {
 	void Scene::OnComponentAdded<SpriteRendererComponent>(EntityID entityID, SpriteRendererComponent& component)
 	{
 		
+	}
+
+	template<>
+	void Scene::OnComponentAdded<CircleRendererComponent>(EntityID entityID, CircleRendererComponent& component)
+	{
+
 	}
 
 	template<>

@@ -267,6 +267,15 @@ namespace Jah {
 				}
 			}
 
+			if (!entity.HasComponent<CircleRendererComponent>())
+			{
+				if (ImGui::MenuItem("Circle Renderer"))
+				{
+					entity.AddComponent<CircleRendererComponent>();
+					ImGui::CloseCurrentPopup();
+				}
+			}
+
 			if (!entity.HasComponent<Rigidbody2DComponent>())
 			{
 				if (ImGui::MenuItem("Rigidbody 2D"))
@@ -364,7 +373,7 @@ namespace Jah {
 
 		
 
-		DrawComponent<SpriteRendererComponent>("SpriteRenderer", entityID, m_Context, [](auto& component)
+		DrawComponent<SpriteRendererComponent>("Sprite Renderer", entityID, m_Context, [](auto& component)
 		{
 			ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
 
@@ -380,6 +389,14 @@ namespace Jah {
 				}
 				ImGui::EndDragDropTarget();
 			}
+
+		});
+
+		DrawComponent<CircleRendererComponent>("Circle Renderer", entityID, m_Context, [](auto& component)
+		{
+			ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
+			ImGui::DragFloat("Thickness", &component.Thickness, 0.025f, 0.0f, 1.0f);
+			ImGui::DragFloat("Fade", &component.Fade, 0.00025f, 0.0f, 1.0f);
 
 		});
 

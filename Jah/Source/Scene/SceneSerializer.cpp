@@ -179,6 +179,24 @@ namespace Jah {
 			out << YAML::EndMap; // SpriteRendererComponent
 		}
 
+		if (entity.HasComponent<CircleRendererComponent>())
+		{
+			out << YAML::Key << "CircleRendererComponent";
+			out << YAML::BeginMap; // CircleRendererComponent
+
+			auto& src = entity.GetComponent<CircleRendererComponent>();
+			out << YAML::Key << "Color";
+			out << YAML::Value << src.Color;
+
+			out << YAML::Key << "Thickness";
+			out << YAML::Value << src.Thickness;
+
+			out << YAML::Key << "Fade";
+			out << YAML::Value << src.Fade;
+
+			out << YAML::EndMap; // SpriteRendererComponent
+		}
+
 		if (entity.HasComponent<CameraComponent>())
 		{
 			out << YAML::Key << "CameraComponent";
@@ -312,6 +330,15 @@ namespace Jah {
 				{
 					auto& src = deserializedEntity.AddComponent<SpriteRendererComponent>();
 					src.Color = spriteRendererComponent["Color"].as<glm::vec4>();
+				}
+
+				auto circleRendererComponent = entity["CircleRendererComponent"];
+				if (circleRendererComponent)
+				{
+					auto& crc = deserializedEntity.AddComponent<CircleRendererComponent>();
+					crc.Color = circleRendererComponent["Color"].as<glm::vec4>();
+					crc.Thickness = circleRendererComponent["Thickness"].as<float>();
+					crc.Fade = circleRendererComponent["Fade"].as<float>();
 				}
 
 				auto cameraComponent = entity["CameraComponent"];

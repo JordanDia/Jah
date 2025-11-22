@@ -1,6 +1,7 @@
 workspace "Jah"
 	architecture "x64"
 	startproject "Jah-Editor"
+	toolset "v145"
 
 	configurations {
 		"Debug",

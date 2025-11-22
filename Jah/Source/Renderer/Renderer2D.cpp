@@ -14,10 +14,21 @@ namespace Jah {
 
 	struct QuadVertex
 	{
-		glm::vec3 Position{};
-		glm::vec4 Color{};
-		glm::vec2 TexCoord{};
+		glm::vec3 Position = {};
+		glm::vec4 Color = {};
+		glm::vec2 TexCoord = {};
 		float TexIndex = 0;
+
+		int EntityID = 0;
+	};
+
+	struct CircleVertex
+	{
+		glm::vec3 WorldPosition = {};
+		glm::vec3 LocalPosition = {};
+		glm::vec4 Color = {};
+		float Thickness = 0.0f;
+		float Fade = 0.0f;
 
 		int EntityID = 0;
 	};
@@ -31,12 +42,20 @@ namespace Jah {
 
 		Shared<VertexArray> QuadVertexArray;
 		Shared<VertexBuffer> QuadVertexBuffer;
-		Shared<Shader> TextureShader;
+		Shared<Shader> QuadShader;
 		Shared<Texture2D> WhiteTexture;
+
+		Shared<VertexArray> CircleVertexArray;
+		Shared<VertexBuffer> CircleVertexBuffer;
+		Shared<Shader> CircleShader;
 
 		uint32_t QuadIndexCount = 0;
 		QuadVertex* QuadVertexBufferBase = nullptr;
 		QuadVertex* QuadVertexBufferPtr = nullptr;
+
+		uint32_t CircleIndexCount = 0;
+		CircleVertex* CircleVertexBufferBase = nullptr;
+		CircleVertex* CircleVertexBufferPtr = nullptr;
 
 		std::array<Shared<Texture2D>, MaxTextureSlots> TextureSlots;
 		uint32_t TextureSlotIndex = 1;
@@ -85,6 +104,25 @@ namespace Jah {
 		delete[] quadIndices;
 
 
+		// Circles
+		Data.CircleVertexArray = std::make_shared<Jah::VertexArray>();
+
+		Data.CircleVertexBuffer = std::make_shared<VertexBuffer>(Data.MaxVertices * sizeof(CircleVertex));
+		Data.CircleVertexBuffer->SetLayout({
+			{ ShaderDataType::Float3,	"a_WorldPosition"	},
+			{ ShaderDataType::Float3,	"a_LocalPosition"	},
+			{ ShaderDataType::Float4,	"a_Color"		},
+			{ ShaderDataType::Float,	"a_Thickness"	},
+			{ ShaderDataType::Float,	"a_Fade"		},
+			{ ShaderDataType::Int,		"a_EntityID"	},
+			});
+		Data.CircleVertexArray->AddVertexBuffer(Data.CircleVertexBuffer);
+		Data.CircleVertexArray->SetIndexBuffer(quadIB); // Use quad IB
+		Data.CircleVertexBufferBase = new CircleVertex[Data.MaxVertices];
+
+
+
+
 		Data.WhiteTexture = std::make_shared<Texture2D>(1, 1);
 		uint32_t whiteTextureData = 0xffffffff;
 		Data.WhiteTexture->SetData(&whiteTextureData, sizeof(whiteTextureData));
@@ -93,9 +131,11 @@ namespace Jah {
 		for (uint32_t i = 0; i < Data.MaxTextureSlots; i++)
 			samplers[i] = i;
 
-		Data.TextureShader = std::make_shared<Jah::Shader>("Assets/Shaders/Texture.glsl");
-		Data.TextureShader->Bind();
-		Data.TextureShader->UploadUniformIntArray("u_Textures", samplers, Data.MaxTextureSlots);
+		Data.QuadShader = CreateShared<Shader>("Assets/Shaders/Renderer2D_Quad.glsl");
+		Data.CircleShader = CreateShared<Shader>("Assets/Shaders/Renderer2D_Circle.glsl");
+
+		Data.QuadShader->Bind();
+		Data.QuadShader->UploadUniformIntArray("u_Textures", samplers, Data.MaxTextureSlots);
 		Data.TextureSlots[0] = Data.WhiteTexture;
 
 		Data.QuadVertexPositions[0] = { -0.5f, -0.5f, 0.0f, 1.0f };
@@ -106,15 +146,16 @@ namespace Jah {
 
 	void Renderer2D::Shutdown()
 	{
-		
+		delete[] Data.QuadVertexBufferBase;
+		delete[] Data.CircleVertexBufferBase;
 	}
 
 	void Renderer2D::BeginScene(Camera& camera, glm::mat4& transform)
 	{
 		glm::mat4 viewProj = camera.GetProjection() * glm::inverse(transform);
 
-		Data.TextureShader->Bind();
-		Data.TextureShader->UploadUniformMat4("u_ViewProjection", viewProj);
+		Data.QuadShader->Bind();
+		Data.QuadShader->UploadUniformMat4("u_ViewProjection", viewProj);
 
 		Data.QuadIndexCount = 0;
 		Data.QuadVertexBufferPtr = Data.QuadVertexBufferBase;
@@ -124,8 +165,8 @@ namespace Jah {
 
 	void Renderer2D::BeginScene(OrthographicCamera& camera)
 	{
-		Data.TextureShader->Bind();
-		Data.TextureShader->UploadUniformMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+		Data.QuadShader->Bind();
+		Data.QuadShader->UploadUniformMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 
 		Data.QuadIndexCount = 0;
 		Data.QuadVertexBufferPtr = Data.QuadVertexBufferBase;
@@ -140,45 +181,63 @@ namespace Jah {
 
 		glm::mat4 viewProj = camera.GetViewProjection();
 
-		Data.TextureShader->Bind();
-		Data.TextureShader->UploadUniformMat4("u_ViewProjection", viewProj);
+		Data.QuadShader->Bind();
+		Data.QuadShader->UploadUniformMat4("u_ViewProjection", viewProj);
 
-		Data.QuadIndexCount = 0;
-		Data.QuadVertexBufferPtr = Data.QuadVertexBufferBase;
+		Data.CircleShader->Bind();
+		Data.CircleShader->UploadUniformMat4("u_ViewProjection", viewProj);
 
-		Data.TextureSlotIndex = 1;
+		StartBatch();
 	}
 
 	void Renderer2D::EndScene()
 	{
-		uint32_t dataSize = uint32_t((uint8_t*)Data.QuadVertexBufferPtr - (uint8_t*)Data.QuadVertexBufferBase);
-		Data.QuadVertexBuffer->SetData(Data.QuadVertexBufferBase, dataSize);
-
 		Flush();
+	}
+
+	void Renderer2D::StartBatch()
+	{
+		Data.QuadIndexCount = 0;
+		Data.QuadVertexBufferPtr = Data.QuadVertexBufferBase;
+
+		Data.CircleIndexCount = 0;
+		Data.CircleVertexBufferPtr = Data.CircleVertexBufferBase;
+
+		Data.TextureSlotIndex = 1;
+	}
+
+	void Renderer2D::NextBatch()
+	{
+		Flush();
+		StartBatch();
 	}
 
 	void Renderer2D::Flush()
 	{
-		if (Data.QuadIndexCount) {
+		if (Data.QuadIndexCount)
+		{
+			uint32_t dataSize = uint32_t((uint8_t*)Data.QuadVertexBufferPtr - (uint8_t*)Data.QuadVertexBufferBase);
+			Data.QuadVertexBuffer->SetData(Data.QuadVertexBufferBase, dataSize);
 
 			for (uint32_t i = 0; i < Data.TextureSlotIndex; i++)
-			{
 				Data.TextureSlots[i]->Bind(i);
-			}
-
+			
+			Data.QuadShader->Bind();
 			Renderer::DrawIndexed(Data.QuadVertexArray, Data.QuadIndexCount);
+			Data.Stats.DrawCalls++;
+		}
 
+		if (Data.CircleIndexCount)
+		{
+			uint32_t dataSize = uint32_t((uint8_t*)Data.CircleVertexBufferPtr - (uint8_t*)Data.CircleVertexBufferBase);
+			Data.CircleVertexBuffer->SetData(Data.CircleVertexBufferBase, dataSize);
+
+			Data.CircleShader->Bind();
+			Renderer::DrawIndexed(Data.CircleVertexArray, Data.CircleIndexCount);
 			Data.Stats.DrawCalls++;
 		}
 	}
-
-	void Renderer2D::FlushAndReset()
-	{
-		EndScene();
-		Data.QuadIndexCount = 0;
-		Data.QuadVertexBufferPtr = Data.QuadVertexBufferBase;
-		Data.TextureSlotIndex = 1;
-	}
+	
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
 	{
@@ -188,7 +247,7 @@ namespace Jah {
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
 	{
 		if (Data.QuadIndexCount >= Renderer2DData::MaxIndices)
-			FlushAndReset();
+			NextBatch();
 
 		const float whiteTextureIndex = 0.0f;
 
@@ -227,7 +286,7 @@ namespace Jah {
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Shared<Texture2D> texture)
 	{
 		if (Data.QuadIndexCount >= Renderer2DData::MaxIndices)
-			FlushAndReset();
+			NextBatch();
 
 		constexpr glm::vec4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
 
@@ -285,7 +344,7 @@ namespace Jah {
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Shared<SubTexture2D> subtexture)
 	{
 		if (Data.QuadIndexCount >= Renderer2DData::MaxIndices)
-			FlushAndReset();
+			NextBatch();
 
 		constexpr uint32_t quadVertexCount = 4;
 		const glm::vec2* texCoords = subtexture->GetTexCoords();
@@ -336,7 +395,7 @@ namespace Jah {
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Shared<Texture2D> texture, const glm::vec2& texCoordMin, const glm::vec2& texCoordMax)
 	{
 		if (Data.QuadIndexCount >= Renderer2DData::MaxIndices)
-			FlushAndReset();
+			NextBatch();
 
 		constexpr uint32_t quadVertexCount = 4;
 
@@ -391,7 +450,7 @@ namespace Jah {
 	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color, int entityID)
 	{
 		if (Data.QuadIndexCount >= Renderer2DData::MaxIndices)
-			FlushAndReset();
+			NextBatch();
 
 		constexpr uint32_t quadVertexCount = 4;
 		constexpr glm::vec2 textureCoords[] = {
@@ -422,7 +481,7 @@ namespace Jah {
 	void Renderer2D::DrawQuad(const glm::mat4& transform, const Shared<Texture2D>& texture, const glm::vec2& texCoordMin, const glm::vec2& texCoordMax, int entityID)
 	{
 		if (Data.QuadIndexCount >= Renderer2DData::MaxIndices)
-			FlushAndReset();
+			NextBatch();
 
 		constexpr uint32_t quadVertexCount = 4;
 
@@ -447,7 +506,7 @@ namespace Jah {
 		if (textureIndex == 0.0f)
 		{
 			if (Data.QuadIndexCount >= Renderer2DData::MaxIndices)
-				FlushAndReset();
+				NextBatch();
 
 			textureIndex = (float)Data.TextureSlotIndex;
 			Data.TextureSlots[Data.TextureSlotIndex] = texture;
@@ -469,6 +528,27 @@ namespace Jah {
 		Data.Stats.QuadCount++;
 	}
 
+	void Renderer2D::DrawCircle(const glm::mat4& transform, const glm::vec4& color, float thickness /*= 1.0f*/, float fade /*= 0.005f*/, int entityID /*= -1*/)
+	{
+		if (Data.CircleIndexCount >= Renderer2DData::MaxIndices)
+			NextBatch();
+
+		for (int i = 0; i < 4; i++)
+		{
+			Data.CircleVertexBufferPtr->WorldPosition = transform * Data.QuadVertexPositions[i];
+			Data.CircleVertexBufferPtr->LocalPosition = Data.QuadVertexPositions[i] * 2.0f;
+			Data.CircleVertexBufferPtr->Color = color;
+			Data.CircleVertexBufferPtr->Thickness = thickness;
+			Data.CircleVertexBufferPtr->Fade = fade;
+			Data.CircleVertexBufferPtr->EntityID = entityID;
+			Data.CircleVertexBufferPtr++;
+
+		}
+		Data.CircleIndexCount += 6;
+
+		Data.Stats.QuadCount++;
+	}
+
 	void Renderer2D::DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, int entityID)
 	{
 		if (src.Texture)
@@ -485,7 +565,7 @@ namespace Jah {
 	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const glm::vec4& color)
 	{
 		if (Data.QuadIndexCount >= Renderer2DData::MaxIndices)
-			FlushAndReset();
+			NextBatch();
 
 		const float whiteTextureIndex = 0.0f;
 
@@ -524,7 +604,7 @@ namespace Jah {
 	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Shared<Texture2D> texture)
 	{
 		if (Data.QuadIndexCount >= Renderer2DData::MaxIndices)
-			FlushAndReset();
+			NextBatch();
 
 		constexpr glm::vec4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
 
@@ -581,7 +661,7 @@ namespace Jah {
 	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Shared<SubTexture2D> subtexture)
 	{
 		if (Data.QuadIndexCount >= Renderer2DData::MaxIndices)
-			FlushAndReset();
+			NextBatch();
 
 		constexpr glm::vec4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
 
@@ -633,7 +713,7 @@ namespace Jah {
 	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Shared<Texture2D> texture, const glm::vec2& texCoordMin, const glm::vec2& texCoordMax)
 	{
 		if (Data.QuadIndexCount >= Renderer2DData::MaxIndices)
-			FlushAndReset();
+			NextBatch();
 
 		constexpr uint32_t quadVertexCount = 4;
 
