@@ -36,6 +36,10 @@ namespace Jah {
 		static void DrawQuad(const glm::mat4& transform, const Shared<Texture2D>& texture, const glm::vec2& texCoordMin, const glm::vec2& texCoordMax, int entityID = -1);
 		
 		static void DrawCircle(const glm::mat4& transform, const glm::vec4& color, float thickness = 1.0f, float fade = 0.005f, int entityID = -1);
+		static void DrawLine(const glm::vec3& p0, const glm::vec3& p1, const glm::vec4& color, int entityID = -1);
+		static void DrawRect(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color, int entityID = -1);
+		static void DrawRect(const glm::mat4& transform, const glm::vec4& color, int entityID = -1);
+
 		static void DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, int entityID = -1);
 
 		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const glm::vec4& color);
@@ -46,6 +50,9 @@ namespace Jah {
 		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Shared<Texture2D> texture, const glm::vec2& texCoordMin, const glm::vec2& texCoordMax);
 		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Shared<SubTexture2D> subtexture);
 		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Shared<SubTexture2D> subtexture);
+
+		static float GetLineWidth();
+		static void SetLineWidth(float width);
 
 		struct Statistics
 		{

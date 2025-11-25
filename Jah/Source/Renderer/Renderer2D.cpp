@@ -33,6 +33,14 @@ namespace Jah {
 		int EntityID = 0;
 	};
 
+	struct LineVertex
+	{
+		glm::vec3 Position = {};
+		glm::vec4 Color = {};
+
+		int EntityID = 0;
+	};
+
 	struct Renderer2DData
 	{
 		static constexpr uint32_t MaxQuads = 20000;
@@ -49,6 +57,11 @@ namespace Jah {
 		Shared<VertexBuffer> CircleVertexBuffer;
 		Shared<Shader> CircleShader;
 
+		Shared<VertexArray> LineVertexArray;
+		Shared<VertexBuffer> LineVertexBuffer;
+		Shared<Shader> LineShader;
+		float LineWidth = 2.0f;
+
 		uint32_t QuadIndexCount = 0;
 		QuadVertex* QuadVertexBufferBase = nullptr;
 		QuadVertex* QuadVertexBufferPtr = nullptr;
@@ -56,6 +69,10 @@ namespace Jah {
 		uint32_t CircleIndexCount = 0;
 		CircleVertex* CircleVertexBufferBase = nullptr;
 		CircleVertex* CircleVertexBufferPtr = nullptr;
+
+		uint32_t LineVertexCount = 0;
+		LineVertex* LineVertexBufferBase = nullptr;
+		LineVertex* LineVertexBufferPtr = nullptr;
 
 		std::array<Shared<Texture2D>, MaxTextureSlots> TextureSlots;
 		uint32_t TextureSlotIndex = 1;
@@ -69,9 +86,9 @@ namespace Jah {
 
 	void Renderer2D::Init()
 	{
-		Data.QuadVertexArray = std::make_shared<Jah::VertexArray>();
+		Data.QuadVertexArray = CreateShared<VertexArray>();
 
-		Data.QuadVertexBuffer = std::make_shared<VertexBuffer>(Data.MaxVertices * sizeof(QuadVertex));
+		Data.QuadVertexBuffer = CreateShared<VertexBuffer>(Data.MaxVertices * sizeof(QuadVertex));
 		Data.QuadVertexBuffer->SetLayout({
 			{ ShaderDataType::Float3,	"a_Position"	},
 			{ ShaderDataType::Float4,	"a_Color"		},
@@ -99,15 +116,15 @@ namespace Jah {
 			offset += 4;
 		}
 
-		std::shared_ptr<Jah::IndexBuffer> quadIB = std::make_shared<IndexBuffer>(quadIndices, Data.MaxIndices);
+		std::shared_ptr<IndexBuffer> quadIB = CreateShared<IndexBuffer>(quadIndices, Data.MaxIndices);
 		Data.QuadVertexArray->SetIndexBuffer(quadIB);
 		delete[] quadIndices;
 
 
 		// Circles
-		Data.CircleVertexArray = std::make_shared<Jah::VertexArray>();
+		Data.CircleVertexArray = CreateShared<VertexArray>();
 
-		Data.CircleVertexBuffer = std::make_shared<VertexBuffer>(Data.MaxVertices * sizeof(CircleVertex));
+		Data.CircleVertexBuffer = CreateShared<VertexBuffer>(Data.MaxVertices * sizeof(CircleVertex));
 		Data.CircleVertexBuffer->SetLayout({
 			{ ShaderDataType::Float3,	"a_WorldPosition"	},
 			{ ShaderDataType::Float3,	"a_LocalPosition"	},
@@ -115,15 +132,26 @@ namespace Jah {
 			{ ShaderDataType::Float,	"a_Thickness"	},
 			{ ShaderDataType::Float,	"a_Fade"		},
 			{ ShaderDataType::Int,		"a_EntityID"	},
-			});
+		});
 		Data.CircleVertexArray->AddVertexBuffer(Data.CircleVertexBuffer);
 		Data.CircleVertexArray->SetIndexBuffer(quadIB); // Use quad IB
 		Data.CircleVertexBufferBase = new CircleVertex[Data.MaxVertices];
 
 
+		// Lines
+		Data.LineVertexArray = CreateShared<VertexArray>();
 
+		Data.LineVertexBuffer = CreateShared<VertexBuffer>(Data.MaxVertices * sizeof(LineVertex));
+		Data.LineVertexBuffer->SetLayout({
+			{ ShaderDataType::Float3,	"a_Position"	},
+			{ ShaderDataType::Float4,	"a_Color"		},
+			{ ShaderDataType::Int,		"a_EntityID"	},
+		});
+		Data.LineVertexArray->AddVertexBuffer(Data.LineVertexBuffer);
+		Data.LineVertexBufferBase = new LineVertex[Data.MaxVertices];
 
-		Data.WhiteTexture = std::make_shared<Texture2D>(1, 1);
+		// Textures
+		Data.WhiteTexture = CreateShared<Texture2D>(1, 1);
 		uint32_t whiteTextureData = 0xffffffff;
 		Data.WhiteTexture->SetData(&whiteTextureData, sizeof(whiteTextureData));
 
@@ -133,6 +161,7 @@ namespace Jah {
 
 		Data.QuadShader = CreateShared<Shader>("Assets/Shaders/Renderer2D_Quad.glsl");
 		Data.CircleShader = CreateShared<Shader>("Assets/Shaders/Renderer2D_Circle.glsl");
+		Data.LineShader = CreateShared<Shader>("Assets/Shaders/Renderer2D_Line.glsl");
 
 		Data.QuadShader->Bind();
 		Data.QuadShader->UploadUniformIntArray("u_Textures", samplers, Data.MaxTextureSlots);
@@ -157,6 +186,12 @@ namespace Jah {
 		Data.QuadShader->Bind();
 		Data.QuadShader->UploadUniformMat4("u_ViewProjection", viewProj);
 
+		Data.CircleShader->Bind();
+		Data.CircleShader->UploadUniformMat4("u_ViewProjection", viewProj);
+
+		Data.LineShader->Bind();
+		Data.LineShader->UploadUniformMat4("u_ViewProjection", viewProj);
+
 		Data.QuadIndexCount = 0;
 		Data.QuadVertexBufferPtr = Data.QuadVertexBufferBase;
 
@@ -167,6 +202,12 @@ namespace Jah {
 	{
 		Data.QuadShader->Bind();
 		Data.QuadShader->UploadUniformMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+
+		Data.CircleShader->Bind();
+		Data.CircleShader->UploadUniformMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+
+		Data.LineShader->Bind();
+		Data.LineShader->UploadUniformMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 
 		Data.QuadIndexCount = 0;
 		Data.QuadVertexBufferPtr = Data.QuadVertexBufferBase;
@@ -187,6 +228,9 @@ namespace Jah {
 		Data.CircleShader->Bind();
 		Data.CircleShader->UploadUniformMat4("u_ViewProjection", viewProj);
 
+		Data.LineShader->Bind();
+		Data.LineShader->UploadUniformMat4("u_ViewProjection", viewProj);
+
 		StartBatch();
 	}
 
@@ -202,6 +246,9 @@ namespace Jah {
 
 		Data.CircleIndexCount = 0;
 		Data.CircleVertexBufferPtr = Data.CircleVertexBufferBase;
+
+		Data.LineVertexCount = 0;
+		Data.LineVertexBufferPtr = Data.LineVertexBufferBase;
 
 		Data.TextureSlotIndex = 1;
 	}
@@ -234,6 +281,17 @@ namespace Jah {
 
 			Data.CircleShader->Bind();
 			Renderer::DrawIndexed(Data.CircleVertexArray, Data.CircleIndexCount);
+			Data.Stats.DrawCalls++;
+		}
+
+		if (Data.LineVertexCount)
+		{
+			uint32_t dataSize = uint32_t((uint8_t*)Data.LineVertexBufferPtr - (uint8_t*)Data.LineVertexBufferBase);
+			Data.LineVertexBuffer->SetData(Data.LineVertexBufferBase, dataSize);
+
+			Data.LineShader->Bind();
+			Renderer::SetLineWidth(Data.LineWidth);
+			Renderer::DrawLines(Data.LineVertexArray, Data.LineVertexCount);
 			Data.Stats.DrawCalls++;
 		}
 	}
@@ -409,8 +467,6 @@ namespace Jah {
 			{ texCoordMin.x, texCoordMax.y },
 		};
 
-	
-
 		constexpr glm::vec4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
 
 		float textureIndex = 0.0f;
@@ -430,8 +486,6 @@ namespace Jah {
 			Data.TextureSlots[Data.TextureSlotIndex] = texture;
 			Data.TextureSlotIndex++;
 		}
-
-	
 
 		for (int i = 0; i < 4; i++)
 		{
@@ -547,6 +601,46 @@ namespace Jah {
 		Data.CircleIndexCount += 6;
 
 		Data.Stats.QuadCount++;
+	}
+
+	void Renderer2D::DrawLine(const glm::vec3& p0, const glm::vec3& p1, const glm::vec4& color, int entityID)
+	{
+		Data.LineVertexBufferPtr->Position = p0;
+		Data.LineVertexBufferPtr->Color = color;
+		Data.LineVertexBufferPtr->EntityID = entityID;
+		Data.LineVertexBufferPtr++;
+
+		Data.LineVertexBufferPtr->Position = p1;
+		Data.LineVertexBufferPtr->Color = color;
+		Data.LineVertexBufferPtr->EntityID = entityID;
+		Data.LineVertexBufferPtr++;
+
+		Data.LineVertexCount += 2;
+	}
+
+	void Renderer2D::DrawRect(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color, int entityID /*= -1*/)
+	{
+		glm::vec3 p0 = glm::vec3(position.x - size.x / 2, position.y - size.y / 2, 0);
+		glm::vec3 p1 = glm::vec3(position.x + size.x / 2, position.y - size.y / 2, 0);
+		glm::vec3 p2 = glm::vec3(position.x + size.x / 2, position.y + size.y / 2, 0);
+		glm::vec3 p3 = glm::vec3(position.x - size.x / 2, position.y + size.y / 2, 0);
+
+		DrawLine(p0, p1, color, entityID);
+		DrawLine(p1, p2, color, entityID);
+		DrawLine(p2, p3, color, entityID);
+		DrawLine(p3, p0, color, entityID);
+	}
+
+	void Renderer2D::DrawRect(const glm::mat4& transform, const glm::vec4& color, int entityID /*= -1*/)
+	{
+		glm::vec3 lineVertices[4];
+		for (size_t i = 0; i < 4; i++)
+			lineVertices[i] = transform * Data.QuadVertexPositions[i];
+
+		DrawLine(lineVertices[0], lineVertices[1], color, entityID);
+		DrawLine(lineVertices[1], lineVertices[2], color, entityID);
+		DrawLine(lineVertices[2], lineVertices[3], color, entityID);
+		DrawLine(lineVertices[3], lineVertices[0], color, entityID);
 	}
 
 	void Renderer2D::DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, int entityID)
@@ -762,6 +856,16 @@ namespace Jah {
 		Data.QuadIndexCount += 6;
 
 		Data.Stats.QuadCount++;
+	}
+
+	float Renderer2D::GetLineWidth()
+	{
+		return Data.LineWidth;
+	}
+
+	void Renderer2D::SetLineWidth(float width)
+	{
+		Renderer::SetLineWidth(width);
 	}
 
 	void Renderer2D::ResetStats()

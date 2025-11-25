@@ -14,6 +14,9 @@ namespace Jah {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_LINE_SMOOTH);
+
 		Renderer2D::Init();
 	}
 
@@ -64,7 +67,7 @@ namespace Jah {
 
 	void Renderer::Clear()
 	{
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
 	void Renderer::DrawIndexed(const Shared<VertexArray>& vertexArray, uint32_t indexCount)
@@ -72,6 +75,17 @@ namespace Jah {
 		vertexArray->Bind();
 		uint32_t count = indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetCount();
 		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
+	}
+
+	void Renderer::DrawLines(const Shared<VertexArray>& vertexArray, uint32_t vertexCount)
+	{
+		vertexArray->Bind();
+		glDrawArrays(GL_LINES, 0, vertexCount);
+	}
+
+	void Renderer::SetLineWidth(float width)
+	{
+		glLineWidth(width);
 	}
 
 }

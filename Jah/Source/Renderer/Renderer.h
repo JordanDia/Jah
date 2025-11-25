@@ -30,6 +30,9 @@ namespace Jah {
 		static void Clear();
 
 		static void DrawIndexed(const Shared<VertexArray>& vertexArray, uint32_t indexCount = 0);
+		static void DrawLines(const Shared<VertexArray>& vertexArray, uint32_t vertexCount = 0);
+
+		static void SetLineWidth(float width);
 
 	private:
 		struct SceneData

@@ -21,7 +21,7 @@ namespace Jah {
 		case Rigidbody2DComponent::BodyType::Static: return b2_staticBody;
 		case Rigidbody2DComponent::BodyType::Dynamic: return b2_dynamicBody;
 		case Rigidbody2DComponent::BodyType::Kinematic: return b2_kinematicBody;
-		default: JAH_ASSERT(false, "Invalid body type!");
+		default: JAH_ASSERT(false, "Invalid body type!"); return b2_staticBody;
 		}
 	}
 
@@ -188,7 +188,7 @@ namespace Jah {
 	{
 		Renderer2D::BeginScene(camera);
 		
-
+		// Draw Sprites
 		{
 			auto view = m_Registry.View<TransformComponent, SpriteRendererComponent>();
 
@@ -199,10 +199,12 @@ namespace Jah {
 				auto& spriteRenderer = m_Registry.Get<SpriteRendererComponent>(entityID);
 
 				Renderer2D::DrawSprite(transform.GetTransform(), spriteRenderer, (int)entityID);
+				//Renderer2D::DrawRect(transform.GetTransform(), glm::vec4(1.0f), (int)entityID);
 			}
 
 		}
 
+		// Draw Circles
 		{
 			auto view = m_Registry.View<TransformComponent, CircleRendererComponent>();
 
@@ -216,7 +218,6 @@ namespace Jah {
 			}
 
 		}
-
 		Renderer2D::EndScene();
 	}
 

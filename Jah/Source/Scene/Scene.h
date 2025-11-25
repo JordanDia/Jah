@@ -49,7 +49,7 @@ namespace Jah {
 		uint32_t m_ViewportWidth = 0;
 		uint32_t m_ViewportHeight = 0;
 
-		b2WorldId m_PhysicsWorldID;
+		b2WorldId m_PhysicsWorldID{};
 
 		friend class Entity;
 		friend class SceneSerializer;
