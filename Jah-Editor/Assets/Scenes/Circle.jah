@@ -1,22 +1,5 @@
 Scene: Untitled
 Entities:
-  - Entity: 11479805536298567263
-    TagComponent:
-      Tag: Square
-    TransformComponent:
-      Translation: [1.4900778e-08, 1.4146534, 2.3605988e-09]
-      Rotation: [0, 0, 0]
-      Scale: [0.49999994, 0.5, 0.9999998]
-    SpriteRendererComponent:
-      Color: [0.3, 0.4, 1, 1]
-    Rigidbody2DComponent:
-      BodyType: Dynamic
-    BoxCollider2DComponent:
-      Offset: [0, 0]
-      Size: [0.5, 0.5]
-      Density: 1
-      Friction: 0.5
-      Restitution: 1
   - Entity: 11190404779375098579
     TagComponent:
       Tag: Camera
@@ -57,10 +40,10 @@ Entities:
       Tag: Circle
     TransformComponent:
       Translation: [-0.002371721, -0.029877245, 0.10868829]
-      Rotation: [0, 0, 0]
+      Rotation: [0.008678234, -0.11114398, -0.817123]
       Scale: [0.49999994, 0.5, 0.9999998]
     CircleRendererComponent:
-      Color: [0.7721519, 0.35186666, 0, 1]
+      Color: [1, 1, 1, 1]
       Thickness: 1
       Fade: 0.005
     Rigidbody2DComponent:
@@ -69,5 +52,5 @@ Entities:
       Radius: 0.5
       Offset: [0, 0]
       Density: 1
-      Friction: 0
-      Restitution: 1
+      Friction: 0.5
+      Restitution: 0

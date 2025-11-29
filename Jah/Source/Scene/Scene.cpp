@@ -73,10 +73,12 @@ namespace Jah {
 
 		CopyComponent<TransformComponent>(dstSceneRegistry, srcSceneRegistry, entityMap);
 		CopyComponent<SpriteRendererComponent>(dstSceneRegistry, srcSceneRegistry, entityMap);
+		CopyComponent<CircleRendererComponent>(dstSceneRegistry, srcSceneRegistry, entityMap);
 		CopyComponent<CameraComponent>(dstSceneRegistry, srcSceneRegistry, entityMap);
 		CopyComponent<NativeScriptComponent>(dstSceneRegistry, srcSceneRegistry, entityMap);
 		CopyComponent<Rigidbody2DComponent>(dstSceneRegistry, srcSceneRegistry, entityMap);
 		CopyComponent<BoxCollider2DComponent>(dstSceneRegistry, srcSceneRegistry, entityMap);
+		CopyComponent<CircleCollider2DComponent>(dstSceneRegistry, srcSceneRegistry, entityMap);
 
 		return newScene;
 	}
@@ -117,8 +119,7 @@ namespace Jah {
 
 			b2BodyDef bodyDef = b2DefaultBodyDef();
 			bodyDef.type = Rigidbody2DTypeToBox2DType(rb2d.Type);
-			bodyDef.position = {transform.Translation.x, transform.Translation.y };
-			
+			bodyDef.position = { transform.Translation.x, transform.Translation.y };
 			
 			bodyDef.rotation = b2MakeRot(transform.Rotation.z);
 			
@@ -136,7 +137,26 @@ namespace Jah {
 				shapeDef.material.restitution = bc2d.Restitution;
 				shapeDef.density = 1.0f;
 
-				b2ShapeId shapeId = b2CreatePolygonShape(bodyID, &shapeDef, &boxShape);
+				b2CreatePolygonShape(bodyID, &shapeDef, &boxShape);
+
+
+				
+			}
+
+			if (entity.HasComponent<CircleCollider2DComponent>())
+			{
+				auto& cc2d = entity.GetComponent<CircleCollider2DComponent>();
+				
+				b2Circle circle;
+				circle.center = { cc2d.Offset.x * transform.Scale.x, cc2d.Offset.y * transform.Scale.y };
+				circle.radius = cc2d.Radius * transform.Scale.x;
+
+				b2ShapeDef shapeDef = b2DefaultShapeDef();
+				shapeDef.material.friction = cc2d.Friction;
+				shapeDef.material.restitution = cc2d.Restitution;
+				shapeDef.density = 1.0f;
+
+				b2CreateCircleShape(bodyID, &shapeDef, &circle);
 			}
 		}
 	}
@@ -298,13 +318,23 @@ namespace Jah {
 
 				for (auto entityID : view)
 				{
-
 					auto& transform = m_Registry.Get<TransformComponent>(entityID);
 					auto& spriteRenderer = m_Registry.Get<SpriteRendererComponent>(entityID);
 
 					Renderer2D::DrawSprite(transform.GetTransform(), spriteRenderer, (int)entityID);
 				}
+			}
 
+			{
+				auto view = m_Registry.View<TransformComponent, CircleRendererComponent>();
+
+				for (auto entityID : view)
+				{
+					auto& transform = m_Registry.Get<TransformComponent>(entityID);
+					auto& circleRenderer = m_Registry.Get<CircleRendererComponent>(entityID);
+
+					Renderer2D::DrawCircle(transform.GetTransform(), circleRenderer.Color, circleRenderer.Thickness, circleRenderer.Fade, (int)entityID);
+				}
 			}
 
 			Renderer2D::EndScene();
@@ -340,6 +370,7 @@ namespace Jah {
 		CopyComponentIfExists<NativeScriptComponent>(newEntity, entity);
 		CopyComponentIfExists<Rigidbody2DComponent>(newEntity, entity);
 		CopyComponentIfExists<BoxCollider2DComponent>(newEntity, entity);
+		CopyComponentIfExists<CircleCollider2DComponent>(newEntity, entity);
 	}
 
 	Entity Scene::GetPrimaryCameraEntity()
@@ -411,6 +442,12 @@ namespace Jah {
 
 	template<>
 	void Scene::OnComponentAdded<BoxCollider2DComponent>(EntityID entityID, BoxCollider2DComponent& component)
+	{
+
+	}
+
+	template<>
+	void Scene::OnComponentAdded<CircleCollider2DComponent>(EntityID entityID, CircleCollider2DComponent& component)
 	{
 
 	}

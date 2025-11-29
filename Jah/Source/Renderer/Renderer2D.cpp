@@ -195,6 +195,12 @@ namespace Jah {
 		Data.QuadIndexCount = 0;
 		Data.QuadVertexBufferPtr = Data.QuadVertexBufferBase;
 
+		Data.CircleIndexCount = 0;
+		Data.CircleVertexBufferPtr = Data.CircleVertexBufferBase;
+
+		Data.LineVertexCount = 0;
+		Data.LineVertexBufferPtr = Data.LineVertexBufferBase;
+
 		Data.TextureSlotIndex = 1;
 	}
 

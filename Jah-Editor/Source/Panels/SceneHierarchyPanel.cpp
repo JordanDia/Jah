@@ -294,6 +294,15 @@ namespace Jah {
 				}
 			}
 
+			if (!entity.HasComponent<CircleCollider2DComponent>())
+			{
+				if (ImGui::MenuItem("Circle Collider 2D"))
+				{
+					entity.AddComponent<CircleCollider2DComponent>();
+					ImGui::CloseCurrentPopup();
+				}
+			}
+
 			ImGui::EndPopup();
 		}
 
@@ -301,75 +310,75 @@ namespace Jah {
 
 
 		DrawComponent<TransformComponent>("Transform", entityID, m_Context, [](auto& component)
-			{
-				DrawVec3Control("Translation", component.Translation);
-				glm::vec3 rotation = glm::degrees(component.Rotation);
-				DrawVec3Control("Rotation", rotation);
-				component.Rotation = glm::radians(rotation);
-				DrawVec3Control("Scale", component.Scale, 1.0f);
-			});
+		{
+			DrawVec3Control("Translation", component.Translation);
+			glm::vec3 rotation = glm::degrees(component.Rotation);
+			DrawVec3Control("Rotation", rotation);
+			component.Rotation = glm::radians(rotation);
+			DrawVec3Control("Scale", component.Scale, 1.0f);
+		});
 
 		DrawComponent<CameraComponent>("Camera", entityID, m_Context, [](auto& component)
+		{
+			auto& camera = component.Camera;
+
+			ImGui::Checkbox("Primary", &component.Primary);
+
+			const char* projectionTypeStrings[] = { "Perspective", "Orthographic" };
+			const char* currentProjectionTypeString = projectionTypeStrings[(uint32_t)camera.GetProjectionType()];
+			if (ImGui::BeginCombo("Projection", currentProjectionTypeString))
 			{
-				auto& camera = component.Camera;
-
-				ImGui::Checkbox("Primary", &component.Primary);
-
-				const char* projectionTypeStrings[] = { "Perspective", "Orthographic" };
-				const char* currentProjectionTypeString = projectionTypeStrings[(uint32_t)camera.GetProjectionType()];
-				if (ImGui::BeginCombo("Projection", currentProjectionTypeString))
+				for (int i = 0; i < 2; i++)
 				{
-					for (int i = 0; i < 2; i++)
+					bool isSelected = currentProjectionTypeString == projectionTypeStrings[i];
+
+					if (ImGui::Selectable(projectionTypeStrings[i], isSelected))
 					{
-						bool isSelected = currentProjectionTypeString == projectionTypeStrings[i];
-
-						if (ImGui::Selectable(projectionTypeStrings[i], isSelected))
-						{
-							currentProjectionTypeString = projectionTypeStrings[i];
-							component.Camera.SetProjectionType((SceneCamera::ProjectionType)i);
-						}
-
-						if (isSelected)
-							ImGui::SetItemDefaultFocus();
+						currentProjectionTypeString = projectionTypeStrings[i];
+						component.Camera.SetProjectionType((SceneCamera::ProjectionType)i);
 					}
 
-
-					ImGui::EndCombo();
-				}
-
-				if (camera.GetProjectionType() == SceneCamera::ProjectionType::Perspective)
-				{
-					float verticalFov = glm::degrees(camera.GetPerspectiveVerticalFOV());
-					if (ImGui::DragFloat("Vertical FOV", &verticalFov))
-						camera.SetPerspectiveVerticalFOV(glm::radians(verticalFov));
-
-					float perspectiveNear = camera.GetPerspectiveNearClip();
-					if (ImGui::DragFloat("Near", &perspectiveNear))
-						camera.SetPerspectiveNearClip(perspectiveNear);
-
-					float perspectiveFar = camera.GetPerspectiveFarClip();
-					if (ImGui::DragFloat("Far", &perspectiveFar))
-						camera.SetPerspectiveFarClip(perspectiveFar);
+					if (isSelected)
+						ImGui::SetItemDefaultFocus();
 				}
 
 
-				if (camera.GetProjectionType() == SceneCamera::ProjectionType::Orthographic)
-				{
-					float orthoSize = camera.GetOrthographicSize();
-					if (ImGui::DragFloat("Size", &orthoSize))
-						camera.SetOrthographicSize(orthoSize);
+				ImGui::EndCombo();
+			}
 
-					float orthoNear = camera.GetOrthographicNearClip();
-					if (ImGui::DragFloat("Near", &orthoNear))
-						camera.SetOrthographicNearClip(orthoNear);
+			if (camera.GetProjectionType() == SceneCamera::ProjectionType::Perspective)
+			{
+				float verticalFov = glm::degrees(camera.GetPerspectiveVerticalFOV());
+				if (ImGui::DragFloat("Vertical FOV", &verticalFov))
+					camera.SetPerspectiveVerticalFOV(glm::radians(verticalFov));
 
-					float orthoFar = camera.GetOrthographicFarClip();
-					if (ImGui::DragFloat("Far", &orthoFar))
-						camera.SetOrthographicFarClip(orthoFar);
+				float perspectiveNear = camera.GetPerspectiveNearClip();
+				if (ImGui::DragFloat("Near", &perspectiveNear))
+					camera.SetPerspectiveNearClip(perspectiveNear);
 
-					ImGui::Checkbox("Fixed Aspect Ratio", &component.FixedAspectRatio);
-				}
-			});
+				float perspectiveFar = camera.GetPerspectiveFarClip();
+				if (ImGui::DragFloat("Far", &perspectiveFar))
+					camera.SetPerspectiveFarClip(perspectiveFar);
+			}
+
+
+			if (camera.GetProjectionType() == SceneCamera::ProjectionType::Orthographic)
+			{
+				float orthoSize = camera.GetOrthographicSize();
+				if (ImGui::DragFloat("Size", &orthoSize))
+					camera.SetOrthographicSize(orthoSize);
+
+				float orthoNear = camera.GetOrthographicNearClip();
+				if (ImGui::DragFloat("Near", &orthoNear))
+					camera.SetOrthographicNearClip(orthoNear);
+
+				float orthoFar = camera.GetOrthographicFarClip();
+				if (ImGui::DragFloat("Far", &orthoFar))
+					camera.SetOrthographicFarClip(orthoFar);
+
+				ImGui::Checkbox("Fixed Aspect Ratio", &component.FixedAspectRatio);
+			}
+		});
 
 		
 
@@ -427,13 +436,20 @@ namespace Jah {
 
 		DrawComponent<BoxCollider2DComponent>("Box Collider 2D", entityID, m_Context, [](auto& component)
 		{
-			ImGui::DragFloat2("Offset", glm::value_ptr(component.Offset));
-			ImGui::DragFloat2("Size", glm::value_ptr(component.Size));
+			ImGui::DragFloat2("Offset", glm::value_ptr(component.Offset), 0.01f);
+			ImGui::DragFloat2("Size", glm::value_ptr(component.Size), 0.01f);
 			ImGui::DragFloat("Density", &component.Density, 0.01f, 0.0f, 1.0f);
 			ImGui::DragFloat("Friction", &component.Friction, 0.01f, 0.0f, 1.0f);
 			ImGui::DragFloat("Restitution", &component.Restitution, 0.01f, 0.0f, 1.0f);
+		});
 
-
+		DrawComponent<CircleCollider2DComponent>("Circle Collider 2D", entityID, m_Context, [](auto& component)
+		{
+			ImGui::DragFloat("Radius", &component.Radius, 0.01f);
+			ImGui::DragFloat2("Offset", glm::value_ptr(component.Offset), 0.01f);
+			ImGui::DragFloat("Density", &component.Density, 0.01f, 0.0f, 1.0f);
+			ImGui::DragFloat("Friction", &component.Friction, 0.01f, 0.0f, 1.0f);
+			ImGui::DragFloat("Restitution", &component.Restitution, 0.01f, 0.0f, 1.0f);
 		});
 	}
 

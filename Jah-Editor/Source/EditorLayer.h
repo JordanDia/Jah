@@ -42,11 +42,16 @@ namespace Jah {
 		void OnScenePlay();
 		void OnSceneStop();
 
+		void OnOverlayRender();
+
 		void DuplicateEntity();
 
 		// UI Panels
 
 		void UI_Toolbar();
+
+		
+
 	private:
 		Shared<Scene> m_ActiveScene;
 		Shared<Scene> m_EditorScene;
@@ -70,6 +75,9 @@ namespace Jah {
 
 		
 		int m_GizmoType = -1;
+
+		bool m_ShowPhysicsColliders = false;
+		glm::vec4 m_ColliderColor{ 0.0f, 1.0f, 0.0f, 1.0f };
 
 		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
 		glm::vec2 m_ViewportBounds[2];

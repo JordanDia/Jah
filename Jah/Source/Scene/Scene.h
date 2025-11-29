@@ -40,6 +40,12 @@ namespace Jah {
 
 		Entity GetPrimaryCameraEntity();
 
+		template<typename... Components>
+		auto GetAllComponentsWith()
+		{
+			return m_Registry.View<Components...>();
+		}
+
 	private:
 		template<typename T>
 		void OnComponentAdded(EntityID entity, T& component);
