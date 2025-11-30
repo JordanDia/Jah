@@ -16,7 +16,7 @@ namespace Jah {
 	{
 	public:
 		Scene() = default;
-		~Scene() = default;
+		~Scene();
 
 		static Shared<Scene> Copy(Shared<Scene> other);
 
@@ -27,9 +27,12 @@ namespace Jah {
 		void OnRuntimeStart();
 		void OnRuntimeStop();
 
-		void OnRender(Camera& camera);
+		void OnSimulationStart();
+		void OnSimulationStop();
+
 		void OnRender(OrthographicCamera& camera);
 		void OnUpdateEditor(Timestep timestep, EditorCamera& camera);
+		void OnUpdateSimulation(Timestep timestep, EditorCamera& camera);
 		void OnUpdateRuntime(Timestep timestep);
 
 		void OnViewportResize(uint32_t width, uint32_t height);
@@ -49,6 +52,11 @@ namespace Jah {
 	private:
 		template<typename T>
 		void OnComponentAdded(EntityID entity, T& component);
+
+		void OnPhysics2DStart();
+		void OnPhysics2DStop();
+
+		void RenderScene(EditorCamera& camera);
 
 	private:
 		Registry m_Registry;

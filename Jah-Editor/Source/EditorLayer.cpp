@@ -25,6 +25,7 @@ namespace Jah {
 		m_SquareColor = { 0.0f, 0.4f, 1.0f, 1.0f };
 
 		m_IconPlay = CreateShared<Texture2D>("Resources/Icons/PlayButton.png");
+		m_IconSimulate = CreateShared<Texture2D>("Resources/Icons/SimulateButton.png");
 		m_IconStop = CreateShared<Texture2D>("Resources/Icons/StopButton.png");
 
 		m_ParticleProps.ColorBegin = { 0.0f, 0.4f, 1.0f, 1.0f };
@@ -43,7 +44,8 @@ namespace Jah {
 		framebufferSpec.Height = Application::Get().GetWindow().GetHeight();
 		m_Framebuffer = std::make_shared<Framebuffer>(framebufferSpec);
 
-		m_ActiveScene = std::make_shared<Scene>();
+		m_EditorScene = CreateShared<Scene>();
+		m_ActiveScene = m_EditorScene;
 		m_EditorCamera = EditorCamera(30.0f, 16.0f / 9.0f, 0.1f, 1000.0f);
 
 #if 0
@@ -110,9 +112,6 @@ namespace Jah {
 
 	void EditorLayer::OnUpdate(Timestep timestep)
 	{
-
-		
-
 		if (FramebufferSpecification spec = m_Framebuffer->GetSpecification();
 			m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f &&
 			(spec.Width != m_ViewportSize.x || spec.Height != m_ViewportSize.y))
@@ -122,12 +121,9 @@ namespace Jah {
 
 			if (m_ActiveScene)
 				m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
-
 		}
 
 		m_FPS = 1.0f / timestep;
-
-		
 
 		// Render
 		Renderer2D::ResetStats();
@@ -139,17 +135,11 @@ namespace Jah {
 		// Clear our entity ID attachment to -1
 		m_Framebuffer->ClearAttachment(1, -1);
 
-
 		switch (m_SceneState)
 		{
 			case SceneState::Edit:
 			{
-
-				if (m_ViewportFocused)
-					m_CameraController.OnUpdate(timestep);
-
 				m_EditorCamera.OnUpdate(timestep);
-
 				m_ActiveScene->OnUpdateEditor(timestep, m_EditorCamera);
 				break;
 			}
@@ -157,6 +147,13 @@ namespace Jah {
 			case SceneState::Play:
 			{
 				m_ActiveScene->OnUpdateRuntime(timestep);
+				break;
+			}
+
+			case SceneState::Simulate:
+			{
+				m_EditorCamera.OnUpdate(timestep);
+				m_ActiveScene->OnUpdateSimulation(timestep, m_EditorCamera);
 				break;
 			}
 		}
@@ -395,20 +392,42 @@ namespace Jah {
 		ImGuiWindowFlags flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse;
 		ImGui::Begin("##Toolbar", nullptr, flags);
 
+		bool toolbarEnabled = (bool)m_ActiveScene;
+
+		ImVec4 tintColor = ImVec4(1, 1, 1, 1);
+		if (!toolbarEnabled)
+			tintColor.w = 0.5f;
+
 		float size = ImGui::GetWindowHeight() - 4.0f;
-		Shared<Texture2D> icon = m_SceneState == SceneState::Edit ? m_IconPlay : m_IconStop;
-		ImTextureRef textureRef(icon->GetRendererID());
-		const char* id = m_SceneState == SceneState::Edit ? "PlayIcon" : "StopIcon";
-		ImGui::SetCursorPosX((ImGui::GetWindowContentRegionMax().x * 0.5f) - (size * 0.5f));
-		if (ImGui::ImageButton(id, textureRef, ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1)))
 		{
-			if (m_SceneState == SceneState::Edit)
-				OnScenePlay();
-			else if (m_SceneState == SceneState::Play)
-				OnSceneStop();
+			Shared<Texture2D> icon = (m_SceneState == SceneState::Edit || m_SceneState == SceneState::Simulate) ? m_IconPlay : m_IconStop;
+			ImTextureRef textureRef(icon->GetRendererID());
+			const char* id = m_SceneState == SceneState::Edit ? "PlayIcon" : "StopPlayIcon";
+			ImGui::SetCursorPosX((ImGui::GetWindowContentRegionMax().x * 0.5f) - (size * 0.5f));
+			if (ImGui::ImageButton(id, textureRef, ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), tintColor) && toolbarEnabled)
+			{
+				if (m_SceneState == SceneState::Edit || m_SceneState == SceneState::Simulate)
+					OnScenePlay();
+				else if (m_SceneState == SceneState::Play)
+					OnSceneStop();
 
+			}
 		}
+		ImGui::SameLine();
+		{
+			Shared<Texture2D> icon = (m_SceneState == SceneState::Edit || m_SceneState == SceneState::Play) ? m_IconSimulate : m_IconStop;
+			ImTextureRef textureRef(icon->GetRendererID());
+			const char* id = m_SceneState == SceneState::Edit ? "SimulateIcon" : "StopSimulateIcon";
+			//ImGui::SetCursorPosX((ImGui::GetWindowContentRegionMax().x * 0.5f) - (size * 0.5f));
+			if (ImGui::ImageButton(id, textureRef, ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0, 0, 0, 0), tintColor) && toolbarEnabled)
+			{
+				if (m_SceneState == SceneState::Edit || m_SceneState == SceneState::Play)
+					OnSceneSimulate();
+				else if (m_SceneState == SceneState::Simulate)
+					OnSceneStop();
 
+			}
+		}
 		ImGui::PopStyleColor(3);
 		ImGui::PopStyleVar(3);
 		ImGui::End();
@@ -509,7 +528,8 @@ namespace Jah {
 
 	void EditorLayer::NewScene()
 	{
-		m_ActiveScene = std::make_shared<Scene>();
+		m_EditorScene = CreateShared<Scene>();
+		m_ActiveScene = m_EditorScene;
 		m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 
@@ -574,8 +594,8 @@ namespace Jah {
 
 	void EditorLayer::OnScenePlay()
 	{
-		if (!m_EditorScene)
-			return;
+		if (m_SceneState == SceneState::Simulate)
+			OnSceneStop();
 
 		m_SceneState = SceneState::Play;
 
@@ -585,14 +605,33 @@ namespace Jah {
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 	}
 
+	void EditorLayer::OnSceneSimulate()
+	{
+		if (m_SceneState == SceneState::Play)
+			OnSceneStop();
+
+		m_SceneState = SceneState::Simulate;
+
+		m_ActiveScene = Scene::Copy(m_EditorScene);
+		m_ActiveScene->OnSimulationStart();
+
+		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+	}
+
 	void EditorLayer::OnSceneStop()
 	{
-		m_SceneState = SceneState::Edit;
-		m_ActiveScene->OnRuntimeStop();
-		m_ActiveScene = m_EditorScene;
+		JAH_ASSERT(m_SceneState == SceneState::Play || m_SceneState == SceneState::Simulate)
 
+		if (m_SceneState == SceneState::Play)
+			m_ActiveScene->OnRuntimeStop();
+		else if (m_SceneState == SceneState::Simulate)
+			m_ActiveScene->OnSimulationStop();
+			
+		m_SceneState = SceneState::Edit;
+		m_ActiveScene = m_EditorScene;
 		m_SceneHierarchyPanel.SetContext(m_EditorScene);
 	}
+	
 
 	void EditorLayer::OnOverlayRender()
 	{

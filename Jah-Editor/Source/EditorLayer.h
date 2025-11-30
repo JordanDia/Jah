@@ -40,7 +40,10 @@ namespace Jah {
 		void SerializeScene(Shared<Scene> scene, const std::filesystem::path& path);
 
 		void OnScenePlay();
+		void OnSceneSimulate();
 		void OnSceneStop();
+
+
 
 		void OnOverlayRender();
 
@@ -57,6 +60,7 @@ namespace Jah {
 		Shared<Scene> m_EditorScene;
 		std::filesystem::path m_EditorScenePath;
 
+		// Cameras
 		OrthographicCameraController m_CameraController;
 		Entity m_CameraEntity;
 		Entity m_SecondCamera;
@@ -67,8 +71,7 @@ namespace Jah {
 
 		Shared<Jah::Framebuffer> m_Framebuffer;
 
-
-
+		// Paricle System
 		glm::vec4 m_SquareColor = { 0.3f, 0.35f, 1.0f, 1.0f };
 		ParticleProps m_ParticleProps;
 		ParticleSystem m_ParticleSystem;
@@ -76,12 +79,14 @@ namespace Jah {
 		
 		int m_GizmoType = -1;
 
+		// Physic Colliders
 		bool m_ShowPhysicsColliders = false;
 		glm::vec4 m_ColliderColor{ 0.0f, 1.0f, 0.0f, 1.0f };
 
+
+		// Viewport
 		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
 		glm::vec2 m_ViewportBounds[2];
-
 		bool m_ViewportFocused = false;
 		bool m_ViewportHovered = false;
 
@@ -89,7 +94,7 @@ namespace Jah {
 
 		enum class SceneState
 		{
-			Edit, Play
+			Edit, Play, Simulate
 		};
 
 		SceneState m_SceneState = SceneState::Edit;
@@ -100,8 +105,7 @@ namespace Jah {
 
 		// Editor Resources
 		Shared<Texture2D> m_IconPlay;
+		Shared<Texture2D> m_IconSimulate;
 		Shared<Texture2D> m_IconStop;
-
 	};
-
 }
