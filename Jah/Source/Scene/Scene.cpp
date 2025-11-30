@@ -13,7 +13,6 @@
 
 namespace Jah {
 
-
 	static b2BodyType Rigidbody2DTypeToBox2DType(Rigidbody2DComponent::BodyType type)
 	{
 		switch (type)
@@ -40,7 +39,6 @@ namespace Jah {
 		}
 	}
 
-
 	template<typename Component>
 	static void CopyComponentIfExists(Entity dst, Entity src)
 	{
@@ -50,7 +48,6 @@ namespace Jah {
 
 	Scene::~Scene()
 	{
-		OnPhysics2DStop();
 	}
 
 	Shared<Scene> Scene::Copy(Shared<Scene> other)
@@ -385,7 +382,7 @@ namespace Jah {
 			{
 				auto& cc2d = entity.GetComponent<CircleCollider2DComponent>();
 
-				b2Circle circle;
+				b2Circle circle{};
 				circle.center = { cc2d.Offset.x * transform.Scale.x, cc2d.Offset.y * transform.Scale.y };
 				circle.radius = cc2d.Radius * transform.Scale.x;
 
