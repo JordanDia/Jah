@@ -30,3 +30,7 @@
 #include "Scene/ScriptableEntity.h"
 #include "Scene/SceneSerializer.h"
 // -------------------------------------
+
+// --Scripting--------------------------
+#include "Scripting/ScriptEngine.h"
+// -------------------------------------

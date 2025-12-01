@@ -55,22 +55,22 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(ProjectDir)..\Binaries\Debug-x86_64\Jah-Editor\</OutDir>
-    <IntDir>$(ProjectDir)..\Binaries-Int\Debug-x86_64\Jah-Editor\</IntDir>
+    <OutDir>$(ProjectDir)Binaries\Debug-x86_64\Jah-Editor\</OutDir>
+    <IntDir>$(ProjectDir)Binaries-Int\Debug-x86_64\Jah-Editor\</IntDir>
     <TargetName>Jah-Editor</TargetName>
     <TargetExt>.exe</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(ProjectDir)..\Binaries\Release-x86_64\Jah-Editor\</OutDir>
-    <IntDir>$(ProjectDir)..\Binaries-Int\Release-x86_64\Jah-Editor\</IntDir>
+    <OutDir>$(ProjectDir)Binaries\Release-x86_64\Jah-Editor\</OutDir>
+    <IntDir>$(ProjectDir)Binaries-Int\Release-x86_64\Jah-Editor\</IntDir>
     <TargetName>Jah-Editor</TargetName>
     <TargetExt>.exe</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(ProjectDir)..\Binaries\Dist-x86_64\Jah-Editor\</OutDir>
-    <IntDir>$(ProjectDir)..\Binaries-Int\Dist-x86_64\Jah-Editor\</IntDir>
+    <OutDir>$(ProjectDir)Binaries\Dist-x86_64\Jah-Editor\</OutDir>
+    <IntDir>$(ProjectDir)Binaries-Int\Dist-x86_64\Jah-Editor\</IntDir>
     <TargetName>Jah-Editor</TargetName>
     <TargetExt>.exe</TargetExt>
   </PropertyGroup>
@@ -83,7 +83,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpplatest</LanguageStandard>
@@ -105,7 +105,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpplatest</LanguageStandard>
@@ -128,7 +128,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpplatest</LanguageStandard>

@@ -1,13 +1,19 @@
 # Visual Studio
 .vs/
-*.suo
-*.user
-*.userosscache
-*.sln.docstates
+**.sln
+**.vcxproj
+**.vcxproj.filters
+**.vcxproj.user
+**.csproj
+**.suo
+**.user
+**.userosscache
+**.sln.docstates
 
 # Build directories
 Binaries/
 Binaries-Int/
+Intermediates/
 obj/
 
 # Logs

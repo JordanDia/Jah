@@ -25,7 +25,7 @@ namespace Jah {
 #define JAH_CORE_WARN(...)		::Jah::Log::GetCoreLogger()->warn(__VA_ARGS__)
 #define JAH_CORE_INFO(...)		::Jah::Log::GetCoreLogger()->info(__VA_ARGS__)
 #define JAH_CORE_TRACE(...)		::Jah::Log::GetCoreLogger()->trace(__VA_ARGS__)
-#define JAH_CORE_FATAL(...)		::Jah::Log::GetCoreLogger()->fatal(__VA_ARGS__)
+#define JAH_CORE_CRITICAL(...)		::Jah::Log::GetCoreLogger()->critical(__VA_ARGS__)
 
 #define JAH_ERROR(...)		::Jah::Log::GetCoreLogger()->error(__VA_ARGS__)
 #define JAH_WARN(...)		::Jah::Log::GetCoreLogger()->warn(__VA_ARGS__)

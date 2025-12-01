@@ -22,6 +22,7 @@ namespace Jah {
 	void EditorLayer::OnAttach()
 	{
 
+
 		m_SquareColor = { 0.0f, 0.4f, 1.0f, 1.0f };
 
 		m_IconPlay = CreateShared<Texture2D>("Resources/Icons/PlayButton.png");
@@ -620,7 +621,7 @@ namespace Jah {
 
 	void EditorLayer::OnSceneStop()
 	{
-		JAH_ASSERT(m_SceneState == SceneState::Play || m_SceneState == SceneState::Simulate)
+		JAH_ASSERT(m_SceneState == SceneState::Play || m_SceneState == SceneState::Simulate, "Invalid state!");
 
 		if (m_SceneState == SceneState::Play)
 			m_ActiveScene->OnRuntimeStop();

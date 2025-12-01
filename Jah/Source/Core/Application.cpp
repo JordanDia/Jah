@@ -4,6 +4,7 @@
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
 #include "Renderer/Renderer.h"
+#include "Scripting/ScriptEngine.h"
 
 namespace Jah {
 
@@ -16,6 +17,7 @@ namespace Jah {
 		m_Window->SetEventCallback([this](Event& e) { OnEvent(e); });
 
 		Renderer::Init();
+		ScriptEngine::Init();
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);	
@@ -23,7 +25,8 @@ namespace Jah {
 
 	Application::~Application()
 	{
-
+		ScriptEngine::Shutdown();
+		Renderer::Shutdown();
 	}
 
 	void Application::Run()

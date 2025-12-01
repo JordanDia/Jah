@@ -49,6 +49,9 @@
     <Filter Include="Source\Scene">
       <UniqueIdentifier>{F300E3F2-DF63-7297-88E9-AA4D742B3E1A}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Scripting">
+      <UniqueIdentifier>{D803A49B-C4FC-C2ED-ED2E-A872D986A2F9}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source\Utils">
       <UniqueIdentifier>{369510F3-22F8-9F97-CB7D-D84DB7BF6B1A}</UniqueIdentifier>
     </Filter>
@@ -1428,6 +1431,9 @@
     <ClInclude Include="Source\Scene\ScriptableEntity.h">
       <Filter>Source\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Scripting\ScriptEngine.h">
+      <Filter>Source\Scripting</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Utils\Utils.h">
       <Filter>Source\Utils</Filter>
     </ClInclude>
@@ -1510,6 +1516,9 @@
     </ClCompile>
     <ClCompile Include="Source\Scene\SceneSerializer.cpp">
       <Filter>Source\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scripting\ScriptEngine.cpp">
+      <Filter>Source\Scripting</Filter>
     </ClCompile>
     <ClCompile Include="Source\Utils\Utils.cpp">
       <Filter>Source\Utils</Filter>
