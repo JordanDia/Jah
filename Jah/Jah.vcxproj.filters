@@ -1440,6 +1440,7 @@
     <ClInclude Include="Source\jahpch.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Scripting\ScriptGlue.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\ImGuizmo\ImGuizmo.cpp">
@@ -1526,5 +1527,6 @@
     <ClCompile Include="Source\jahpch.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Scripting\ScriptGlue.cpp" />
   </ItemGroup>
 </Project>

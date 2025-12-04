@@ -39,6 +39,8 @@ namespace Jah {
 
 		void DuplicateEntity(Entity entity);
 
+		Entity GetEntityByUUID(UUID uuid);
+
 		Registry& GetRegistry() { return m_Registry; }
 
 		Entity GetPrimaryCameraEntity();
@@ -64,6 +66,8 @@ namespace Jah {
 		uint32_t m_ViewportHeight = 0;
 
 		b2WorldId m_PhysicsWorldID{};
+
+		std::unordered_map<UUID, EntityID> m_EntityMap;
 
 		friend class Entity;
 		friend class SceneSerializer;

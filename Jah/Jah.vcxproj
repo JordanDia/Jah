@@ -609,6 +609,7 @@
     <ClInclude Include="Source\Scene\SceneSerializer.h" />
     <ClInclude Include="Source\Scene\ScriptableEntity.h" />
     <ClInclude Include="Source\Scripting\ScriptEngine.h" />
+    <ClInclude Include="Source\Scripting\ScriptGlue.h" />
     <ClInclude Include="Source\Utils\Utils.h" />
     <ClInclude Include="Source\jahpch.h" />
   </ItemGroup>
@@ -641,6 +642,7 @@
     <ClCompile Include="Source\Scene\Scene.cpp" />
     <ClCompile Include="Source\Scene\SceneSerializer.cpp" />
     <ClCompile Include="Source\Scripting\ScriptEngine.cpp" />
+    <ClCompile Include="Source\Scripting\ScriptGlue.cpp" />
     <ClCompile Include="Source\Utils\Utils.cpp" />
     <ClCompile Include="Source\jahpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>

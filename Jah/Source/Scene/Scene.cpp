@@ -80,6 +80,7 @@ namespace Jah {
 		CopyComponent<Rigidbody2DComponent>(dstSceneRegistry, srcSceneRegistry, entityMap);
 		CopyComponent<BoxCollider2DComponent>(dstSceneRegistry, srcSceneRegistry, entityMap);
 		CopyComponent<CircleCollider2DComponent>(dstSceneRegistry, srcSceneRegistry, entityMap);
+		CopyComponent<ScriptComponent>(dstSceneRegistry, srcSceneRegistry, entityMap);
 
 		return newScene;
 	}
@@ -97,22 +98,55 @@ namespace Jah {
 		auto& tag = entity.AddComponent<TagComponent>();
 		tag.Name = name.empty() ? "Entity" : name;
 
+		m_EntityMap[uuid] = entity.GetID();
 		return entity;
 	}
 
 	void Scene::DestroyEntity(EntityID entityID)
 	{
 		m_Registry.DestroyEntity(entityID);
+		
+		Entity entity = { entityID, this };
+		m_EntityMap.erase(entity.GetUUID());
 	}
 
 	void Scene::OnRuntimeStart()
 	{
 		OnPhysics2DStart();
+
+		// Scripting
+		{
+			ScriptEngine::OnRuntimeStart(this);
+
+			// Instantiate all script entities
+			auto view = m_Registry.View<ScriptComponent>();
+			for (auto entityID : view)
+			{
+				Entity entity = { entityID, this };
+				ScriptEngine::OnCreateEntity(entity);
+			}
+			
+		}
 	}
 
 	void Scene::OnRuntimeStop()
 	{
 		OnPhysics2DStop();
+
+
+		// Scripting
+		{
+			ScriptEngine::OnRuntimeStop();
+
+			// Instantiate all script entities
+			auto view = m_Registry.View<ScriptComponent>();
+			for (auto entityID : view)
+			{
+				Entity entity = { entityID, this };
+				ScriptEngine::OnDestroyEntity(entity);
+			}
+
+		}
 	}
 
 	void Scene::OnSimulationStart()
@@ -192,7 +226,7 @@ namespace Jah {
 	void Scene::OnUpdateRuntime(Timestep timestep)
 	{
 
-		// Update scripts
+		// Update NativeScriptComponent
 		{
 			auto view = m_Registry.View<NativeScriptComponent>();
 
@@ -207,6 +241,16 @@ namespace Jah {
 				}
 
 				nsc.Instance->OnUpdate(timestep);
+			}
+		}
+
+		// Update ScriptComponent
+		{
+			auto view = m_Registry.View<ScriptComponent>();
+			for (auto entityID : view)
+			{
+				Entity entity = { entityID, this };
+				ScriptEngine::OnUpdateEntity(entity, timestep);
 			}
 		}
 
@@ -319,6 +363,13 @@ namespace Jah {
 		CopyComponentIfExists<Rigidbody2DComponent>(newEntity, entity);
 		CopyComponentIfExists<BoxCollider2DComponent>(newEntity, entity);
 		CopyComponentIfExists<CircleCollider2DComponent>(newEntity, entity);
+		CopyComponentIfExists<ScriptComponent>(newEntity, entity);
+	}
+
+	Entity Scene::GetEntityByUUID(UUID uuid)
+	{
+		JAH_ASSERT(m_EntityMap.find(uuid) != m_EntityMap.end(), "Entity not found in UUID map!");
+		return { m_EntityMap.at(uuid), this };
 	}
 
 	Entity Scene::GetPrimaryCameraEntity()
@@ -497,6 +548,12 @@ namespace Jah {
 
 	template<>
 	void Scene::OnComponentAdded<CircleCollider2DComponent>(EntityID entityID, CircleCollider2DComponent& component)
+	{
+
+	}
+
+	template<>
+	void Scene::OnComponentAdded<ScriptComponent>(EntityID entityID, ScriptComponent& component)
 	{
 
 	}

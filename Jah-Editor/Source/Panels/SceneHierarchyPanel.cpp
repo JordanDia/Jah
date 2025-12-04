@@ -303,6 +303,15 @@ namespace Jah {
 				}
 			}
 
+			if (!entity.HasComponent<ScriptComponent>())
+			{
+				if (ImGui::MenuItem("Script Component"))
+				{
+					entity.AddComponent<ScriptComponent>();
+					ImGui::CloseCurrentPopup();
+				}
+			}
+
 			ImGui::EndPopup();
 		}
 
@@ -450,6 +459,29 @@ namespace Jah {
 			ImGui::DragFloat("Density", &component.Density, 0.01f, 0.0f, 1.0f);
 			ImGui::DragFloat("Friction", &component.Friction, 0.01f, 0.0f, 1.0f);
 			ImGui::DragFloat("Restitution", &component.Restitution, 0.01f, 0.0f, 1.0f);
+		});
+
+		DrawComponent<ScriptComponent>("Script", entityID, m_Context, [](auto& component)
+		{
+			bool scriptClassExists = false;
+
+			const auto& entityClasses = ScriptEngine::GetEntityClasses();
+			if (entityClasses.find(component.ClassName) != entityClasses.end())
+				scriptClassExists = true;
+
+			char buffer[64];
+			strcpy(buffer, component.ClassName.c_str());
+
+			if (!scriptClassExists)
+				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.2f, 0.3f, 1.0f));
+
+			if (ImGui::InputText("Class", buffer, sizeof(buffer)))
+			{
+				component.ClassName = buffer;
+			}
+
+			if (!scriptClassExists)
+				ImGui::PopStyleColor();
 		});
 	}
 

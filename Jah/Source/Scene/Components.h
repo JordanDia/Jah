@@ -3,11 +3,13 @@
 #include <glm/glm.hpp>
 #include "Renderer/Camera.h"
 #include "Core/UUID.h"
+#include "Renderer/Texture.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <string>
 #include <glm/gtx/quaternion.hpp>
 #include <box2d/box2d.h>
+#include <Scripting\ScriptEngine.h>
 
 namespace Jah {
 	
@@ -156,17 +158,29 @@ namespace Jah {
 		CircleCollider2DComponent(const CircleCollider2DComponent&) = default;
 	};
 
+	struct ScriptComponent
+	{
+		std::string ClassName;
+
+		ScriptComponent() = default;
+		ScriptComponent(const ScriptComponent&) = default;
+	};
+
+	template<typename... Component>
+	struct ComponentGroup
+	{
+	};
+
+	using AllComponents = ComponentGroup<
+		TransformComponent, SpriteRendererComponent,
+		CircleRendererComponent, CameraComponent,
+		Rigidbody2DComponent, BoxCollider2DComponent, CircleCollider2DComponent,
+		ScriptComponent
+	>;
 
 
 
-
-
-
-
-
-
-
-
+	// TODO: Remove this old helper function
 	static std::pair<glm::vec2, glm::vec2> GetTexCoords(
 		const glm::vec2& coords,
 		const glm::vec2& cellSize,
