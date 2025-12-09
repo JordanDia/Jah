@@ -1434,13 +1434,15 @@
     <ClInclude Include="Source\Scripting\ScriptEngine.h">
       <Filter>Source\Scripting</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Scripting\ScriptGlue.h">
+      <Filter>Source\Scripting</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Utils\Utils.h">
       <Filter>Source\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Source\jahpch.h">
       <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scripting\ScriptGlue.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\ImGuizmo\ImGuizmo.cpp">
@@ -1521,12 +1523,14 @@
     <ClCompile Include="Source\Scripting\ScriptEngine.cpp">
       <Filter>Source\Scripting</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Scripting\ScriptGlue.cpp">
+      <Filter>Source\Scripting</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Utils\Utils.cpp">
       <Filter>Source\Utils</Filter>
     </ClCompile>
     <ClCompile Include="Source\jahpch.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scripting\ScriptGlue.cpp" />
   </ItemGroup>
 </Project>

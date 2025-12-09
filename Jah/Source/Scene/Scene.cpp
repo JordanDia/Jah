@@ -3,6 +3,7 @@
 #include "Entity.h"
 #include "Registry.h"
 #include "Core/UUID.h"
+#include "Scripting/ScriptEngine.h"
 
 #include "Renderer/Renderer2D.h"
 #include "ScriptableEntity.h"
@@ -104,10 +105,9 @@ namespace Jah {
 
 	void Scene::DestroyEntity(EntityID entityID)
 	{
-		m_Registry.DestroyEntity(entityID);
-		
 		Entity entity = { entityID, this };
 		m_EntityMap.erase(entity.GetUUID());
+		m_Registry.DestroyEntity(entityID);
 	}
 
 	void Scene::OnRuntimeStart()

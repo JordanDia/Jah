@@ -35,6 +35,11 @@ namespace Jah {
 		m_SceneData->ViewProjectionMatrix = camera.GetViewProjectionMatrix();
 	}
 
+	void Renderer::BeginScene(const glm::mat4& viewProjectionMatrix)
+	{
+		m_SceneData->ViewProjectionMatrix = viewProjectionMatrix;
+	}
+
 	void Renderer::EndScene()
 	{
 

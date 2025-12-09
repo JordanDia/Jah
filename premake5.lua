@@ -27,7 +27,7 @@ group "Core"
 	include "Jah-ScriptCore"
 	include "Jah-Editor"
 
-group "Misc"
-	include "Sandbox"
+group "Runtime"
+	include "Jah-Runtime"
 
 

@@ -21,6 +21,12 @@ namespace Jah {
 		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	}
 
+	Texture2D::Texture2D(uint32_t rendererID, uint32_t width, uint32_t height)
+		: m_RendererID(rendererID), m_Width(width), m_Height(height)
+	{
+		m_InternalFormat = GL_RGBA8;
+		m_DataFormat = GL_RGBA;
+	}
 
 	Texture2D::Texture2D(const std::string& path)
 		: m_Path(path)
@@ -64,7 +70,6 @@ namespace Jah {
 		stbi_image_free(data);
 	}
 
-	
 	Texture2D::~Texture2D()
 	{
 		glDeleteTextures(1, &m_RendererID);

@@ -1,0 +1,56 @@
+Scene: Untitled
+Entities:
+  - Entity: 8613698047502274779
+    TagComponent:
+      Tag: Grass Sprite
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 20.7997]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [0, 0, 0, 1]
+  - Entity: 1854544087150412769
+    TagComponent:
+      Tag: Camera Entity
+    TransformComponent:
+      Translation: [0, 0, 14.2]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 0
+        PerspectiveFOV: 0.7853982
+        PerspectiveNear: 0.01
+        PerspectiveFar: 1000
+        OrthographicSize: 10
+        OrthographicNear: -1
+        OrthographicFar: 1
+      Primary: true
+      FixedAspectRatio: false
+  - Entity: 3467253262213788931
+    TagComponent:
+      Tag: Clip Space Camera
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 1
+        PerspectiveFOV: 0.7853982
+        PerspectiveNear: 0.01
+        PerspectiveFar: 1000
+        OrthographicSize: 10
+        OrthographicNear: -1
+        OrthographicFar: 1
+      Primary: true
+      FixedAspectRatio: false
+  - Entity: 7577349984824959853
+    TagComponent:
+      Tag: Red Square
+    TransformComponent:
+      Translation: [2.4, 3.8, -29.5]
+      Rotation: [0, 0, 0.7853982]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 0.3, 0.3, 1]

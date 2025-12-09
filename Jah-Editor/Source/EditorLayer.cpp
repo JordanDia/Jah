@@ -43,7 +43,7 @@ namespace Jah {
 		framebufferSpec.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::Depth };
 		framebufferSpec.Width = Application::Get().GetWindow().GetWidth();
 		framebufferSpec.Height = Application::Get().GetWindow().GetHeight();
-		m_Framebuffer = std::make_shared<Framebuffer>(framebufferSpec);
+		m_Framebuffer = CreateShared<Framebuffer>(framebufferSpec);
 
 		m_EditorScene = CreateShared<Scene>();
 		m_ActiveScene = m_EditorScene;
@@ -331,11 +331,6 @@ namespace Jah {
 			float windowHeight = (float)ImGui::GetWindowHeight();
 			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
 
-			/*auto cameraEntity = m_ActiveScene->GetPrimaryCameraEntity();
-			const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
-			const glm::mat4& cameraProjection = camera.GetProjection();
-			glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());*/
-
 			// Editor Camera
 			const glm::mat4& cameraProjection = m_EditorCamera.GetProjection();
 			glm::mat4 cameraView = m_EditorCamera.GetViewMatrix();
@@ -482,7 +477,6 @@ namespace Jah {
 
 		}
 
-
 		// Scene Commands
 		case JAH_KEY_D:
 		{
@@ -492,7 +486,6 @@ namespace Jah {
 		}
 
 		// Gizmos
-
 		case JAH_KEY_1:
 		{
 			m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
@@ -688,8 +681,6 @@ namespace Jah {
 				Renderer2D::DrawCircle(transform, m_ColliderColor, 0.1f);
 			}
 		}
-		
-		
 
 		Renderer2D::EndScene();
 	}
@@ -703,7 +694,5 @@ namespace Jah {
 		if (m_SceneHierarchyPanel.GetSelectedEntity())
 			m_EditorScene->DuplicateEntity(selectedEntity);
 	}
-
-	
 
 }

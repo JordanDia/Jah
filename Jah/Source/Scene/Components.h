@@ -9,7 +9,6 @@
 #include <string>
 #include <glm/gtx/quaternion.hpp>
 #include <box2d/box2d.h>
-#include <Scripting\ScriptEngine.h>
 
 namespace Jah {
 	

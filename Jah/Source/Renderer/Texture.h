@@ -24,6 +24,7 @@ namespace Jah {
 	public:
 		Texture2D(const std::string& path);
 		Texture2D(uint32_t width, uint32_t height);
+		Texture2D(uint32_t rendererID, uint32_t width, uint32_t height);
 		~Texture2D();
 
 		uint32_t GetWidth() const override { return m_Width; }
@@ -34,6 +35,8 @@ namespace Jah {
 		void Bind(uint32_t slot = 0) const override;
 
 		inline uint32_t GetRendererID() const { return m_RendererID; }
+		inline void SetRendererID(uint32_t rendererID) { m_RendererID = rendererID; }
+		inline void SetSize(uint32_t width, uint32_t height) { m_Width = width; m_Height = height; }
 
 		bool operator==(const Texture2D& other) const
 		{

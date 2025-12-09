@@ -22,9 +22,9 @@ namespace Jah {
 		void OnAttach() override;
 		void OnDetach() override;
 
-		void OnUpdate(Jah::Timestep timestep) override;
+		void OnUpdate(Timestep timestep) override;
 		void OnImGuiRender() override;
-		void OnEvent(Jah::Event& event) override;
+		void OnEvent(Event& event) override;
 
 	private:
 		bool OnKeyPressed(KeyPressedEvent& event);
@@ -69,7 +69,7 @@ namespace Jah {
 		Entity m_HoveredEntity;
 		EditorCamera m_EditorCamera;
 
-		Shared<Jah::Framebuffer> m_Framebuffer;
+		Shared<Framebuffer> m_Framebuffer;
 
 		// Paricle System
 		glm::vec4 m_SquareColor = { 0.3f, 0.35f, 1.0f, 1.0f };

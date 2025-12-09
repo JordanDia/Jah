@@ -12,7 +12,7 @@
 
 namespace Jah {
 
-	class JahEditor : public Jah::Application
+	class JahEditor : public Application
 	{
 	public:
 		JahEditor()
