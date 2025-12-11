@@ -11,17 +11,21 @@ It provides a modern, lightweight framework for building 2D games with OpenGL.
 
 ### Current Features
 - **2D Renderer**: Built with OpenGL
-- **Scene System**: Entities, components, and hierarchy
+- **Scene System**: Play and Stop Button, Entities, Components, Serialization, Scene Hierarchy Panel, and Content Browser Panel
 - **Mouse Picking**: Using framebuffer attachments for entity selection
 - **Texture and asset management**
 - **Input system**: Keyboard and mouse handling
-- **Editor support**: Custom ImGui-based content browser and UI
-
-### Coming Soon
 - 2D physics system
-- Scene Play / Stop buttons
 - Circle rendering
 - C# scripting support
+- **Editor support**: Custom ImGui-based content browser and UI
+- **Runtime support**: Dist configuration to ship games
+
+### Coming Soon
+- Sound Components
+- Saving/Loading Textures
+- Launcher
+- Project System
 
 ---
 
