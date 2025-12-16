@@ -5,9 +5,12 @@ using System.Runtime.InteropServices;
 namespace Jah
 {
 
+    [StructLayout(LayoutKind.Sequential)]
     public struct Vector3
     {
-        public float X, Y, Z;
+        public float X;
+        public float Y;
+        public float Z;
 
         public static Vector3 Zero => new Vector3(0, 0, 0);
 
@@ -56,6 +59,18 @@ namespace Jah
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         internal extern static bool Input_IsKeyDown(KeyCode keycode);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        internal extern static bool Play_Sound(string path);
+
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        internal extern static ulong World_FindEntityByName(string name);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        internal extern static ulong World_CreateQuad();
+
+
     }
 
     public class Entity
@@ -91,7 +106,6 @@ namespace Jah
         {
             Console.WriteLine("OnDestroy");
         }
-
 
         public Vector3 Translation
         { 

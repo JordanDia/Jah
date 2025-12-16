@@ -40,6 +40,7 @@ namespace Jah {
 		void DuplicateEntity(Entity entity);
 
 		Entity GetEntityByUUID(UUID uuid);
+		Entity GetEntityByName(const std::string& name);
 
 		Registry& GetRegistry() { return m_Registry; }
 
@@ -51,12 +52,15 @@ namespace Jah {
 			return m_Registry.View<Components...>();
 		}
 
+		void SetupEntityPhysics(Entity entity);
+
 	private:
 		template<typename T>
 		void OnComponentAdded(EntityID entity, T& component);
 
 		void OnPhysics2DStart();
 		void OnPhysics2DStop();
+
 
 		void RenderScene(EditorCamera& camera);
 

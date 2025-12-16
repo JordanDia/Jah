@@ -125,14 +125,12 @@ namespace Jah {
 				Entity entity = { entityID, this };
 				ScriptEngine::OnCreateEntity(entity);
 			}
-			
 		}
 	}
 
 	void Scene::OnRuntimeStop()
 	{
 		OnPhysics2DStop();
-
 
 		// Scripting
 		{
@@ -254,6 +252,9 @@ namespace Jah {
 			}
 		}
 
+		// Update World Scripts
+		ScriptEngine::OnUpdateWorldScripts(timestep);
+
 		// Physics
 		{
 			int32_t subStepCount = 4;
@@ -372,6 +373,23 @@ namespace Jah {
 		return { m_EntityMap.at(uuid), this };
 	}
 
+	Entity Scene::GetEntityByName(const std::string& name)
+	{
+		auto view = m_Registry.View<TagComponent>();
+
+		for (auto entityID : view)
+		{
+			Entity entity{ entityID, this };
+			auto& tc = entity.GetComponent<TagComponent>();
+			if (tc.Name == name)
+			{
+				return entity;
+			}
+		}
+
+		return {};
+	}
+
 	Entity Scene::GetPrimaryCameraEntity()
 	{
 		auto view = m_Registry.View<CameraComponent>();
@@ -451,6 +469,52 @@ namespace Jah {
 	{
 		b2DestroyWorld(m_PhysicsWorldID);
 		m_PhysicsWorldID = b2_nullWorldId;
+	}
+
+	void Scene::SetupEntityPhysics(Entity entity)
+	{
+		auto& transform = entity.GetComponent<TransformComponent>();
+		auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+
+		b2BodyDef bodyDef = b2DefaultBodyDef();
+		bodyDef.type = Rigidbody2DTypeToBox2DType(rb2d.Type);
+		bodyDef.position = { transform.Translation.x, transform.Translation.y };
+
+		bodyDef.rotation = b2MakeRot(transform.Rotation.z);
+
+		b2BodyId bodyID = b2CreateBody(m_PhysicsWorldID, &bodyDef);
+		rb2d.RuntimeBodyID = bodyID;
+
+		if (entity.HasComponent<BoxCollider2DComponent>())
+		{
+			auto& bc2d = entity.GetComponent<BoxCollider2DComponent>();
+
+			b2Polygon boxShape = b2MakeBox(bc2d.Size.x * transform.Scale.x, bc2d.Size.y * transform.Scale.y);
+
+			b2ShapeDef shapeDef = b2DefaultShapeDef();
+			shapeDef.material.friction = bc2d.Friction;
+			shapeDef.material.restitution = bc2d.Restitution;
+			shapeDef.density = 1.0f;
+
+			b2CreatePolygonShape(bodyID, &shapeDef, &boxShape);
+
+		}
+
+		if (entity.HasComponent<CircleCollider2DComponent>())
+		{
+			auto& cc2d = entity.GetComponent<CircleCollider2DComponent>();
+
+			b2Circle circle{};
+			circle.center = { cc2d.Offset.x * transform.Scale.x, cc2d.Offset.y * transform.Scale.y };
+			circle.radius = cc2d.Radius * transform.Scale.x;
+
+			b2ShapeDef shapeDef = b2DefaultShapeDef();
+			shapeDef.material.friction = cc2d.Friction;
+			shapeDef.material.restitution = cc2d.Restitution;
+			shapeDef.density = 1.0f;
+
+			b2CreateCircleShape(bodyID, &shapeDef, &circle);
+		}
 	}
 
 	void Scene::RenderScene(EditorCamera& camera)

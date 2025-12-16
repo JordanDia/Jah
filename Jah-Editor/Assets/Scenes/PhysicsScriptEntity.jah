@@ -73,7 +73,7 @@ Entities:
       Restitution: 1
   - Entity: 5857537197267474890
     TagComponent:
-      Tag: ScriptSquare
+      Tag: Player
     TransformComponent:
       Translation: [1.8159943, 2.330257, 1.8626451e-09]
       Rotation: [0, 0, 0]

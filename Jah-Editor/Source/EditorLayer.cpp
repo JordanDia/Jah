@@ -9,7 +9,6 @@
 #include "ImGuizmo.h"
 #include "Math/Math.h"
 
-
 namespace Jah {
 
 	extern const std::filesystem::path g_AssetPath;
@@ -21,7 +20,8 @@ namespace Jah {
 
 	void EditorLayer::OnAttach()
 	{
-
+		auto soundFilepath = std::filesystem::absolute("Assets/Sounds/BallTap.wav");
+		SoundEngine::PlaySoundFile(soundFilepath);
 
 		m_SquareColor = { 0.0f, 0.4f, 1.0f, 1.0f };
 

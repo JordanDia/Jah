@@ -5,6 +5,7 @@
 #include <glfw/glfw3.h>
 #include "Renderer/Renderer.h"
 #include "Scripting/ScriptEngine.h"
+#include "Sound/SoundEngine.h"
 
 namespace Jah {
 
@@ -18,6 +19,7 @@ namespace Jah {
 
 		Renderer::Init();
 		ScriptEngine::Init();
+		SoundEngine::Init();
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);	
@@ -27,10 +29,12 @@ namespace Jah {
 	{
 		ScriptEngine::Shutdown();
 		Renderer::Shutdown();
+		SoundEngine::Shutdown();
 	}
 
 	void Application::Run()
 	{
+
 		while (m_Running)
 		{
 			double time = glfwGetTime();

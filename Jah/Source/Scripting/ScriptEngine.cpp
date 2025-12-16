@@ -7,6 +7,7 @@
 #include "mono/metadata/appdomain.h"
 #include <filesystem>
 #include "Scene/Entity.h"
+#include <unordered_map>
 
 // TODO: Add script class, get script components working for entities
 
@@ -39,10 +40,6 @@ namespace Jah {
 
 		
 	}
-
-
-	
-
 	
 	struct ScriptEngineData
 	{
@@ -56,6 +53,9 @@ namespace Jah {
 
 		std::unordered_map<std::string, Shared<ScriptClass>> EntityClasses;
 		std::unordered_map<UUID, Shared<ScriptInstance>> EntityInstances;
+
+		std::unordered_map<std::string, Shared<ScriptClass>> WorldScriptClasses;
+		std::vector<Shared<ScriptInstance>> ActiveWorldScripts;
 
 		// Runtime
 		Scene* SceneContext = nullptr;
@@ -76,26 +76,6 @@ namespace Jah {
 		// Retrieve and Instantiate class
 		s_Data->EntityClass = ScriptClass("Jah", "Entity");
 
-		//// Get and construct class
-		//s_Data->EntityClass = ScriptClass("Jah", "Entity");
-		//MonoObject* instance = s_Data->EntityClass.Instantiate();
-
-		//// Call methods
-		//MonoMethod* printMessageFunc = s_Data->EntityClass.GetMethod("PrintMessage", 0);
-		//s_Data->EntityClass.InvokeMethod(instance, printMessageFunc, nullptr);
-
-		//MonoMethod* printIntFunc = s_Data->EntityClass.GetMethod("PrintInt", 1);
-		//int value = 6;
-		//void* param = &value;
-		//s_Data->EntityClass.InvokeMethod(instance, printIntFunc, &param);
-
-		//MonoMethod* printIntsFunc = s_Data->EntityClass.GetMethod("PrintInts", 2);
-		//int value2 = 7;
-		//void* params[2] = {
-		//	&value,
-		//	&value2
-		//};
-		//s_Data->EntityClass.InvokeMethod(instance, printIntsFunc, params);
 	}
 
 	void ScriptEngine::Shutdown()
@@ -144,6 +124,14 @@ namespace Jah {
 	void ScriptEngine::OnRuntimeStart(Scene* scene)
 	{
 		s_Data->SceneContext = scene;
+
+		// Start world scripts
+		for (auto& [name, scriptClass] : s_Data->WorldScriptClasses)
+		{
+			auto instance = CreateShared<ScriptInstance>(scriptClass);
+			s_Data->ActiveWorldScripts.push_back(instance);
+			instance->InvokeOnCreate();
+		}
 	}
 
 	void ScriptEngine::OnRuntimeStop()
@@ -183,6 +171,14 @@ namespace Jah {
 		instance->InvokeOnDestroy();*/
 	}
 
+	void ScriptEngine::OnUpdateWorldScripts(Timestep timestep)
+	{
+		for (auto& script : s_Data->ActiveWorldScripts)
+		{
+			script->InvokeOnUpdate(timestep);
+		}
+	}
+
 	Scene* ScriptEngine::GetSceneContext()
 	{
 		return s_Data->SceneContext;
@@ -196,6 +192,7 @@ namespace Jah {
 		const MonoTableInfo* typeDefinitionsTable = mono_image_get_table_info(image, MONO_TABLE_TYPEDEF);
 		int32_t numTypes = mono_table_info_get_rows(typeDefinitionsTable);
 		MonoClass* entityClass = mono_class_from_name(image, "Jah", "Entity");
+		MonoClass* worldScriptClass = mono_class_from_name(image, "Jah", "WorldScript");
 
 		for (int32_t i = 0; i < numTypes; i++)
 		{
@@ -218,7 +215,12 @@ namespace Jah {
 				s_Data->EntityClasses[fullName] = CreateShared<ScriptClass>(nameSpace, name);
 			}
 
-			JAH_CORE_TRACE("{}.{}", nameSpace, name);
+			
+			bool isWorldScript = mono_class_is_subclass_of(monoClass, worldScriptClass, false);
+			if (isWorldScript)
+			{
+				s_Data->WorldScriptClasses[fullName] = CreateShared<ScriptClass>(nameSpace, name);
+			}
 		}
 	}
 
@@ -267,7 +269,17 @@ namespace Jah {
 
 		UUID entityUUID = entity.GetUUID();
 		void* param = &entityUUID;
-		m_ScriptClass->InvokeMethod(m_Instance, m_Constructor, &param);
+		scriptClass->InvokeMethod(m_Instance, m_Constructor, &param);
+	}
+
+	ScriptInstance::ScriptInstance(Shared<ScriptClass> scriptClass)
+		: m_ScriptClass(scriptClass)
+	{
+		m_Instance = scriptClass->Instantiate();
+
+		m_OnCreateMethod = scriptClass->GetMethod("OnCreate", 0);
+		m_OnDestroyMethod = scriptClass->GetMethod("OnDestroy", 0);
+		m_OnUpdateMethod = scriptClass->GetMethod("OnUpdate", 1);
 	}
 
 	void ScriptInstance::InvokeOnCreate()

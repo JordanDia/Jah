@@ -14,6 +14,8 @@ namespace Sandbox
         new void OnCreate()
         {
             Console.WriteLine($"Player.OnCreate - {UUID}");
+
+            InternalCalls.Play_Sound("Assets/Sounds/BallTap.wav");
         }
 
         new void OnUpdate(float timestep)
@@ -39,6 +41,7 @@ namespace Sandbox
 
             translation += velocity;
             Translation = translation;
+
         }
 
         new void OnDestroy()

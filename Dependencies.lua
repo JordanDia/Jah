@@ -11,6 +11,7 @@ IncludeDirs = {
 	Box2D = "%{wks.location}/Jah/External/Box2D/include",
 	mono = "%{wks.location}/Jah/External/mono/include",
 	dotnet = "%{wks.location}/Jah/External/dotnet",
+	miniaudio = "%{wks.location}/Jah/External/miniaudio",
 }
 
 LibraryDir = {

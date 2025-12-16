@@ -34,6 +34,7 @@ namespace Jah {
 	{
 	public:
 		ScriptInstance(Shared<ScriptClass> scriptClass, Entity entity);
+		ScriptInstance(Shared<ScriptClass> scriptClass); // For World Scripts
 
 		void InvokeOnCreate();
 		void InvokeOnDestroy();
@@ -41,8 +42,8 @@ namespace Jah {
 
 	private:
 		Shared<ScriptClass> m_ScriptClass;
-
 		MonoObject* m_Instance = nullptr;
+
 		MonoMethod* m_Constructor = nullptr;
 		MonoMethod* m_OnCreateMethod = nullptr;
 		MonoMethod* m_OnDestroyMethod = nullptr;
@@ -63,6 +64,8 @@ namespace Jah {
 		static void OnCreateEntity(Entity entity);
 		static void OnUpdateEntity(Entity entity, Timestep timestep);
 		static void OnDestroyEntity(Entity entity);
+
+		static void OnUpdateWorldScripts(Timestep timestep);
 
 		static Scene* GetSceneContext();
 		

@@ -52,6 +52,9 @@
     <Filter Include="Source\Scripting">
       <UniqueIdentifier>{D803A49B-C4FC-C2ED-ED2E-A872D986A2F9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Sound">
+      <UniqueIdentifier>{8ED9E9F2-7A3C-7997-23C2-B14D0F04451A}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source\Utils">
       <UniqueIdentifier>{369510F3-22F8-9F97-CB7D-D84DB7BF6B1A}</UniqueIdentifier>
     </Filter>
@@ -1437,6 +1440,9 @@
     <ClInclude Include="Source\Scripting\ScriptGlue.h">
       <Filter>Source\Scripting</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Sound\SoundEngine.h">
+      <Filter>Source\Sound</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Utils\Utils.h">
       <Filter>Source\Utils</Filter>
     </ClInclude>
@@ -1525,6 +1531,12 @@
     </ClCompile>
     <ClCompile Include="Source\Scripting\ScriptGlue.cpp">
       <Filter>Source\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Sound\SoundEngine.cpp">
+      <Filter>Source\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Sound\miniaudio.cpp">
+      <Filter>Source\Sound</Filter>
     </ClCompile>
     <ClCompile Include="Source\Utils\Utils.cpp">
       <Filter>Source\Utils</Filter>

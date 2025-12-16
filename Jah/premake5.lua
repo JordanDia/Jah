@@ -42,6 +42,7 @@ project "Jah"
 		IncludeDirs.ImGuizmo,
 		IncludeDirs.Box2D,
 		IncludeDirs.mono,
+		IncludeDirs.miniaudio,
 	}
 
 	links {

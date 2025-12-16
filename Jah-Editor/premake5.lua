@@ -23,6 +23,7 @@ project "Jah-Editor"
 		IncludeDirs.spdlog,
 		IncludeDirs.ImGuizmo,
 		IncludeDirs.Box2D,
+		IncludeDirs.miniaudio,
     }
 
     links {

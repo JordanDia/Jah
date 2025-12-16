@@ -4,6 +4,7 @@
 #include "Renderer/Camera.h"
 #include "Core/UUID.h"
 #include "Renderer/Texture.h"
+#include "Sound/SoundEngine.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <string>
@@ -95,7 +96,7 @@ namespace Jah {
 	{
 		ScriptableEntity* Instance = nullptr;
 
-		using InstantiateFn = ScriptableEntity * (*)();
+		using InstantiateFn = ScriptableEntity* (*)();
 		using DestroyFn = void (*)(NativeScriptComponent*);
 
 		InstantiateFn InstantiateScript = nullptr;
@@ -169,6 +170,19 @@ namespace Jah {
 	struct ComponentGroup
 	{
 	};
+
+
+	struct SoundComponent
+	{
+		std::string Name;
+		float Volume = 1.0f;
+		bool Loop = false;
+		bool PlayOnStart = false;
+		
+
+	};
+
+
 
 	using AllComponents = ComponentGroup<
 		TransformComponent, SpriteRendererComponent,
