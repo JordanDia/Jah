@@ -9,22 +9,28 @@ namespace Jah
     public class Setup : WorldScript
     {
 
+        private Entity player;
+        private float spawnTimer;
+
         public override void OnCreate()
         {
             Console.WriteLine("Setting up game");
 
-            var player = World.Find("Player");
+            player = World.Find("Player");
             Console.WriteLine(player != null ? "Found player!" : "Player not found!");
-
-
-            player.Translation += new Vector3(0, 2, 0);
 
             var newQuad = World.CreateQuad();
         }
 
         public override void OnUpdate(float timestep)
         {
-            Console.WriteLine("World ticking");
+            spawnTimer += timestep;
+            if (spawnTimer >= 1.0f) // every 1 second
+            {
+                // spawn a new quad
+                var newQuad = World.CreateQuad();
+                spawnTimer = 0f; // reset timer
+            }
         }
 
     }

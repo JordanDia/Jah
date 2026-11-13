@@ -176,6 +176,9 @@ namespace Jah {
 			out << YAML::Key << "Color";
 			out << YAML::Value << src.Color;
 
+			out << YAML::Key << "TexturePath";
+			out << YAML::Value << src.TexturePath.string();
+
 			out << YAML::EndMap; // SpriteRendererComponent
 		}
 
@@ -355,6 +358,16 @@ namespace Jah {
 				{
 					auto& src = deserializedEntity.AddComponent<SpriteRendererComponent>();
 					src.Color = spriteRendererComponent["Color"].as<glm::vec4>();
+
+					auto texturePathNode = spriteRendererComponent["TexturePath"];
+					if (texturePathNode && texturePathNode.IsScalar())
+					{
+						src.TexturePath = spriteRendererComponent["TexturePath"].as<std::string>();
+						if (!src.TexturePath.empty())
+							src.Texture = CreateShared<Texture2D>(src.TexturePath.string());
+						else
+							src.Texture = nullptr;
+					}
 				}
 
 				auto circleRendererComponent = entity["CircleRendererComponent"];

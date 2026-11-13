@@ -16,6 +16,8 @@ project "Jah"
 		"Source/**.cpp",
 		"External/stb_image/**.h",
 		"External/stb_image/**.cpp",
+		"External/stb_truetype/**.h",
+		"External/stb_truetype/**.cpp",
 		"External/glm/glm/**.hpp",
 		"External/glm/glm/**.inl",
 
@@ -37,12 +39,14 @@ project "Jah"
 		IncludeDirs.ImGuiBackends,
 		IncludeDirs.glm,
 		IncludeDirs.stb_image,
+		IncludeDirs.stb_truetype,
 		IncludeDirs.spdlog,
 		IncludeDirs.yaml_cpp,
 		IncludeDirs.ImGuizmo,
 		IncludeDirs.Box2D,
 		IncludeDirs.mono,
 		IncludeDirs.miniaudio,
+		IncludeDirs.freetype,
 	}
 
 	links {
@@ -51,6 +55,7 @@ project "Jah"
 		"Glad",
 		"ImGui",
 		"yaml-cpp",
+		"freetype",
 		"opengl32.lib",
 
 		Library.mono,

@@ -405,6 +405,7 @@ namespace Jah {
 					const wchar_t* path = reinterpret_cast<const wchar_t*>(payload->Data);
 					std::filesystem::path texturePath = std::filesystem::path(g_AssetPath) / path;
 					component.Texture = CreateShared<Texture2D>(texturePath.string());
+					component.TexturePath = texturePath;
 				}
 				ImGui::EndDragDropTarget();
 			}

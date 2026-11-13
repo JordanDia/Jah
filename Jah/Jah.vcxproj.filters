@@ -28,6 +28,9 @@
     <Filter Include="External\stb_image">
       <UniqueIdentifier>{A237811D-8E1B-4273-F77B-3CC6E37E2CF5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="External\stb_truetype">
+      <UniqueIdentifier>{A148A7AE-0DB5-62A9-D6A8-FA0642D48411}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source">
       <UniqueIdentifier>{56EB95D1-428D-C0A7-2B48-D4FB178947F8}</UniqueIdentifier>
     </Filter>
@@ -1326,6 +1329,9 @@
     <ClInclude Include="External\stb_image\stb_image.h">
       <Filter>External\stb_image</Filter>
     </ClInclude>
+    <ClInclude Include="External\stb_truetype\stb_truetype.h">
+      <Filter>External\stb_truetype</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Core\Application.h">
       <Filter>Source\Core</Filter>
     </ClInclude>
@@ -1387,6 +1393,9 @@
       <Filter>Source\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Renderer\EditorCamera.h">
+      <Filter>Source\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Renderer\Font.h">
       <Filter>Source\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Renderer\Framebuffer.h">
@@ -1457,6 +1466,9 @@
     <ClCompile Include="External\stb_image\stb_image.cpp">
       <Filter>External\stb_image</Filter>
     </ClCompile>
+    <ClCompile Include="External\stb_truetype\stb_truetype.cpp">
+      <Filter>External\stb_truetype</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Core\Application.cpp">
       <Filter>Source\Core</Filter>
     </ClCompile>
@@ -1491,6 +1503,9 @@
       <Filter>Source\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Source\Renderer\EditorCamera.cpp">
+      <Filter>Source\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Renderer\Font.cpp">
       <Filter>Source\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Source\Renderer\Framebuffer.cpp">

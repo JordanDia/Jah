@@ -8,6 +8,11 @@
 
 namespace Jah {
 
+	enum class TextureFormat
+	{
+		Red, RGB, RGBA
+	};
+
 	class Texture
 	{
 	public:
@@ -23,8 +28,8 @@ namespace Jah {
 	{
 	public:
 		Texture2D(const std::string& path);
-		Texture2D(uint32_t width, uint32_t height);
-		Texture2D(uint32_t rendererID, uint32_t width, uint32_t height);
+		Texture2D(uint32_t width, uint32_t height, TextureFormat format = TextureFormat::RGBA);
+
 		~Texture2D();
 
 		uint32_t GetWidth() const override { return m_Width; }

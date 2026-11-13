@@ -12,6 +12,7 @@
 #include <box2d/box2d.h>
 
 namespace Jah {
+
 	
 	struct IDComponent
 	{
@@ -58,6 +59,7 @@ namespace Jah {
 	struct SpriteRendererComponent
 	{
 		glm::vec4 Color	{ 0.3f, 0.4f, 1.0f, 1.0f };
+		std::filesystem::path TexturePath = "";
 
 		Shared<Texture2D> Texture = nullptr;
 		glm::vec2 TexCoordMin = { 0.0f, 0.0f };
@@ -67,8 +69,7 @@ namespace Jah {
 		SpriteRendererComponent(const glm::vec4 color)
 			: Color(color) {}
 		SpriteRendererComponent(Shared<Texture2D> texture, const glm::vec4 color = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f))
-			: Texture(texture), Color(color) {
-		}
+			: Texture(texture), Color(color) {}
 	};
 
 	struct CircleRendererComponent
@@ -129,7 +130,6 @@ namespace Jah {
 
 	struct BoxCollider2DComponent
 	{
-
 		glm::vec2 Offset = { 0.0f, 0.0f };
 		glm::vec2 Size = { 0.5f, 0.5f };
 

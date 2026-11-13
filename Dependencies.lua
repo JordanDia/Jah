@@ -5,6 +5,7 @@ IncludeDirs = {
 	ImGuiBackends = "%{wks.location}/Jah/External/imgui/backends",
 	glm = "%{wks.location}/Jah/External/glm",
 	stb_image = "%{wks.location}/Jah/External/stb_image",
+	stb_truetype = "%{wks.location}/Jah/External/stb_truetype",
 	spdlog = "%{wks.location}/Jah/External/spdlog/include",
 	yaml_cpp = "%{wks.location}/Jah/External/yaml-cpp/include",
 	ImGuizmo = "%{wks.location}/Jah/External/ImGuizmo",
@@ -12,6 +13,7 @@ IncludeDirs = {
 	mono = "%{wks.location}/Jah/External/mono/include",
 	dotnet = "%{wks.location}/Jah/External/dotnet",
 	miniaudio = "%{wks.location}/Jah/External/miniaudio",
+	freetype = "%{wks.location}/Jah/External/freetype/include",
 }
 
 LibraryDir = {

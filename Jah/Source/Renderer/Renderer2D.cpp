@@ -62,6 +62,8 @@ namespace Jah {
 		Shared<Shader> LineShader;
 		float LineWidth = 2.0f;
 
+		Shared<Shader> TextShader;
+
 		uint32_t QuadIndexCount = 0;
 		QuadVertex* QuadVertexBufferBase = nullptr;
 		QuadVertex* QuadVertexBufferPtr = nullptr;
@@ -162,6 +164,10 @@ namespace Jah {
 		Data.QuadShader = CreateShared<Shader>("Assets/Shaders/Renderer2D_Quad.glsl");
 		Data.CircleShader = CreateShared<Shader>("Assets/Shaders/Renderer2D_Circle.glsl");
 		Data.LineShader = CreateShared<Shader>("Assets/Shaders/Renderer2D_Line.glsl");
+		Data.TextShader = CreateShared<Shader>("Assets/Shaders/Renderer2D_Text.glsl");
+
+		Data.TextShader->Bind();
+		Data.TextShader->UploadUniformIntArray("u_Textures", samplers, Data.MaxTextureSlots);
 
 		Data.QuadShader->Bind();
 		Data.QuadShader->UploadUniformIntArray("u_Textures", samplers, Data.MaxTextureSlots);
@@ -191,6 +197,9 @@ namespace Jah {
 
 		Data.LineShader->Bind();
 		Data.LineShader->UploadUniformMat4("u_ViewProjection", viewProj);
+
+		Data.TextShader->Bind();
+		Data.TextShader->UploadUniformMat4("u_ViewProjection", viewProj);
 
 		Data.QuadIndexCount = 0;
 		Data.QuadVertexBufferPtr = Data.QuadVertexBufferBase;
@@ -236,6 +245,9 @@ namespace Jah {
 
 		Data.LineShader->Bind();
 		Data.LineShader->UploadUniformMat4("u_ViewProjection", viewProj);
+
+		Data.TextShader->Bind();
+		Data.TextShader->UploadUniformMat4("u_ViewProjection", viewProj);
 
 		StartBatch();
 	}
@@ -648,6 +660,30 @@ namespace Jah {
 		DrawLine(lineVertices[2], lineVertices[3], color, entityID);
 		DrawLine(lineVertices[3], lineVertices[0], color, entityID);
 	}
+
+	void Renderer2D::DrawString(const std::string& text, Shared<Font> font, const glm::vec2& position, const glm::vec4& color)
+	{
+		float x = position.x;
+		float y = position.y;
+
+		for (char c : text)
+		{
+			const Glyph& glyph = font->GetGlyph(c);
+
+			if (!glyph.Texture)
+				continue;
+
+			float xpos = x + glyph.Bearing.x;
+			float ypos = y - (glyph.Size.y - glyph.Bearing.y);
+
+			glm::vec2 size = { (float)glyph.Size.x,	(float)glyph.Size.y	};
+
+			DrawQuad({ xpos, ypos, 0.0f }, size, glyph.Texture);
+
+			x += glyph.Advance;
+		}	
+	}
+	
 
 	void Renderer2D::DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, int entityID)
 	{

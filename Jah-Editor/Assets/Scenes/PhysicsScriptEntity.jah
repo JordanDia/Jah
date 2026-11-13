@@ -9,6 +9,7 @@ Entities:
       Scale: [0.49999994, 0.5, 0.9999998]
     SpriteRendererComponent:
       Color: [0.3, 0.4, 1, 1]
+      TexturePath: ""
     Rigidbody2DComponent:
       BodyType: Dynamic
     BoxCollider2DComponent:
@@ -44,6 +45,7 @@ Entities:
       Scale: [8.875359, 0.35885233, 1]
     SpriteRendererComponent:
       Color: [1, 0.5063291, 0, 1]
+      TexturePath: ""
     Rigidbody2DComponent:
       BodyType: Static
     BoxCollider2DComponent:
@@ -80,5 +82,6 @@ Entities:
       Scale: [0.49999994, 0.5, 0.9999998]
     SpriteRendererComponent:
       Color: [0.3, 0.4, 1, 1]
+      TexturePath: Assets\Textures\goku_pfp.jpg
     ScriptComponent:
       ClassName: Sandbox.Player

@@ -21,6 +21,7 @@ group "Dependencies"
 	include "Jah/External/imgui"
 	include "Jah/External/yaml-cpp"
 	include "Jah/External/Box2D"
+	include "Jah/External/freetype"
 
 group "Core"
 	include "Jah"

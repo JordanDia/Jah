@@ -255,6 +255,9 @@ namespace Jah {
 				if (ImGui::MenuItem("Open", "Ctrl+O"))
 					OpenScene();
 
+				if (ImGui::MenuItem("Save", "Ctrl+S"))
+					SaveScene();
+
 				if (ImGui::MenuItem("Save As", "Ctrl+Shift+S"))
 					SaveSceneAs();
 
@@ -461,9 +464,7 @@ namespace Jah {
 		{
 			if (control)
 				OpenScene();
-
 			break;
-
 		}
 
 		case JAH_KEY_S:
@@ -474,7 +475,6 @@ namespace Jah {
 				SaveScene();
 
 			break;
-
 		}
 
 		// Scene Commands

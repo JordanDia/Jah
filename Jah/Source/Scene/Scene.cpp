@@ -521,6 +521,11 @@ namespace Jah {
 	{
 		Renderer2D::BeginScene(camera);
 
+
+		auto fontFilepath = std::filesystem::absolute("Assets/Fonts/Roboto/Roboto-Regular.ttf");
+		Shared<Font> font = CreateShared<Font>(fontFilepath, 24.0f);
+		Renderer2D::DrawString("KAMEHAMEHA!", font, glm::vec2(1.0f, 1.0f), glm::vec4(1.0f));
+
 		// Draw Sprites
 		{
 			auto view = m_Registry.View<TransformComponent, SpriteRendererComponent>();
