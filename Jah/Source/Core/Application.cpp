@@ -1,4 +1,3 @@
-#include "jahpch.h"
 #include "Application.h"
 
 #include <glad/glad.h>

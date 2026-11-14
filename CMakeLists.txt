@@ -1,0 +1,26 @@
+cmake_minimum_required(VERSION 3.28)
+
+project(Jah LANGUAGES C CXX)
+
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug CACHE STRING "Debug, Release or Dist" FORCE)
+endif()
+
+set(CMAKE_C_FLAGS_DIST                      "${CMAKE_C_FLAGS_RELEASE}")
+set(CMAKE_CXX_FLAGS_DIST                    "${CMAKE_CXX_FLAGS_RELEASE}")
+set(CMAKE_EXE_LINKER_FLAGS_DIST             "${CMAKE_EXE_LINKER_FLAGS_RELEASE}")
+set(CMAKE_STATIC_LINKER_FLAGS_DIST          "${CMAKE_STATIC_LINKER_FLAGS_RELEASE}")
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+
+add_subdirectory(Jah/External)
+add_subdirectory(Jah)
+add_subdirectory(Jah-Editor)
+add_subdirectory(Jah-Runtime)

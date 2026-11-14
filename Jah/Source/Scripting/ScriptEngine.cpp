@@ -1,4 +1,3 @@
-#include "jahpch.h"
 #include "ScriptEngine.h"
 #include "ScriptGlue.h"
 

@@ -1,4 +1,3 @@
-#include "jahpch.h"
 #include "Renderer2D.h"
 
 #include "Renderer.h"

@@ -1,4 +1,3 @@
-#include "jahpch.h"
 #include "Framebuffer.h"
 #include <glad\glad.h>
 #include <print>

@@ -1,4 +1,3 @@
-﻿#include "jahpch.h"
 #include "ImGuiLayer.h"
 #include "Core/Application.h"
 

@@ -1,4 +1,3 @@
-#include "jahpch.h"
 #include "Utils.h"
 
 #include <commdlg.h>

@@ -1,4 +1,3 @@
-#include "jahpch.h"
 #include "SubTexture2D.h"
 
 namespace Jah {

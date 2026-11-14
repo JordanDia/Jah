@@ -1,4 +1,3 @@
-#include "jahpch.h"
 #include "Scene.h"
 #include "Entity.h"
 #include "Registry.h"

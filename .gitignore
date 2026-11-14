@@ -15,6 +15,7 @@ Binaries/
 Binaries-Int/
 Intermediates/
 obj/
+build/
 
 # Logs
 *.log

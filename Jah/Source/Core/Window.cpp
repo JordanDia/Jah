@@ -1,5 +1,3 @@
-#include "jahpch.h"
-
 
 #include "Window.h"
 #include "Events/ApplicationEvent.h"

@@ -1,4 +1,3 @@
-#include "jahpch.h"
 #include "Layer.h"
 
 

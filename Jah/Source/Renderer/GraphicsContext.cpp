@@ -1,4 +1,3 @@
-#include "jahpch.h"
 #include "Renderer/GraphicsContext.h"
 #include "Core/Core.h"
 

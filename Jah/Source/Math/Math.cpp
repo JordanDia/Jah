@@ -1,4 +1,3 @@
-#include "jahpch.h"
 #include "Math.h"
 
 #define GLM_ENABLE_EXPERIMENTAL

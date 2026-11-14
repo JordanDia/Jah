@@ -1,4 +1,3 @@
-#include "jahpch.h"
 #include "SoundEngine.h"
 
 namespace Jah {

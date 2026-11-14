@@ -1,5 +1,3 @@
-#include "jahpch.h"
-
 #include "SceneSerializer.h"
 #include "Entity.h"
 #include "Components.h"

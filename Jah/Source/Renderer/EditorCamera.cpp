@@ -1,4 +1,3 @@
-#include "jahpch.h"
 #include "EditorCamera.h"
 
 #include "Core/Input.h"

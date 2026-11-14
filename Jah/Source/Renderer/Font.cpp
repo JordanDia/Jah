@@ -1,4 +1,3 @@
-#include "jahpch.h"
 #include "Font.h"
 
 #include <ft2build.h>

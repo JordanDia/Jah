@@ -32,18 +32,22 @@ It provides a modern, lightweight framework for building 2D games with OpenGL.
 ## Getting Started
 
 ### Prerequisites
-- C++23 compatible compiler
-- Premake
-- OpenGL 3.3+
-- GLFW, GLAD, ImGui (included as submodules or downloaded)
+- Windows with the MSVC compiler (Visual Studio 2026 or Build Tools 2026)
+- CMake 3.28+ and Ninja
+- OpenGL 4.5+
+- All other dependencies are included in the repository or as submodules
 
 ### Build
-1. Clone the repository:
+From an **x64 Native Tools Command Prompt for VS 2026**:
 
 ```bash
 git clone --recurse-submodules https://github.com/JordanDia/Jah.git
+cd Jah
+cmake --preset debug
+cmake --build --preset debug
 ```
 
-2. Run the GenerateProjects.bat script in the main directory. This will create project files for your compiler/IDE.
+The presets are `debug`, `release` and `dist`. Executables are written to `build/<preset>/bin/`.
+Run Jah-Editor with `Jah-Editor/` as the working directory.
 
-3. Open the generated project in Visual Studio IDE and build.
+In VS Code, open the folder with the CMake Tools and C/C++ extensions installed, select a preset, then build with F7 and debug with F5.

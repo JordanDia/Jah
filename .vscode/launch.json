@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Jah-Editor",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${command:cmake.launchTargetPath}",
+            "cwd": "${workspaceFolder}/Jah-Editor",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Jah-Runtime",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${command:cmake.launchTargetPath}",
+            "cwd": "${workspaceFolder}/Jah-Runtime",
+            "console": "integratedTerminal"
+        }
+    ]
+}
