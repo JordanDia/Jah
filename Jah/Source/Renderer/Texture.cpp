@@ -1,4 +1,3 @@
-#include "jahpch.h"
 #include "Texture.h"
 
 #include "stb_image.h"
@@ -41,6 +40,13 @@ namespace Jah {
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	}
+
+	Texture2D::Texture2D(uint32_t rendererID, uint32_t width, uint32_t height, TextureFormat format)
+		: m_RendererID(rendererID), m_Width(width), m_Height(height), m_OwnsTexture(false)
+	{
+		m_InternalFormat = GL_RGBA8;
+		m_DataFormat = GL_RGBA;
 	}
 
 	Texture2D::Texture2D(const std::string& path)
@@ -87,7 +93,8 @@ namespace Jah {
 
 	Texture2D::~Texture2D()
 	{
-		glDeleteTextures(1, &m_RendererID);
+		if (m_OwnsTexture)
+			glDeleteTextures(1, &m_RendererID);
 	}
 
 	void Texture2D::SetData(void* data, uint32_t size)

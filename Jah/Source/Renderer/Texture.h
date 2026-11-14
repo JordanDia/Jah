@@ -29,6 +29,7 @@ namespace Jah {
 	public:
 		Texture2D(const std::string& path);
 		Texture2D(uint32_t width, uint32_t height, TextureFormat format = TextureFormat::RGBA);
+		Texture2D(uint32_t rendererId, uint32_t height, uint32_t width, TextureFormat format = TextureFormat::RGBA);
 
 		~Texture2D();
 
@@ -55,6 +56,7 @@ namespace Jah {
 		uint32_t m_RendererID = 0;
 		GLenum m_InternalFormat;
 		GLenum m_DataFormat;
+		bool m_OwnsTexture = true;
 	};
 
 }
